@@ -1,5 +1,5 @@
-from src.sokoban import Sokoban,Direction, Symbol
-
+from src.sokoban import Sokoban, Direction, Symbol
+from src.state import State
 def main():
     with open('inputs/input2', 'r') as file:
         level = [list(map(Symbol, line.strip('\n'))) for line in file]
