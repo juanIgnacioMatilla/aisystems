@@ -1,7 +1,7 @@
 from src.sokoban import Sokoban, Direction, Symbol
 from src.state import State
 def main():
-    with open('inputs/input2', 'r') as file:
+    with open('inputs/input3', 'r') as file:
         level = [list(map(Symbol, line.strip('\n'))) for line in file]
 
     game = Sokoban(level)
@@ -14,6 +14,14 @@ def main():
     print("BFS")
     # print("Path: ", bfs.reconstructed_path)
     print("Length: ", len(bfs.reconstructed_path))
+
+    # search method DFS
+    from src.search_methods.dfs import DFS
+    dfs = DFS(game)
+    dfs.search(State(game.player_pos, game.boxes))
+    print("DFS")
+    # print("Path: ", bfs.reconstructed_path)
+    print("Length: ", len(dfs.reconstructed_path))
 
 
 # # use arrows for movement
