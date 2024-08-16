@@ -15,8 +15,6 @@ class Direction(Enum):
     LEFT = (-1, 0)
     RIGHT = (1, 0)
 
-
-
 class Sokoban:
     def __init__(self, level):
         self.level = level
@@ -84,3 +82,24 @@ class Sokoban:
                 else:
                     print(Symbol.FREE.value, end='')
             print()
+
+    def can_move(self, direction: Direction):
+        dx, dy = direction.value
+        new_player_pos = (self.player_pos[0] + dx, self.player_pos[1] + dy)
+
+        if new_player_pos in self.walls:
+            return False
+
+        new_boxes = set(self.boxes)
+        if new_player_pos in new_boxes:
+            new_box_pos = (new_player_pos[0] + dx, new_player_pos[1] + dy)
+            if new_box_pos in self.walls or new_box_pos in new_boxes:
+                return False
+        return True
+
+    def copy_move(self, direction: Direction):
+        new = Sokoban(self.level)
+        if new.move(direction):
+            return new
+        return None
+
