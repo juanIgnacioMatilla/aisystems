@@ -1,5 +1,5 @@
+from TP1.src.node import Node
 from TP1.src.search_methods.abstract_method import SearchMethod
-from TP1.src.sokoban import Direction
 from TP1.src.state import State
 
 
@@ -14,11 +14,10 @@ class DFS(SearchMethod):
             if self.is_goal_state(current_state):
                 return self.reconstructed_path
 
-            neighbors = self.get_neighbors(current_state)
-            for neighbor in neighbors:
-                if neighbor not in visited:
-                    self.reconstructed_path.append(neighbor)
-                    visited.add(neighbor)
-                    stack.append(neighbor)
-
-        return None  #
+            neighbours = self.get_neighbours(current_state)
+            for neighbour in neighbours:
+                if neighbour not in visited:
+                    self.reconstructed_path.append(Node(1, neighbour))
+                    visited.add(neighbour)
+                    stack.append(neighbour)
+        return self.reconstructed_path  #

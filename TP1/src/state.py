@@ -6,7 +6,9 @@ from TP1.src.sokoban import Direction
 class State:
     def __init__(self, player_pos, boxes):
         self.player_pos = player_pos
-        self.boxes = tuple(sorted(boxes))  # Tupla ordenada para garantizar unicidad en el set
+        self.boxes = tuple(
+            sorted(boxes)
+        )  # Tupla ordenada para garantizar unicidad en el set
 
     def __eq__(self, other):
         return self.player_pos == other.player_pos and self.boxes == other.boxes
@@ -45,3 +47,20 @@ class State:
 
     def is_completed(self, targets):
         return set(self.boxes) == targets
+
+    def is_blocked(self, walls):
+        set_walls = set(walls)
+        for box in self.boxes:
+            if (
+                ((box[0] + 1, box[1]) in set_walls)
+                and ((box[0], box[1] + 1) in set_walls)
+                or ((box[0] + 1, box[1]) in set_walls)
+                and ((box[0], box[1] - 1) in set_walls)
+                or (box[0] - 1, box[1] in set_walls)
+                and ((box[0], box[1] + 1) in set_walls)
+                or ((box[0] - 1, box[1]) in set_walls)
+                and ((box[0], box[1] - 1) in set_walls)
+            ):
+                return True
+        return False
+
