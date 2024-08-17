@@ -3,11 +3,10 @@ from TP1.src.state import State
 
 
 class DFS(SearchMethod):
-    def search(self, initial_state: State):
-        self.init_node = self.add_node(0, initial_state, None)
+    def search(self):
         stack = [self.init_node]
         visited = set()
-        visited.add(initial_state)
+        visited.add(self.init_node.state)
         last_node = None
         while stack:
             current_node = stack.pop()

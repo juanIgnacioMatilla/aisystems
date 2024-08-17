@@ -3,29 +3,31 @@ from src.state import State
 
 from TP1.src.gif_generator import create_gif, delete_frames, generate_gif, print_path
 from TP1.src.search_methods.bfs import BFS
-from TP1.src.search_methods.dfs import DFS
+from TP1.src.search_methods.greedy_search import GreedySearch
+from TP1.src.heuristics.manhattan_heuristic import manhattan_heuristic
 
 
 def main():
-    with open("inputs/input3", "r") as file:
+    with open("TP1/inputs/input4", "r") as file:
         level = [list(map(Symbol, line.strip("\n"))) for line in file]
 
     game = Sokoban(level)
     game.print_board()
-
-    # search method BFS
-    # print("BFS")
-    # bfs = BFS(game)
-    # path = bfs.search(State(game.player_pos, game.boxes))
-    print("DFS")
-    dfs = DFS(game)
-    path = dfs.search(State(game.player_pos, game.boxes))
+    print("Greedy")
+    initial_state = State(game.player_pos, game.boxes)
+    greedy = GreedySearch(
+        game.player_pos,
+        game.walls,
+        initial_state,
+        manhattan_heuristic(initial_state, game.targets)
+    )
+    path = greedy.search()
     if path:
         print("Search path: ", path)
         print("Length: ", len(path))
         print()
         # Visualize the path
-        generate_gif(path, game, gif_name="input3_solution.gif")
+        # generate_gif(path, game, gif_name="input4_solution.gif")
     else:
         print("No solution found.")
 

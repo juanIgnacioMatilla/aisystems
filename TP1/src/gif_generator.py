@@ -63,7 +63,6 @@ def delete_frames(output_folder: str = 'TP1/frames'):
         img_path = os.path.join(output_folder, img)
         if img.endswith(".png"):
             os.remove(img_path)
-            print(f"Eliminado {img_path}")
 
 
 def create_gif(output_folder: str = 'TP1/frames', gif_name: str = 'sokoban_solution.gif'):

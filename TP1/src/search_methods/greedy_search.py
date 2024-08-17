@@ -5,11 +5,8 @@ from TP1.src.state import State
 
 
 class GreedySearch(InformedSearchMethod):
-    def search(self, initial_state: State):
+    def search(self):
         open_list = []
-        self.init_node = self.add_node(
-            self.heuristic(initial_state), initial_state, None
-        )
         last_node = None
         heapq.heappush(
             open_list, self.init_node
