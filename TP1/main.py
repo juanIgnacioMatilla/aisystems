@@ -1,5 +1,11 @@
+from TP1.src.search_methods.greedy_search import GreedySearch
 from src.sokoban import Sokoban, Direction, Symbol
 from src.state import State
+from src.search_methods.bfs import BFS
+from src.search_methods.dfs import DFS
+from src.heuristics.trivial_heuristic import trivial_heuristic
+
+
 def main():
     with open('inputs/input3', 'r') as file:
         level = [list(map(Symbol, line.strip('\n'))) for line in file]
@@ -8,21 +14,22 @@ def main():
     game.print_board()
 
     # search method BFS
-    from src.search_methods.bfs import BFS
-    bfs = BFS(game)
-    bfs.search(State(game.player_pos,game.boxes))
     print("BFS")
-    # print("Path: ", bfs.reconstructed_path)
+    bfs = BFS(game)
+    bfs.search(State(game.player_pos, game.boxes))
     print("Length: ", len(bfs.reconstructed_path))
-
+    print()
     # search method DFS
-    from src.search_methods.dfs import DFS
+    print("DFS")
     dfs = DFS(game)
     dfs.search(State(game.player_pos, game.boxes))
-    print("DFS")
-    # print("Path: ", bfs.reconstructed_path)
     print("Length: ", len(dfs.reconstructed_path))
-
+    print()
+    # search method Greedy Search
+    print("Greedy")
+    greedy = GreedySearch(game, trivial_heuristic)
+    greedy.search(State(game.player_pos, game.boxes))
+    print("Length: ", len(greedy.reconstructed_path))
 
 # # use arrows for movement
 #     while not game.is_completed():
