@@ -35,7 +35,9 @@ class SearchMethod(ABC):
                 neighbours.append(new_state)
         return neighbours
 
-    def reconstruct_path(self, node: Node) -> list[Node]:
+    def reconstruct_path(self, node: Node | None) -> list[Node]:
+        if node is None:
+            return []
         parent_node = node.parent
         node_list = deque([node])
         while parent_node is not None:
