@@ -1,12 +1,18 @@
+from typing import Optional
+
 from TP1.src.state import State
 
 
 class Node:
-    def __init__(self, cost: float, id: int, state: State, parent: Node | None = None):
+    def __init__(self, cost: float, id: int, state: State, parent: Optional['Node'] = None):
         self.cost = cost
         self.state = state
         self.parent = parent
         self.id = id
+
+    def __hash__(self):
+        return hash((self.id, self.parent, self.state))
+
 
     def __lt__(self, other):
         return self.cost < other.cost

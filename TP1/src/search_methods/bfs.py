@@ -14,7 +14,10 @@ class BFS(SearchMethod):
         last_node = None
         while queue:
             current_node: Node = queue.popleft()
-            self.node_dict_by_parent[current_node.parent].add(current_node)
+            if current_node.parent is not None:
+                if current_node.parent not in self.node_dict_by_parent:
+                    self.node_dict_by_parent[current_node.parent] = set()
+                self.node_dict_by_parent[current_node.parent].add(current_node)
             if self.is_goal_state(current_node.state):
                 return self.reconstruct_path(current_node)
 
