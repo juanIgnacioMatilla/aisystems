@@ -16,6 +16,7 @@ class GreedySearch(InformedSearchMethod):
         last_node = None
         while not queue.empty():
             current_node: Node = queue.get()
+            self.explored_counter += 1
             if current_node.parent is not None:
                 if current_node.parent not in self.node_dict_by_parent:
                     self.node_dict_by_parent[current_node.parent] = set()

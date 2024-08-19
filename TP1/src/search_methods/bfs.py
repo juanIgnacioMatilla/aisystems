@@ -11,8 +11,10 @@ class BFS(SearchMethod):
         visited = set()
         visited.add(self.init_node.state)
         last_node = None
+
         while queue:
             current_node: Node = queue.popleft()
+            self.explored_counter+=1
             if current_node.parent is not None:
                 if current_node.parent not in self.node_dict_by_parent:
                     self.node_dict_by_parent[current_node.parent] = set()

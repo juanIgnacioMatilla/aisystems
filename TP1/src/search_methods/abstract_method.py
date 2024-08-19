@@ -16,6 +16,7 @@ class SearchMethod(ABC):
         self.init_node: Node = self.add_node(0, initial_state, None)
         self.frontier = []
         self.success = False
+        self.explored_counter = 0
         # Search tiene que crear el node inicial y setearselo a la funcion porq sino explota todo
 
     @abstractmethod

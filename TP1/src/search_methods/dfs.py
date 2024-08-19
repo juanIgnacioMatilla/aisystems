@@ -10,6 +10,7 @@ class DFS(SearchMethod):
         last_node = None
         while stack:
             current_node = stack.pop()
+            self.explored_counter += 1
             if current_node.parent is not None:
                 if current_node.parent not in self.node_dict_by_parent:
                     self.node_dict_by_parent[current_node.parent] = set()
