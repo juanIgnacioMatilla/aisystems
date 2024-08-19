@@ -17,10 +17,13 @@ def print_results(game: Sokoban, search_method_class: type, heuristic: Callable[
     path = search_method.search()
     end_time = time.time()
     print("Success: ", search_method.success)
-    print("Time: ", end_time - start_time)
+    print("Expanded nodes count: ", search_method.node_counter)
+    print("Frontier nodes count: ", len(search_method.frontier))
     print("Solution path: ", path)
+    print("Time: ", end_time - start_time)
     print("Length: ", len(path))
-    print("Frontier nodes count: ", search_method.node_counter)
+
+
     print()
     # Visualize the path
     # generate_gif(path, game, gif_name="sokoban_solution.gif")
