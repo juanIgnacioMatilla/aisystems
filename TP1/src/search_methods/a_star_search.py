@@ -18,7 +18,7 @@ class AStarSearch(InformedSearchMethod):
                     self.node_dict_by_parent[current_node.parent] = set()
                 self.node_dict_by_parent[current_node.parent].add(current_node)
             if self.is_goal_state(current_node.state):
-                self.frontier = queue
+                self.frontier = queue.queue
                 self.success = True
                 return self.reconstruct_path(current_node)
 
