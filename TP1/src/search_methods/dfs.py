@@ -15,6 +15,8 @@ class DFS(SearchMethod):
                     self.node_dict_by_parent[current_node.parent] = set()
                 self.node_dict_by_parent[current_node.parent].add(current_node)
             if self.is_goal_state(current_node.state):
+                self.frontier = stack
+                self.success = True
                 return self.reconstruct_path(current_node)
 
             neighbours = self.get_neighbours(current_node.state)

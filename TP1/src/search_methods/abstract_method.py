@@ -14,7 +14,8 @@ class SearchMethod(ABC):
         self.node_dict_by_parent: dict[Node, set[Node]] = {}
         self.node_counter: int = 0
         self.init_node: Node = self.add_node(0, initial_state, None)
-
+        self.frontier = []
+        self.success = False
         # Search tiene que crear el node inicial y setearselo a la funcion porq sino explota todo
 
     @abstractmethod
@@ -23,7 +24,6 @@ class SearchMethod(ABC):
 
     def is_goal_state(self, state: State):
         if state.is_completed(self.targets):
-            print(state)
             return True
         return False
 

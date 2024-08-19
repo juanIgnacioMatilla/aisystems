@@ -1,5 +1,12 @@
+import cProfile
+import time
+import timeit
+
 from TP1.src.heuristics.blocked_heuristic import blocked_heuristic
 from TP1.src.heuristics.trivial_heuristic import trivial_heuristic
+from TP1.src.print_results import print_results
+from TP1.src.search_methods.a_star_search import AStarSearch
+from TP1.src.search_methods.dfs import DFS
 from src.sokoban import Sokoban, Symbol
 from src.state import State
 
@@ -16,38 +23,11 @@ def main():
     game = Sokoban(level)
     game.print_board()
 
-    initial_state = State(game.player_pos, game.boxes)
-    print("BFS")
-    bfs = BFS(game.targets, game.walls, initial_state)
-    path = bfs.search()
-    if path:
-        print("Search path: ", path)
-        print("Length: ", len(path))
-        print("Node counter: ",bfs.node_counter)
-        print()
-        # Visualize the path
-        # generate_gif(path, game, gif_name="input4_solution.gif")
-    else:
-        print("No solution found.")
+    print_results(game, BFS)
 
-    print("Greedy")
-    greedy = GreedySearch(
-        game.targets,
-        game.walls,
-        initial_state,
-        # trivial_heuristic
-        blocked_heuristic(initial_state, game.walls, manhattan_heuristic(initial_state, game.targets))
-    )
-    path = greedy.search()
-    if path:
-        print("Search path: ", path)
-        print("Length: ", len(path))
-        print("Node counter: ",greedy.node_counter)
-        print()
-        # Visualize the path
-        generate_gif(path, game, gif_name="input4_solution.gif")
-    else:
-        print("No solution found.")
+    print_results(game, DFS)
+
+    print_results(game, AStarSearch, trivial_heuristic)
 
 
 if __name__ == "__main__":
