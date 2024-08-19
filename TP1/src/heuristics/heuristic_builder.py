@@ -1,6 +1,10 @@
 import sys
 from typing import Callable
 
+from TP1.src.heuristics.blocked_heuristic import blocked_heuristic
+from TP1.src.heuristics.box_in_target_heuristic import box_in_target_heuristic
+from TP1.src.heuristics.manhattan_heuristic import manhattan_heuristic
+from TP1.src.heuristics.trivial_heuristic import trivial_heuristic
 from TP1.src.sokoban import Sokoban
 from TP1.src.state import State
 
@@ -8,38 +12,26 @@ from TP1.src.state import State
 class HeuristicBuilder:
     def __init__(self, game: Sokoban):
         self.game = game
-        self.available_heuristics = ["blocked", "manhattan", "trivial"]
+        self.heuristic_dict = {"manhattan": self.get_manhattan, "blocked": self.get_blocked, "trivial": self.get_trivial, "box_in_target": self.get_box_in_target_heuristic }
+
 
     @staticmethod
     def get_trivial(other_heuristic: Callable[[State], float] | None) -> Callable[[State], float]:
-        def f(state: State) -> float:
-            return 1
-        return f
+        return trivial_heuristic
 
     def get_blocked(self, other_heuristic:Callable[[State], float]) -> Callable[[State], float]:
-        def f(state: State) -> float:
-            return other_heuristic(state) if state.is_blocked(self.game.walls) else sys.float_info.max
-        return f
+        return blocked_heuristic(self.game.walls, other_heuristic)
+
+
 
     def get_manhattan(self, other_heuristic:Callable[[State], float] | None)-> Callable[[State], float]:
-        def f(state: State) -> float:
-            return sum(
-                min(abs(bx - tx) + abs(by - ty) for tx, ty in self.game.targets) for bx, by in state.boxes
-            )
-        return f
+        return manhattan_heuristic(self.game.targets)
+
+    def get_box_in_target_heuristic(self, other_heuristic:Callable[[State], float] | None):
+            return box_in_target_heuristic(self.game.targets)
 
     def get_heuristic(self, heuristic: str, other:str)-> Callable[[State], float] | None:
         if heuristic is None:
             return None
-        secondary = None
-        if other == 'manhattan':
-            secondary = self.get_manhattan(None)
-        elif other == 'trivial':
-            secondary = self.get_trivial(None)
-
-        if heuristic == 'blocked':
-            return self.get_blocked(secondary)
-        elif heuristic == 'manhattan':
-            return self.get_manhattan(secondary)
-        else:
-            return self.get_trivial(secondary)
+        other = self.heuristic_dict[other](None) if other else None
+        return self.heuristic_dict[heuristic](other)

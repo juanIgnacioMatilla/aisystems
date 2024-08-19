@@ -1,7 +1,8 @@
 {
   "search_methods" : [
     {
-      "method": "BFS"
+      "method": "A*",
+      "heuristic": "box_in_target"
     },
     {
       "method": "A*",
@@ -13,6 +14,6 @@
       "heuristic": "manhattan"
     }
   ],
-  "runs_per_method": 5,
+  "runs_per_method": 1,
   "results_file_path" : "./results.json"
 }
