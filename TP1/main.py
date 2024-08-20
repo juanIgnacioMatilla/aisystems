@@ -1,5 +1,9 @@
 import sys
 import json
+
+import numpy as np
+
+from TP1.src.search_methods.a_star_search_optimized import AStarOptimizedSearch
 from TP1.utils.heuristic_builder import HeuristicBuilder
 from TP1.utils.plot_results import plot_scatter
 from TP1.utils.print_results import print_results
@@ -9,8 +13,8 @@ from src.sokoban import Sokoban, Symbol
 from TP1.src.search_methods.bfs import BFS
 from TP1.src.search_methods.greedy_search import GreedySearch
 
-informed_methods = ['GGS', 'A*']
-methods_dict = {'GGS': GreedySearch, 'A*': AStarSearch, "BFS": BFS, "DFS": DFS}
+informed_methods = ['GGS', 'A*', 'A*_Optimized']
+methods_dict = {'GGS': GreedySearch, 'A*': AStarSearch, 'A*_Optimized': AStarOptimizedSearch, "BFS": BFS, "DFS": DFS}
 
 
 def main():
@@ -36,13 +40,25 @@ def main():
 
             m = methods_dict[method]
             h = heuristic_builder.get_heuristic(heuristic, secondary_heuristic)
+            times = []
             for i in range(runs):
                 result = print_results(game, m, h)
-                if heuristic and not secondary_heuristic:
-                    result["method"] = f"{result['method']} ({heuristic})"
-                elif heuristic and secondary_heuristic:
-                    result["method"] = f"{result['method']} ({heuristic}) ({secondary_heuristic})"
-                results_list.append(result)
+                times.append(result['time'])
+
+            # Calcular la media y el error (desviación estándar)
+            mean_time = np.mean(times)
+            std_dev_time = np.std(times)
+
+            # Añadir la media y el error al resultado final
+            result['time'] = mean_time
+            result['time_error'] = std_dev_time/np.sqrt(runs)
+
+            if heuristic and not secondary_heuristic:
+                result["method"] = f"{result['method']} ({heuristic})"
+            elif heuristic and secondary_heuristic:
+                result["method"] = f"{result['method']} ({heuristic}) ({secondary_heuristic})"
+
+            results_list.append(result)
         # Graficar los resultados
         plot_scatter(results_list)
 
