@@ -5,7 +5,7 @@ from TP1.src.state import State
 
 def box_in_target_heuristic(targets: set) -> Callable[[State], float]:
     def f(state: State) -> float:
-        counter = len(state.boxes) + 1
+        counter = len(state.boxes)
         for box in state.boxes:
             if box in targets:
                 counter -= 1
