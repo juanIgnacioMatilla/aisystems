@@ -5,9 +5,10 @@ from TP1.src.state import State
 
 class Node:
     def __init__(
-        self, cost: float, id: int, state: State, parent: Optional["Node"] = None
+        self, g_value: float, id: int, state: State,  parent: Optional["Node"] = None, h_value: Optional[float] = None
     ):
-        self.cost = cost
+        self.g_value = g_value
+        self.h_value = h_value
         self.state = state
         self.parent = parent
         self.id = id
@@ -16,22 +17,22 @@ class Node:
         return hash((self.id, self.state))
 
     def __lt__(self, other):
-        return self.cost < other.cost
+        return self.g_value < other.g_value
 
     def __le__(self, other):
-        return self.cost <= other.cost
+        return self.g_value <= other.g_value
 
     def __gt__(self, other):
-        return self.cost > other.cost
+        return self.g_value > other.g_value
 
     def __ge__(self, other):
-        return self.cost >= other.cost
+        return self.g_value >= other.g_value
 
     def __eq__(self, other):
-        return self.cost == other.cost and self.state == other.state
+        return self.g_value == other.g_value and self.state == other.state
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __repr__(self):
-        return f"Node(cost={self.cost}, state={self.state})"
+        return f"Node(g_value={self.g_value}, h_value={self.h_value}, state={self.state})"

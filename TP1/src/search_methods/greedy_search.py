@@ -6,30 +6,42 @@ from TP1.src.node import Node
 from TP1.src.search_methods.informed_abstract_method import InformedSearchMethod
 from TP1.src.state import State
 
+class PrioritizedNodeTuple:
+    def __init__(self, f_value : float, node : Node):
+        self.f_value = f_value
+        self.node = node
+
+    def __lt__(self, other):
+        return self.f_value < other.f_value
+
+    def __eq__(self, other):
+        return self.f_value == other.f_value
 
 class GreedySearch(InformedSearchMethod):
     def search(self):
         queue = PriorityQueue()
-        queue.put(self.init_node)
+        queue.put(PrioritizedNodeTuple(0, self.init_node))
         visited = set()
         visited.add(self.init_node.state)
         last_node = None
         while not queue.empty():
-            current_node: Node = queue.get()
+            current_tuple: PrioritizedNodeTuple = queue.get()
             self.explored_counter += 1
-            if current_node.parent is not None:
-                if current_node.parent not in self.node_dict_by_parent:
-                    self.node_dict_by_parent[current_node.parent] = set()
-                self.node_dict_by_parent[current_node.parent].add(current_node)
-            if self.is_goal_state(current_node.state):
-                self.frontier = queue.queue
+            if current_tuple.node.parent is not None:
+                if current_tuple.node.parent not in self.node_dict_by_parent:
+                    self.node_dict_by_parent[current_tuple.node.parent] = set()
+                self.node_dict_by_parent[current_tuple.node.parent].add(current_tuple.node)
+            if self.is_goal_state(current_tuple.node.state):
+                self.frontier = [prioritized_tuple.node for prioritized_tuple in queue.queue]
                 self.success = True
-                return self.reconstruct_path(current_node)
+                return self.reconstruct_path(current_tuple.node)
 
-            frontier = self.get_neighbours(current_node.state)
+            frontier = self.get_neighbours(current_tuple.node.state)
             for neighbour in frontier:
                 if neighbour not in visited:
                     visited.add(neighbour)
-                    queue.put(self.add_node(self.heuristic(current_node.state), neighbour, current_node))
-            last_node = current_node
+                    h_value: float  = self.heuristic(neighbour)
+                    node = self.add_node(current_tuple.node.g_value + 1, neighbour, current_tuple.node, h_value)
+                    queue.put(PrioritizedNodeTuple(node.h_value,node))
+            last_node = current_tuple.node
         return self.reconstruct_path(last_node)

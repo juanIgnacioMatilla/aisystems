@@ -22,7 +22,7 @@ def print_results(game: Sokoban, search_method_class: type, heuristic: Callable[
     print("Frontier nodes left count: ", len(search_method.frontier))
     print("Solution path: ", path)
     print("Time: ", end_time - start_time)
-    print("Length: ", len(path))
+    print("Length: ", len(path) -1)
 
 
     print()

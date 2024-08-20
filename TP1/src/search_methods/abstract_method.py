@@ -13,7 +13,7 @@ class SearchMethod(ABC):
         self.walls = walls
         self.node_dict_by_parent: dict[Node, set[Node]] = {}
         self.node_counter: int = 0
-        self.init_node: Node = self.add_node(0, initial_state, None)
+        self.init_node: Node = self.add_node(0, initial_state)
         self.frontier = []
         self.success = False
         self.explored_counter = 0
@@ -48,7 +48,7 @@ class SearchMethod(ABC):
 
         return list(node_list)
 
-    def add_node(self, cost: float, state: State, parent: Node | None) -> Node:
-        node = Node(cost, self.node_counter, state, parent)
+    def add_node(self, g_value: float, state: State, parent: Node | None = None, h_value: float | None = None) -> Node:
+        node = Node(g_value, self.node_counter, state, parent, h_value)
         self.node_counter += 1
         return node

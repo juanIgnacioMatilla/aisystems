@@ -12,7 +12,7 @@ from TP1.src.search_methods.greedy_search import GreedySearch
 informed_methods = ['GGS', 'A*']
 methods_dict = {'GGS': GreedySearch, 'A*': AStarSearch, "BFS": BFS, "DFS": DFS}
 def main():
-    with open("TP1/inputs/input4", "r") as file:
+    with open("TP1/inputs/input7", "r") as file:
         level = [list(map(Symbol, line.strip("\n"))) for line in file]
 
 

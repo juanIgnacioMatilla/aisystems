@@ -28,6 +28,6 @@ class BFS(SearchMethod):
             for neighbour in neighbours:
                 if neighbour not in visited:
                     visited.add(neighbour)
-                    queue.append(self.add_node(0, neighbour, current_node))
+                    queue.append(self.add_node(1, neighbour, current_node))
             last_node = current_node
         return self.reconstruct_path(last_node)
