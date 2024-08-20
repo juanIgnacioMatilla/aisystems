@@ -3,16 +3,17 @@ import json
 from TP1.src.heuristics.heuristic_builder import HeuristicBuilder
 from TP1.src.print_results import print_results
 from TP1.src.search_methods.a_star_search import AStarSearch
+from TP1.src.search_methods.a_star_search_optimized import AStarOptimizedSearch
 from TP1.src.search_methods.dfs import DFS
 from src.sokoban import Sokoban, Symbol
 from TP1.src.search_methods.bfs import BFS
 from TP1.src.search_methods.greedy_search import GreedySearch
 
 
-informed_methods = ['GGS', 'A*']
-methods_dict = {'GGS': GreedySearch, 'A*': AStarSearch, "BFS": BFS, "DFS": DFS}
+informed_methods = ['GGS', 'A*', 'A*_Optimized']
+methods_dict = {'GGS': GreedySearch, 'A*': AStarSearch, 'A*_Optimized': AStarOptimizedSearch, "BFS": BFS, "DFS": DFS}
 def main():
-    with open("TP1/inputs/input7", "r") as file:
+    with open("TP1/inputs/input6", "r") as file:
         level = [list(map(Symbol, line.strip("\n"))) for line in file]
 
 
