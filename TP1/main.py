@@ -4,6 +4,8 @@ import json
 import numpy as np
 
 from TP1.src.search_methods.a_star_search_optimized import AStarOptimizedSearch
+from TP1.src.search_methods.bfs_optimized import BFSOptimized
+from TP1.src.search_methods.dfs_optimized import DFSOptimized
 from TP1.utils.heuristic_builder import HeuristicBuilder
 from TP1.utils.plot_results import plot_scatter
 from TP1.utils.print_results import print_results
@@ -14,11 +16,12 @@ from TP1.src.search_methods.bfs import BFS
 from TP1.src.search_methods.greedy_search import GreedySearch
 
 informed_methods = ['GGS', 'A*', 'A*_Optimized']
-methods_dict = {'GGS': GreedySearch, 'A*': AStarSearch, 'A*_Optimized': AStarOptimizedSearch, "BFS": BFS, "DFS": DFS}
+methods_dict = {'GGS': GreedySearch, 'A*': AStarSearch, 'A*_Optimized': AStarOptimizedSearch, "BFS": BFS, "DFS": DFS,
+                "BFS_Optimized": BFSOptimized, "DFS_Optimized": DFSOptimized}
 
 
 def main():
-    with open("TP1/inputs/input4", "r") as file:
+    with open("TP1/inputs/medium/sokoA03", "r") as file:
         level = [list(map(Symbol, line.strip("\n"))) for line in file]
 
     # Game initialization
@@ -51,7 +54,7 @@ def main():
 
             # Añadir la media y el error al resultado final
             result['time'] = mean_time
-            result['time_error'] = std_dev_time/np.sqrt(runs)
+            result['time_error'] = std_dev_time / np.sqrt(runs)
 
             if heuristic and not secondary_heuristic:
                 result["method"] = f"{result['method']} ({heuristic})"

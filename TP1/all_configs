@@ -1,0 +1,175 @@
+{
+  "search_methods": [
+    {
+      "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "trivial"
+    },
+    {
+      "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "box_in_target"
+    },
+    {
+      "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "manhattan"
+    },
+    {
+      "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "minimum_matching"
+    },
+    {
+      "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "pseudo_deadlock"
+    },
+    {
+      "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "weighted_manhattan"
+    },
+    {
+      "method": "A*",
+      "heuristic": "box_in_target"
+    },
+    {
+      "method": "A*",
+      "heuristic": "manhattan"
+    },
+    {
+      "method": "A*",
+      "heuristic": "minimum_matching"
+    },
+    {
+      "method": "A*",
+      "heuristic": "pseudo_deadlock"
+    },
+    {
+      "method": "A*",
+      "heuristic": "trivial"
+    },
+    {
+      "method": "A*",
+      "heuristic": "weighted_manhattan"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "blocked",
+      "secondary_heuristic": "trivial"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "blocked",
+      "secondary_heuristic": "box_in_target"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "blocked",
+      "secondary_heuristic": "manhattan"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "blocked",
+      "secondary_heuristic": "pseudo_deadlock"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "blocked",
+      "secondary_heuristic": "weighted_manhattan"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "box_in_target"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "manhattan"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "minimum_matching"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "pseudo_deadlock"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "trivial"
+    },
+    {
+      "method": "A*_Optimized",
+      "heuristic": "weighted_manhattan"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "blocked",
+      "secondary_heuristic": "trivial"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "blocked",
+      "secondary_heuristic": "box_in_target"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "blocked",
+      "secondary_heuristic": "manhattan"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "blocked",
+      "secondary_heuristic": "minimum_matching"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "blocked",
+      "secondary_heuristic": "pseudo_deadlock"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "blocked",
+      "secondary_heuristic": "weighted_manhattan"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "box_in_target"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "manhattan"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "minimum_matching"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "pseudo_deadlock"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "trivial"
+    },
+    {
+      "method": "GGS",
+      "heuristic": "weighted_manhattan"
+    },
+    {
+      "method": "BFS"
+    },
+    {
+      "method": "DFS"
+    },
+    {
+      "method": "BFS_Optimized"
+    },
+    {
+      "method": "DFS_Optimized"
+    }
+  ],
+  "runs_per_method": 1,
+  "results_file_path": "./results.json"
+}

@@ -10,11 +10,11 @@ def plot_scatter(results):
 
     fig, ax = plt.subplots(figsize=(12, 8))  # Aumenta el tamaño del gráfico
 
-    # Generar colores únicos para cada método y heurística
+    # Generar colores únicos para cada métod y heurística
     unique_methods = list(set(methods))
     colors = plt.cm.get_cmap('tab10', len(unique_methods))
 
-    # Diccionario para asociar cada método con un color
+    # Diccionario para asociar cada métod con un color
     color_dict = {method: colors(i) for i, method in enumerate(unique_methods)}
 
     # Graficar los puntos con barras de error
