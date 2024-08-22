@@ -1,9 +1,6 @@
 from typing import Callable
 
-from skimage.filters.rank import minimum
-
 from TP1.src.heuristics.blocked_heuristic import blocked_heuristic
-from TP1.src.heuristics.blocked_precalculated_heuristic import blocked_precalculated_heuristic
 from TP1.src.heuristics.box_in_target_heuristic import box_in_target_heuristic
 from TP1.src.heuristics.manhattan_heuristic import manhattan_heuristic
 from TP1.src.heuristics.minimum_matching_distance_heuristic import minimum_matching_distance_heuristic

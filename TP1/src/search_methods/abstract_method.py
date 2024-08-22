@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections import deque
 
 from TP1.src.node import Node
-from TP1.src.sokoban import Direction, Sokoban
+from TP1.src.sokoban import Direction
 from TP1.src.state import State
 
 
@@ -17,7 +17,7 @@ class SearchMethod(ABC):
         self.frontier = []
         self.success = False
         self.explored_counter = 0
-        # Search tiene que crear el node inicial y setearselo a la funcion porq sino explota todo
+        # Search tiene que crear el node inicial y setearselo a la funcion porq sino explota toda
 
     @abstractmethod
     def search(self) -> list[Node]:

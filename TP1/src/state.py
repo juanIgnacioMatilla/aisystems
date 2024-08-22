@@ -1,5 +1,3 @@
-from collections import deque
-
 from TP1.src.sokoban import Direction
 
 
@@ -220,3 +218,47 @@ class State:
                         return True
 
         return False
+
+    def is_blocked_extended(self, walls, targets):
+        set_walls = set(walls)
+        set_targets = set(targets)
+
+        # not already blocked
+        if not self.is_blocked(walls, targets):
+            # 4 or more boxes
+            if len(self.boxes) >= 4:
+
+                # Case 4: Four boxes in a square
+                # Helper function to check if four points form a square
+                def is_square(bx1, by1, bx2, by2, bx3, by3, bx4, by4):
+                    dists = [
+                        (abs(bx1 - bx2) + abs(by1 - by2)),
+                        (abs(bx1 - bx3) + abs(by1 - by3)),
+                        (abs(bx1 - bx4) + abs(by1 - by4)),
+                        (abs(bx2 - bx3) + abs(by2 - by3)),
+                        (abs(bx2 - bx4) + abs(by2 - by4)),
+                        (abs(bx3 - bx4) + abs(by3 - by4)),
+                    ]
+                    dists.sort()
+                    # Check if there are 4 equal smaller distances (sides) and 2 equal larger distances (diagonals)
+                    return (dists[0] == dists[1] == dists[2] == dists[3] == 1 and
+                            dists[4] == dists[5] == 2)
+
+                for bx1, by1 in self.boxes:
+                    for bx2, by2 in self.boxes:
+                        if (bx1, by1) == (bx2, by2) or abs(bx1 - bx2) + abs(by1 - by2) > 2:
+                            continue
+                        for bx3, by3 in self.boxes:
+                            if abs(bx1 - bx3) + abs(by1 - by3) > 2 or abs(bx2 - bx3) + abs(by2 - by3) > 2 or (bx2, by2) == (
+                                    bx3, by3) or (bx1, by1) == (bx3, by3):
+                                continue
+                            for bx4, by4 in self.boxes:
+                                if abs(bx1 - bx4) + abs(by1 - by4) > 2 or abs(bx2 - bx4) + abs(by2 - by4) > 2 or abs(
+                                        bx3 - bx4) + abs(by3 - by4) > 2 or (bx3, by3) == (bx4, by4) or (bx1, by1) == (
+                                        bx4, by4) or (bx2, by2) == (bx4, by4):
+                                    continue
+                                if (bx1, by1) in set_targets and (bx2, by2) in set_targets and (
+                                        bx3, by3) in set_targets and (bx4, by4) in set_targets:
+                                    return False
+                                if is_square(bx1, by1, bx2, by2, bx3, by3, bx4, by4):
+                                    return True
