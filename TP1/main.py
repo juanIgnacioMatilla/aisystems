@@ -21,49 +21,52 @@ methods_dict = {'GGS': GreedySearch, 'A*': AStarSearch, 'A*_Optimized': AStarOpt
 
 
 def main():
-    with open("TP1/inputs/medium/sokoA03", "r") as file:
-        level = [list(map(Symbol, line.strip("\n"))) for line in file]
-
-    # Game initialization
-    game = Sokoban(level)
-    game.print_board()
-    heuristic_builder = HeuristicBuilder(game)
-
     with open('TP1/config.json', 'r') as file:
         config = json.load(file)
 
         runs = config['runs_per_method'] if 'runs_per_method' in config else 1
-        results_list = []
-        for search_method in config['search_methods']:
+        maps = config['maps']
+        for soko_map in maps:
+            print(f"Running map {soko_map}")
+            with open("TP1/inputs/"+soko_map, "r") as map_file:
+                level = [list(map(Symbol, line.strip("\n"))) for line in map_file]
 
-            (method, heuristic, secondary_heuristic) = get_method(search_method,
-                                                                  heuristic_builder.heuristic_dict.keys())
+            # Game initialization
+            game = Sokoban(level)
+            game.print_board()
+            heuristic_builder = HeuristicBuilder(game)
 
-            print(method, heuristic, secondary_heuristic)
+            results_list = []
+            for search_method in config['search_methods']:
 
-            m = methods_dict[method]
-            h = heuristic_builder.get_heuristic(heuristic, secondary_heuristic)
-            times = []
-            for i in range(runs):
-                result = print_results(game, m, h)
-                times.append(result['time'])
+                (method, heuristic, secondary_heuristic) = get_method(search_method,
+                                                                      heuristic_builder.heuristic_dict.keys())
 
-            # Calcular la media y el error (desviación estándar)
-            mean_time = np.mean(times)
-            std_dev_time = np.std(times)
+                print(method, heuristic, secondary_heuristic)
 
-            # Añadir la media y el error al resultado final
-            result['time'] = mean_time
-            result['time_error'] = std_dev_time / np.sqrt(runs)
+                m = methods_dict[method]
+                h = heuristic_builder.get_heuristic(heuristic, secondary_heuristic)
+                times = []
+                for i in range(runs):
+                    result = print_results(game, m, h)
+                    times.append(result['time'])
 
-            if heuristic and not secondary_heuristic:
-                result["method"] = f"{result['method']} ({heuristic})"
-            elif heuristic and secondary_heuristic:
-                result["method"] = f"{result['method']} ({heuristic}) ({secondary_heuristic})"
+                # Calcular la media y el error (desviación estándar)
+                mean_time = np.mean(times)
+                std_dev_time = np.std(times)
 
-            results_list.append(result)
-        # Graficar los resultados
-        plot_scatter(results_list)
+                # Añadir la media y el error al resultado final
+                result['time'] = mean_time
+                result['time_error'] = std_dev_time / np.sqrt(runs)
+
+                if heuristic and not secondary_heuristic:
+                    result["method"] = f"{result['method']} ({heuristic})"
+                elif heuristic and secondary_heuristic:
+                    result["method"] = f"{result['method']} ({heuristic}) ({secondary_heuristic})"
+
+                results_list.append(result)
+            # Graficar los resultados
+            plot_scatter(results_list)
 
 
 def get_method(search_method, heuristics_list):
