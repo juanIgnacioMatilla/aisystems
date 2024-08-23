@@ -13,7 +13,7 @@ class BFSOptimized(SearchMethod):
 
         for direction in Direction:
             if state.can_move(direction, self.walls):
-                new_state = state
+                new_state = state.copy_move(direction, self.walls)
                 if new_state is not None and not new_state.is_blocked(self.walls, self.targets):
                     neighbours.append(new_state)
         return neighbours

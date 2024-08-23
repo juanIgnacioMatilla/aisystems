@@ -6,7 +6,7 @@ from TP1.src.state import State
 
 def pseudo_deadlock_heuristic(targets: set, walls: set) -> Callable[[State], float]:
     def f(state: State) -> float:
-        penalty = 0
+        penalty = 1
         set_walls = set(walls)
         set_targets = set(targets)
 

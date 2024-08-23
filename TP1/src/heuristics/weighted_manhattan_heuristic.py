@@ -6,7 +6,7 @@ from TP1.src.state import State
 
 def weighted_manhattan_heuristic(targets: set, walls: set) -> Callable[[State], float]:
     def f(inner_state: State) -> float:
-        total_penalty = 0
+        total_penalty = 1
 
         for bx, by in inner_state.boxes:
             box_penalty = 0

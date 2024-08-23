@@ -26,7 +26,7 @@ class AStarOptimizedSearch(InformedSearchMethod):
             if state.can_move(direction, self.walls):
                 new_state = state.copy_move(direction, self.walls)
                 node_counter = self.node_counter
-                if node_counter > 15000 and node_counter % 4000 == 0:
+                if node_counter > 16000 and node_counter % 4000 == 0:
                     if not new_state.is_blocked_extended(self.walls, self.targets):
                         neighbours.append(new_state)
                 else:

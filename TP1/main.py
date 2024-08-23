@@ -39,13 +39,21 @@ def main():
             results_list = []
             for search_method in config['search_methods']:
 
-                (method, heuristic, secondary_heuristic) = get_method(search_method,
-                                                                      heuristic_builder.heuristic_dict.keys())
+                (method, heuristic, secondary_heuristic, weight, combination1, combination2) = get_method(search_method,
+                                                                                                 heuristic_builder.heuristic_dict.keys())
 
-                print(method, heuristic, secondary_heuristic)
+                #print method/s
+                print(f"Running method {method}")
+                if heuristic:
+                    print(f"{heuristic}")
+                if secondary_heuristic:
+                    print(f", secondary heuristic: {secondary_heuristic}")
+                if weight:
+                    print(f"{weight}*{combination1} and {1.0-weight}*{combination2}")
 
+                # Ejecutar el métod de búsqueda y guardar los resultados
                 m = methods_dict[method]
-                h = heuristic_builder.get_heuristic(heuristic, secondary_heuristic)
+                h = heuristic_builder.get_heuristic(heuristic, secondary_heuristic, weight, combination1, combination2)
                 times = []
                 for i in range(runs):
                     result = print_results(game, m, h)
@@ -72,6 +80,9 @@ def main():
 def get_method(search_method, heuristics_list):
     heuristic = None
     secondary_heuristic = None
+    weight = None
+    combination1 = None
+    combination2 = None
     if "method" not in search_method:
         print("method not found")
         sys.exit(1)
@@ -89,14 +100,22 @@ def get_method(search_method, heuristics_list):
         if "secondary_heuristic" in search_method:
             if search_method["secondary_heuristic"] in heuristics_list:
                 secondary_heuristic = search_method["secondary_heuristic"]
+        if "weight" in search_method:
+            weight = search_method["weight"]
+        if "combined1" in search_method:
+            if search_method["combined1"] in heuristics_list:
+                combination1 = search_method["combined1"]
+        if "combined2" in search_method:
+            if search_method["combined2"] in heuristics_list:
+                combination2 = search_method["combined2"]
             else:
                 print("heuristic does not exist")
                 sys.exit(1)
     elif methods_dict.keys().__contains__(method):
-        return method, heuristic, secondary_heuristic
+        return method, heuristic, secondary_heuristic, weight, combination1, combination2
     else:
         print("method does not exist")
-    return method, heuristic, secondary_heuristic
+    return method, heuristic, secondary_heuristic, weight, combination1, combination2
 
 
 if __name__ == "__main__":

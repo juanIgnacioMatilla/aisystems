@@ -1,19 +1,77 @@
 {
-  "search_methods" : [
-    {
-      "method": "A*",
-      "heuristic": "box_in_target"
-    },
-    {
+  "search_methods": [
+ {
       "method": "A*",
       "heuristic": "blocked",
       "secondary_heuristic": "trivial"
     },
     {
       "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "box_in_target"
+    },
+    {
+      "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "manhattan"
+    },
+    {
+      "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "minimum_matching"
+    },
+    {
+      "method": "A*",
+      "heuristic": "blocked",
+      "secondary_heuristic": "weighted_manhattan"
+    },
+    {
+      "method": "A*",
+      "heuristic": "box_in_target"
+    },
+    {
+      "method": "A*",
       "heuristic": "manhattan"
+    },
+    {
+      "method": "A*",
+      "heuristic": "minimum_matching"
+    },
+    {
+      "method": "A*",
+      "heuristic": "trivial"
+    },
+    {
+      "method": "A*",
+      "heuristic": "weighted_manhattan"
     }
   ],
   "runs_per_method": 1,
-  "results_file_path" : "./results.json"
+  "results_file_path": "./results.json",
+    "maps": [
+    "easy/input3",
+    "easy/input4",
+    "easy/soko00",
+    "easy/soko01",
+    "easy/soko11",
+    "easy/sokoA01",
+    "medium/sokoA02",
+    "medium/sokoA03",
+    "medium/sokoA04",
+    "medium/sokoA05",
+    "medium/sokoA07",
+    "medium/sokoA08",
+    "medium/sokoA12",
+    "hard/soko03",
+    "hard/soko12",
+    "hard/sokoA11",
+    "very_hard/soko02",
+    "very_hard/soko08",
+    "very_hard/soko09",
+    "very_hard/sokoA06",
+    "very_hard/sokoA09",
+    "very_hard/sokoA10",
+    "soko01_impossible",
+    "soko02_impossible"
+  ]
 }
