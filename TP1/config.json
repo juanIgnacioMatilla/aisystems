@@ -9,44 +9,9 @@
       "method": "A*",
       "heuristic": "blocked",
       "secondary_heuristic": "box_in_target"
-    },
-    {
-      "method": "A*",
-      "heuristic": "blocked",
-      "secondary_heuristic": "manhattan"
-    },
-    {
-      "method": "A*",
-      "heuristic": "blocked",
-      "secondary_heuristic": "minimum_matching"
-    },
-    {
-      "method": "A*",
-      "heuristic": "blocked",
-      "secondary_heuristic": "weighted_manhattan"
-    },
-    {
-      "method": "A*",
-      "heuristic": "box_in_target"
-    },
-    {
-      "method": "A*",
-      "heuristic": "manhattan"
-    },
-    {
-      "method": "A*",
-      "heuristic": "minimum_matching"
-    },
-    {
-      "method": "A*",
-      "heuristic": "trivial"
-    },
-    {
-      "method": "A*",
-      "heuristic": "weighted_manhattan"
     }
   ],
-  "runs_per_method": 1,
+  "runs_per_method": 3,
   "results_file_path": "./results.json",
     "maps": [
     "easy/input3",

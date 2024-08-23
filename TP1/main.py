@@ -74,7 +74,7 @@ def main():
 
                 results_list.append(result)
             # Graficar los resultados
-            plot_scatter(results_list)
+            plot_scatter(results_list,runs)
 
 
 def get_method(search_method, heuristics_list):
