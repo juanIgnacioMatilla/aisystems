@@ -6,7 +6,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import os
-from src.sokoban import Sokoban, Symbol
+from TP1.src.sokoban import Sokoban, Symbol
 
 def generate_gif(path, game: Sokoban, gif_name: str = "sokoban.gif"):
     print_path(path, game)
@@ -26,13 +26,13 @@ def save_frame_with_matplotlib(sokoban: Sokoban, frame_number: int, output_folde
 
     for y, line in enumerate(board):
         for x, char in enumerate(line):
-            if char == Symbol.WALL:  # Muro
+            if char.value == Symbol.WALL.value:  # Muro
                 ax.add_patch(patches.Rectangle((x, len(board) - y - 1), 1, 1, color='black'))
-            elif char == Symbol.TARGET:  # Objetivo
+            elif char.value == Symbol.TARGET.value:  # Objetivo
                 ax.add_patch(patches.Rectangle((x, len(board) - y - 1), 1, 1, color='lightgrey'))
             # elif char == Symbol.PLAYER_ON_TARGET:  # Jugador en objetivo
             #     ax.add_patch(patches.Circle((x + 0.5, len(board) - y - 1 + 0.5), 0.4, color='red'))
-            elif char == Symbol.FREE:  # Espacio vacío
+            elif char.value == Symbol.FREE.value:  # Espacio vacío
                 ax.add_patch(patches.Rectangle((x, len(board) - y - 1), 1, 1, color='white'))
     px, py = sokoban.player_pos
     if sokoban.player_pos in sokoban.targets:
@@ -75,7 +75,7 @@ def create_gif(output_folder: str = 'TP1/frames', gif_name: str = 'sokoban_solut
 
     if frames:
         # Guarda el GIF usando el primer frame como base y añadiendo los demás
-        frames[0].save(f"TP1/outputs/{gif_name}", format='GIF',
+        frames[0].save(f"TP1/gifs/{gif_name}", format='GIF',
                        append_images=frames[1:],
                        save_all=True,
                        duration=500,  # Duración entre frames en milisegundos
