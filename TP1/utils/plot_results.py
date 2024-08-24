@@ -3,11 +3,13 @@ from matplotlib import pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
 
-def plot_scatter(results, runs):
+def plot_scatter(results, runs, map_name):
     methods = [result["method"] for result in results]
     times = np.array([result["time"] for result in results])
     expanded_nodes = np.array([result["expanded_nodes"] for result in results])
     errors = np.array([result["time_error"] for result in results])
+
+    path_length = np.array([result["path_length"] for result in results])
 
     fig, ax = plt.subplots(figsize=(12, 8))
 
@@ -23,14 +25,14 @@ def plot_scatter(results, runs):
             xerr=errors[indices],
             fmt='o',
             color=color_dict[method],
-            label=method,
+            label=f'{method} \nCost: {path_length[indices][0]}\n',
             capsize=5,
             capthick=2
         )
 
     ax.set_xlabel('Time (seconds)', fontsize=14)
     ax.set_ylabel('Expanded Nodes', fontsize=14)
-    ax.set_title(f'Time vs Expanded Nodes (Runs: {runs})', fontsize=16)
+    ax.set_title(f'Time vs Expanded Nodes (Runs: {runs}) - {map_name}', fontsize=16)
 
     # Cambiar a escala lineal para evitar la notación científica
     ax.set_xscale('linear')

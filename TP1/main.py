@@ -28,7 +28,7 @@ def main():
         maps = config['maps']
         for soko_map in maps:
             print(f"Running map {soko_map}")
-            with open("TP1/inputs/"+soko_map, "r") as map_file:
+            with open("TP1/inputs/" + soko_map, "r") as map_file:
                 level = [list(map(Symbol, line.strip("\n"))) for line in map_file]
 
             # Game initialization
@@ -40,16 +40,10 @@ def main():
             for search_method in config['search_methods']:
 
                 (method, heuristic, secondary_heuristic, weight, combination1, combination2) = get_method(search_method,
-                                                                                                 heuristic_builder.heuristic_dict.keys())
+                                                                                                          heuristic_builder.heuristic_dict.keys())
 
-                #print method/s
-                print(f"Running method {method}")
-                if heuristic:
-                    print(f"{heuristic}")
-                if secondary_heuristic:
-                    print(f", secondary heuristic: {secondary_heuristic}")
-                if weight:
-                    print(f"{weight}*{combination1} and {1.0-weight}*{combination2}")
+                print(
+                    f"Running method {method} {heuristic if heuristic else ''} {secondary_heuristic if secondary_heuristic else ''} {weight if weight else ''}")
 
                 # Ejecutar el métod de búsqueda y guardar los resultados
                 m = methods_dict[method]
@@ -73,8 +67,11 @@ def main():
                     result["method"] = f"{result['method']} ({heuristic}) ({secondary_heuristic})"
 
                 results_list.append(result)
+
+            #split the soko_map name to get the map name after the / character
+            soko_map = soko_map.split("/")[-1]
             # Graficar los resultados
-            plot_scatter(results_list,runs)
+            plot_scatter(results_list, runs, soko_map)
 
 
 def get_method(search_method, heuristics_list):
