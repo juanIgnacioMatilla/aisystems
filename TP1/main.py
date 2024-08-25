@@ -65,9 +65,8 @@ def main():
                     result["method"] = f"{result['method']} ({heuristic})"
                 elif heuristic and secondary_heuristic:
                     result["method"] = f"{result['method']} ({heuristic}) ({secondary_heuristic})"
-
                 results_list.append(result)
-
+                print(result)
             #split the soko_map name to get the map name after the / character
             soko_map = soko_map.split("/")[-1]
             # Graficar los resultados

@@ -28,7 +28,7 @@ class SearchMethod(ABC):
             return True
         return False
 
-    def get_neighbours(self, state: State) -> list[State]:
+    def get_successors(self, state: State) -> list[State]:
         neighbours = []
 
         for direction in Direction:

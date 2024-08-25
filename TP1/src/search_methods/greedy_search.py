@@ -19,29 +19,29 @@ class PrioritizedNodeTuple:
 
 class GreedySearch(InformedSearchMethod):
     def search(self):
-        queue = PriorityQueue()
-        queue.put(PrioritizedNodeTuple(0, self.init_node))
+        frontier = PriorityQueue()
+        frontier.put(PrioritizedNodeTuple(0, self.init_node))
         visited = set()
         visited.add(self.init_node.state)
         last_node = None
-        while not queue.empty():
-            current_tuple: PrioritizedNodeTuple = queue.get()
+        while not frontier.empty():
+            current_tuple: PrioritizedNodeTuple = frontier.get()
             self.explored_counter += 1
             if current_tuple.node.parent is not None:
                 if current_tuple.node.parent not in self.node_dict_by_parent:
                     self.node_dict_by_parent[current_tuple.node.parent] = set()
                 self.node_dict_by_parent[current_tuple.node.parent].add(current_tuple.node)
             if self.is_goal_state(current_tuple.node.state):
-                self.frontier = [prioritized_tuple.node for prioritized_tuple in queue.queue]
+                self.frontier = [prioritized_tuple.node for prioritized_tuple in frontier.queue]
                 self.success = True
                 return self.reconstruct_path(current_tuple.node)
 
-            frontier = self.get_neighbours(current_tuple.node.state)
-            for neighbour in frontier:
-                if neighbour not in visited:
-                    visited.add(neighbour)
-                    h_value: float  = self.heuristic(neighbour)
-                    node = self.add_node(current_tuple.node.g_value + 1, neighbour, current_tuple.node, h_value)
-                    queue.put(PrioritizedNodeTuple(node.h_value,node))
+            successors = self.get_successors(current_tuple.node.state)
+            for successor in successors:
+                if successor not in visited:
+                    visited.add(successor)
+                    h_value: float  = self.heuristic(successor)
+                    node = self.add_node(current_tuple.node.g_value + 1, successor, current_tuple.node, h_value)
+                    frontier.put(PrioritizedNodeTuple(node.h_value,node))
             last_node = current_tuple.node
         return self.reconstruct_path(last_node)
