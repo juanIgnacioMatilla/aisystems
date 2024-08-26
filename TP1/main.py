@@ -1,3 +1,4 @@
+import copy
 import sys
 import json
 
@@ -6,6 +7,7 @@ import numpy as np
 from TP1.src.search_methods.a_star_search_optimized import AStarOptimizedSearch
 from TP1.src.search_methods.bfs_optimized import BFSOptimized
 from TP1.src.search_methods.dfs_optimized import DFSOptimized
+from TP1.utils.gif_generator import generate_gif
 from TP1.utils.heuristic_builder import HeuristicBuilder
 from TP1.utils.plot_results import plot_scatter
 from TP1.utils.print_results import print_results
@@ -59,19 +61,27 @@ def main():
 
                 # Añadir la media y el error al resultado final
                 result['time'] = mean_time
-                result['time_error'] = std_dev_time / np.sqrt(runs)
-
+                result['time_error'] = std_dev_time
                 if heuristic and not secondary_heuristic:
                     result["method"] = f"{result['method']} ({heuristic})"
                 elif heuristic and secondary_heuristic:
                     result["method"] = f"{result['method']} ({heuristic}) ({secondary_heuristic})"
 
+                # Printing the results according to the structure shown in the image
+                print(f" - Result: {'Success' if result['success'] else 'Failure'}")
+                print(f" - Solution cost: {result['path_length']}")
+                print(f" - Number of expanded nodes: {result['expanded_nodes']}")
+                print(f" - Number of frontier nodes: {result['total_frontier_nodes']}")
+                print(f" - Processing time in seconds: {result['time']:.6f} +- {result['time_error']:.6f}")
                 results_list.append(result)
-
-            #split the soko_map name to get the map name after the / character
-            soko_map = soko_map.split("/")[-1]
-            # Graficar los resultados
-            plot_scatter(results_list, runs, soko_map)
+                if 'generate_gif' in config and config['generate_gif'] is True:
+                    print("Generating GIF...")
+                    copy_game = copy.deepcopy(game)
+                    generate_gif(result['path'], copy_game, f'{soko_map.split("/")[-1]}_{result["method"]}.gif')
+            # #split the soko_map name to get the map name after the / character
+            # soko_map = soko_map.split("/")[-1]
+            # # Graficar los resultados
+            # plot_scatter(results_list, runs, soko_map)
 
 
 def get_method(search_method, heuristics_list):

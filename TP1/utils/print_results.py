@@ -2,6 +2,7 @@ import time
 from typing import Callable
 from TP1.src.sokoban import Sokoban
 from TP1.src.state import State
+from TP1.utils.gif_generator import generate_gif
 
 
 def print_results(game: Sokoban, search_method_class: type, heuristic: Callable[[State], float] = None):
@@ -14,7 +15,6 @@ def print_results(game: Sokoban, search_method_class: type, heuristic: Callable[
     start_time = time.time()
     path = search_method.search()
     end_time = time.time()
-
     results = {
         "method": search_method_class.__name__,
         "heuristic": heuristic.__name__ if heuristic else "None",
@@ -23,7 +23,8 @@ def print_results(game: Sokoban, search_method_class: type, heuristic: Callable[
         "total_frontier_nodes": search_method.node_counter,
         "frontier_nodes_left": len(search_method.frontier),
         "time": end_time - start_time,
-        "path_length": len(path) - 1
+        "path_length": len(path) - 1,
+        "path": path
     }
 
     return results
