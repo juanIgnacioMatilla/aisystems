@@ -17,7 +17,7 @@ class HeuristicBuilder:
         self.game = game
         self.heuristic_dict = {"manhattan": self.get_manhattan, "blocked": self.get_blocked,
                                "trivial": self.get_trivial, "box_in_target": self.get_box_in_target_heuristic,
-                               "pseudo_deadlock": self.get_pseudo_deadlock_heuristic,
+                               #"pseudo_deadlock": self.get_pseudo_deadlock_heuristic,
                                "minimum_matching": self.get_minimum_matching_distance_heuristic,
                                "weighted_manhattan": self.get_weighted_manhattan,
                                "combined": self.get_combined_heuristic}

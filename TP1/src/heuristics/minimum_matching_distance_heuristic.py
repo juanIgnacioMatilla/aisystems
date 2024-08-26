@@ -3,7 +3,6 @@ import numpy as np
 from typing import Callable
 from TP1.src.state import State
 
-#TODO check explanation
 def minimum_matching_distance_heuristic(targets: set) -> Callable[[State], float]:
     def f(inner_state: State) -> float:
         # Convert boxes and targets to lists for indexing

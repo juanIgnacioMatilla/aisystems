@@ -24,12 +24,12 @@ class IDDFS(SearchMethod):
             return None  # Al alcanzar el límite, no seguimos explorando más
 
         visited.add(state)
-        neighbors = self.get_neighbors(state)
+        successors = self.get_successors(state)
 
-        for neighbor in neighbors:
-            if neighbor not in visited:
-                self.reconstructed_path.append(neighbor)
-                result = self.dls_recursive(neighbor, limit - 1, visited)
+        for successor in successors:
+            if successor not in visited:
+                self.reconstructed_path.append(successor)
+                result = self.dls_recursive(successor, limit - 1, visited)
                 if result is not None:
                     return result
                 self.reconstructed_path.pop()  # Retroceder si no es solución válida
@@ -43,12 +43,12 @@ class IDDFS(SearchMethod):
             return True
         return False
 
-    def get_neighbors(self, state: State):
-        neighbors = []
+    def get_successors(self, state: State):
+        successors = []
 
         for direction in Direction:
             if state.can_move(direction, self.sokoban.walls):
                 new_state = state.copy_move(direction, self.sokoban.walls)
-                neighbors.append(new_state)
+                successors.append(new_state)
 
-        return neighbors
+        return successors
