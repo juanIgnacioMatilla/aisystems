@@ -22,6 +22,7 @@ methods_dict = {'GGS': GreedySearch, 'A*': AStarSearch, 'A*_Optimized': AStarOpt
                 "BFS_Optimized": BFSOptimized, "DFS_Optimized": DFSOptimized}
 
 
+
 def main():
     with open('TP1/config.json', 'r') as file:
         config = json.load(file)
@@ -74,6 +75,13 @@ def main():
                 print(f" - Number of frontier nodes: {result['total_frontier_nodes']}")
                 print(f" - Processing time in seconds: {result['time']:.6f} +- {result['time_error']:.6f}")
                 results_list.append(result)
+                actions = []
+                for index in range(1, len(result['path'])):
+                    prev_node = result['path'][index - 1]
+                    current_node = result['path'][index]
+                    movement = get_movement(prev_node.state.player_pos, current_node.state.player_pos)
+                    actions.append(movement)
+                print(" - Actions: ", "->".join(actions))
                 if 'generate_gif' in config and config['generate_gif'] is True:
                     print("Generating GIF...")
                     copy_game = copy.deepcopy(game)
@@ -123,6 +131,22 @@ def get_method(search_method, heuristics_list):
     else:
         print("method does not exist")
     return method, heuristic, secondary_heuristic, weight, combination1, combination2
+
+
+def get_movement(prev_position, current_position):
+    row_diff = current_position[0] - prev_position[0]
+    col_diff = current_position[1] - prev_position[1]
+
+    if row_diff == -1:
+        return "Up"
+    elif row_diff == 1:
+        return "Down"
+    elif col_diff == -1:
+        return "Left"
+    elif col_diff == 1:
+        return "Right"
+    else:
+        return "No movement"
 
 
 if __name__ == "__main__":

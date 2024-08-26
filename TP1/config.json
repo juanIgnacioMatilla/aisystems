@@ -1,83 +1,13 @@
 {
   "maps" : [
-    "easy/soko01",
-    "hard/sokoA11",
-    "medium/sokoA07"
+    "easy/soko01"
   ],
   "search_methods": [
-    {
-      "method": "A*",
-      "heuristic": "blocked",
-      "secondary_heuristic": "box_in_target"
-    },
-    {
-      "method": "A*",
-      "heuristic": "blocked",
-      "secondary_heuristic": "manhattan"
-    },
-    {
-      "method": "A*",
-      "heuristic": "blocked",
-      "secondary_heuristic": "minimum_matching"
-    },
-    {
-      "method": "A*",
-      "heuristic": "blocked",
-      "secondary_heuristic": "weighted_manhattan"
-    },
-    {
-      "method": "A*",
-      "heuristic": "box_in_target"
-    },
-    {
-      "method": "A*",
-      "heuristic": "manhattan"
-    },
-    {
-      "method": "A*",
-      "heuristic": "minimum_matching"
-    },
-    {
-      "method": "A*",
-      "heuristic": "weighted_manhattan"
-    },
-    {
-      "method": "GGS",
-      "heuristic": "blocked",
-      "secondary_heuristic": "box_in_target"
-    },
-    {
-      "method": "GGS",
-      "heuristic": "blocked",
-      "secondary_heuristic": "manhattan"
-    },
-    {
-      "method": "GGS",
-      "heuristic": "blocked",
-      "secondary_heuristic": "minimum_matching"
-    },
-    {
-      "method": "GGS",
-      "heuristic": "blocked",
-      "secondary_heuristic": "weighted_manhattan"
-    },
-    {
-      "method": "GGS",
-      "heuristic": "box_in_target"
-    },
-    {
-      "method": "GGS",
-      "heuristic": "manhattan"
-    },
-    {
-      "method": "GGS",
-      "heuristic": "minimum_matching"
-    },
     {
       "method": "GGS",
       "heuristic": "weighted_manhattan"
     }
   ],
-  "runs_per_method": 10,
+  "runs_per_method": 5,
   "results_file_path" : "./results.json"
 }
