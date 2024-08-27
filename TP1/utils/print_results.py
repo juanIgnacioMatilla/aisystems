@@ -20,8 +20,8 @@ def print_results(game: Sokoban, search_method_class: type, heuristic: Callable[
         "heuristic": heuristic.__name__ if heuristic else "None",
         "success": search_method.success,
         "expanded_nodes": search_method.explored_counter,
-        "total_frontier_nodes": search_method.node_counter,
-        "frontier_nodes_left": len(search_method.frontier),
+        "total_nodes": search_method.node_counter,
+        "frontier_nodes": len(search_method.frontier),
         "time": end_time - start_time,
         "path_length": len(path) - 1,
         "path": path

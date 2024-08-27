@@ -72,7 +72,7 @@ def main():
                 print(f" - Result: {'Success' if result['success'] else 'Failure'}")
                 print(f" - Solution cost: {result['path_length']}")
                 print(f" - Number of expanded nodes: {result['expanded_nodes']}")
-                print(f" - Number of frontier nodes: {result['total_frontier_nodes']}")
+                print(f" - Number of frontier nodes: {result['frontier_nodes']}")
                 print(f" - Processing time in seconds: {result['time']:.6f} +- {result['time_error']:.6f}")
                 results_list.append(result)
                 actions = []
