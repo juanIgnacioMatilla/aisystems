@@ -12,11 +12,46 @@ Trabajo Práctico 1 - Métodos de Búsqueda
 ### uso del config.json
 Los siguientes campos son obligatorios:
 - "maps": Lista de mapas a correr. Estos consideran como estan guardados dentro de la carpeta input, se deben agregar como strings
-- "search_methods": Lista de metodos a probar para obtener soluciones. El archivo all_configs, provee todas las combinaciones de metodos y heuristicas disponibles.
+- "search_methods": Lista de metodos a probar para obtener soluciones. El archivo all_configs, provee varias combinaciones de metodos y heuristicas disponibles.
   
 Los siguientes campos son opcionales:
 - "runs_per_method": Numero entero que representa la cantidad de veces que va a realizar la busqueda por metodo seleccionado. Luego estos se promedian. En caso de no esta defaultea a 1 run.
 - "generate_gif": Este booleano determina si debe o no generar una animacion en formato _.gif_ de la solucion encontrada. En caso de no estar defaultea a **false**.
+
+Para la heuristica blocked hay que especificar con que heuristica se desea combinar con el parametro "secondary_heuristic". Ejemplo:
+```json
+    {
+          "method": "A*",
+          "heuristic": "blocked",
+          "secondary_heuristic": "weighted_manhattan"
+    }
+```
+
+Para la heuristica combined hay que especificar que heuristicas se desea combinar con "combined1", "combined2" y "weight" para indicar el peso de la combinacion. Ejemplo:
+```json
+    {
+      "method": "GGS",
+      "heuristic": "combined",
+      "combined1": "trivial",
+      "combined2": "manhattan",
+      "weight": 0.4
+    }
+```
+En este caso la heuristica resultante seria:
+h(e)=0.4*trivial(e)+(1-0.4)*manhattan(e)
+
+Si quieren usar blocked y de secondary heuristic combined esta seria una posible combinacion:
+
+```json
+    {
+      "method": "GGS",
+      "heuristic": "blocked",
+      "secondary_heuristic": "combined",
+      "combined1": "trivial",
+      "combined2": "manhattan",
+      "weight": 0.4 
+    }
+```
 
 ## Contenidos
 Este repositorio contiene la implementación de un motor de búsqueda de soluciones para el juego **Sokoban**. 
