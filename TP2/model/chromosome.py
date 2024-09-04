@@ -1,8 +1,7 @@
 from typing import TypedDict
 
 
-class Genes(TypedDict):
-    type: str
+class Chromosome(TypedDict):
     height: float
     strength_points: int
     agility_points: int

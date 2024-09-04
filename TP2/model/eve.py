@@ -1,6 +1,8 @@
 import math
 
+from TP2.model.chromosome import Chromosome
 from TP2.model.individual import Individual
+from TP2.model.individual_types import IndividualTypes
 
 
 class EVE:
@@ -41,23 +43,33 @@ class EVE:
         return (vigor_total + intelligence_total) * constitution_total * dem
 
     @staticmethod
-    def calculate_fitness(individual: Individual):
+    def calculate_fitness(individual_type: IndividualTypes, chromosome: Chromosome):
+        height = chromosome['height']
+        # Calculate attributes using EVE class
+        force_total = EVE.calculate_force_total(chromosome['strength_points'])
+        agility_total = EVE.calculate_agility_total(chromosome['agility_points'])
+        intelligence_total = EVE.calculate_intelligence_total(chromosome['intelligence_points'])
+        vigor_total = EVE.calculate_vigor_total(chromosome['vigor_points'])
+        constitution_total = EVE.calculate_constitution_total(chromosome['constitution_points'])
+        atm = EVE.calculate_atm(height)
+        dem = EVE.calculate_dem(height)
+
         attack = EVE.calculate_attack(
-            individual.agility_total,
-            individual.intelligence_total,
-            individual.force_total,
-            individual.atm
+            agility_total,
+            intelligence_total,
+            force_total,
+            atm
         )
         defense = EVE.calculate_defense(
-            individual.vigor_total,
-            individual.intelligence_total,
-            individual.constitution_total,
-            individual.dem
+            vigor_total,
+            intelligence_total,
+            constitution_total,
+            dem
         )
         performances = {
-            'Warrior': 0.6 * attack + 0.4 * defense,
-            'Archer': 0.9 * attack + 0.1 * defense,
-            'Guardian': 0.1 * attack + 0.9 * defense,
-            'Mage': 0.8 * attack + 0.3 * defense
+            IndividualTypes.WARRIOR: 0.6 * attack + 0.4 * defense,
+            IndividualTypes.ARCHER: 0.9 * attack + 0.1 * defense,
+            IndividualTypes.GUARDIAN: 0.1 * attack + 0.9 * defense,
+            IndividualTypes.MAGE: 0.8 * attack + 0.3 * defense
         }
-        return performances.get(individual.type, 0)
+        return performances.get(individual_type, 0)
