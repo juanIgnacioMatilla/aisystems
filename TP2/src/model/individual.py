@@ -29,6 +29,12 @@ class Individual:
             return NotImplemented
         return self.fitness() < other.fitness()
 
+    def __gt__(self, other: "Individual") -> bool:
+        if not isinstance(other, Individual):
+            return NotImplemented
+        return self.fitness() > other.fitness()
+
+
 
 
 

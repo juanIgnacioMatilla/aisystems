@@ -3,26 +3,26 @@
         "run": 5,
         "individual_type": "WARRIOR",
         "total_points": 150,
-        "population_size": 50,
+        "population_size": 500,
         "time_limit": 60.0,
         "hyperparams": {
             "selection": {
                 "name": "elite",
-                "k": 10
+                "k": 100
             },
             "crossover": {
                 "name": "one_point"
             },
             "mutation": {
                 "name": "single_gene",
-                "p_m": 0.3
+                "p_m": 0.0
             },
             "replacement": {
                 "name": "fill_all"
             },
             "termination": {
                 "name": "generation_amount",
-                "amount": 50
+                "amount": 500
             }
         }
     }

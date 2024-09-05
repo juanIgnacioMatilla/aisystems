@@ -23,6 +23,10 @@ class GeneticEngine:
         generation = 0
         start_time = time.time()
 
+        # Initialize the best individual tracking
+        best_individual = max(population, key=lambda ind: ind.fitness())
+        best_generation = generation
+
         while not self.termination_strategy.should_terminate(population, generation) and (
                 time.time() - start_time) < time_limit:
             parents = self.selection_strategy.select(population)
@@ -33,9 +37,14 @@ class GeneticEngine:
                 offspring[i].chromosome = normalize_chromosome(offspring[i].chromosome, total_points)
             population = self.replacement_strategy.replace(population, offspring)
             generation += 1
+            # Update the best individual and its generation if a better one is found
+            current_best = max(population, key=lambda ind: ind.fitness())
+            if current_best.fitness() > best_individual.fitness():
+                best_individual = current_best
+                best_generation = generation
 
         total_time = time.time() - start_time
-        return initial_population,population, generation, total_time
+        return initial_population, population, generation, total_time, (best_individual, best_generation)
 
     def _generate_offspring(self, parents: List[Individual]) -> List[Individual]:
         offspring: List[Individual] = []
