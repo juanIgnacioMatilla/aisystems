@@ -76,7 +76,7 @@ def main():
             print(f"Total Time: {total_time:.2f} seconds")
             print(f"Best individual in generation {best_generation}: {best_ind}")
             print(f"Params for best individual:")
-            print(f"Individual Type: {ind_type}")
+            print(f"Individual Type: {ind_type.value}")
             print(f"Total Points: {total_points}")
             print(f"Strength points: {best_ind.chromosome.strength_points}")
             print(f"Agility points: {best_ind.chromosome.agility_points}")
