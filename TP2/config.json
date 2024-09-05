@@ -1,6 +1,6 @@
 [
     {
-        "run": 5,
+        "runs": 5,
         "individual_type": "WARRIOR",
         "total_points": 150,
         "population_size": 500,

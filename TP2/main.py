@@ -49,7 +49,7 @@ def main():
         time_limit = run_config['time_limit']
 
         engine = GeneticEngine(hyperparams)
-        for i in range(run_config['run']):
+        for i in range(run_config['runs']):
             (initial_population,
              final_population,
              generations,
@@ -69,7 +69,7 @@ def main():
             final_fitness_mean = np.mean(final_fitness_values)
             final_fitness_std = np.std(final_fitness_values)
             # Output the results
-            print(f"Run {i + 1}/{run_config['run']}:")
+            print(f"Run {i + 1}/{run_config['runs']}:")
             print(f"Initial Population fitness mean: {initial_fitness_mean:.2f} +- {initial_fitness_std:.2f}")
             print(f"Final Population fitness mean:  {final_fitness_mean:.2f} +- {final_fitness_std:.2f}")
             print(f"Generations: {generations}")
