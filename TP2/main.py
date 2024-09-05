@@ -74,7 +74,16 @@ def main():
             print(f"Final Population fitness mean:  {final_fitness_mean:.2f} +- {final_fitness_std:.2f}")
             print(f"Generations: {generations}")
             print(f"Total Time: {total_time:.2f} seconds")
-            print(f"Best individual in generation {best_generation}: {best_ind}\n")
+            print(f"Best individual in generation {best_generation}: {best_ind}")
+            print(f"Params for best individual:")
+            print(f"Individual Type: {ind_type}")
+            print(f"Total Points: {total_points}")
+            print(f"Strength points: {best_ind.chromosome.strength_points}")
+            print(f"Agility points: {best_ind.chromosome.agility_points}")
+            print(f"Vigor points: {best_ind.chromosome.vigor_points}")
+            print(f"Constitution points: {best_ind.chromosome.constitution_points}")
+            print(f"Intelligence points: {best_ind.chromosome.intelligence_points}")
+            print(f"Height: {best_ind.chromosome.height:.3f}\n")
 
 
 if __name__ == "__main__":
