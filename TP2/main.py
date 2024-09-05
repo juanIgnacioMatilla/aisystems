@@ -1,17 +1,9 @@
 import json
-
 import numpy as np
-
-from TP2.src.hyperparams.crossover.one_point_crossover import OnePointCrossover
 from TP2.src.hyperparams.hyperparams import Hyperparams
-from TP2.src.hyperparams.mutation.single_gene_mutation import SingleGeneMutation
-from TP2.src.hyperparams.replacement.fill_all_replacement import FillAllReplacement
-from TP2.src.hyperparams.selection.elite_selection import EliteSelection
-from TP2.src.hyperparams.termination.gen_amount_termination import GenAmountTermination
 from TP2.src.model.individual_types import IndividualTypes
 from TP2.src.genetic_engine import GeneticEngine
 from TP2.utils.config_handler import get_strategies
-from TP2.utils.hyperparams_mapping import SELECTION_MAP, CROSSOVER_MAP, MUTATION_MAP, REPLACEMENT_MAP, TERMINATION_MAP
 
 
 def load_config(filename: str):

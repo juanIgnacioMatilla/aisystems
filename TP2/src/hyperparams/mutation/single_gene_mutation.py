@@ -1,6 +1,4 @@
 from random import random, randint
-from typing import List
-
 from TP2.src.hyperparams.mutation.abstract_mutation import Mutation
 from TP2.src.model.chromosome import Chromosome
 from TP2.src.model.individual import Individual
