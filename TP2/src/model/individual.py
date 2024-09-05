@@ -14,7 +14,7 @@ class Individual:
 
     def __repr__(self) -> str:
         # String representation of the object, displaying type and chromosome details
-        return (f"Individual(fitness: {self.fitness()})"
+        return (f"Individual(fitness: {self.fitness():.2f})"
                 # f"{self.type}, "
                 # f"chromosome=height: {self.chromosome.height}, "
                 # f"strength_points: {self.chromosome.strength_points}, "

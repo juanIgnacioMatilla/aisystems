@@ -22,7 +22,7 @@
             },
             "termination": {
                 "name": "generation_amount",
-                "amount": 500
+                "amount": 5
             }
         }
     }

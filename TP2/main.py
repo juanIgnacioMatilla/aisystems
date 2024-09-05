@@ -1,5 +1,7 @@
 import json
 
+import numpy as np
+
 from TP2.src.hyperparams.crossover.one_point_crossover import OnePointCrossover
 from TP2.src.hyperparams.hyperparams import Hyperparams
 from TP2.src.hyperparams.mutation.single_gene_mutation import SingleGeneMutation
@@ -52,17 +54,24 @@ def main():
              final_population,
              generations,
              total_time,
-             (best_ind,best_generation)) = engine.run(
+             (best_ind, best_generation)) = engine.run(
                 ind_type,
                 total_points,
                 population_size,
                 time_limit
             )
 
+            initial_fitness_values = [individual.fitness() for individual in initial_population]
+            initial_fitness_mean = np.mean(initial_fitness_values)
+            initial_fitness_std = np.std(initial_fitness_values)
+
+            final_fitness_values = [individual.fitness() for individual in final_population]
+            final_fitness_mean = np.mean(final_fitness_values)
+            final_fitness_std = np.std(final_fitness_values)
             # Output the results
             print(f"Run {i + 1}/{run_config['run']}:")
-            print(f"Initial Population: {sorted(initial_population, reverse=True)}")
-            print(f"Final Population: {sorted(final_population, reverse=True)}")
+            print(f"Initial Population fitness mean: {initial_fitness_mean:.2f} +- {initial_fitness_std:.2f}")
+            print(f"Final Population fitness mean:  {final_fitness_mean:.2f} +- {final_fitness_std:.2f}")
             print(f"Generations: {generations}")
             print(f"Total Time: {total_time:.2f} seconds")
             print(f"Best individual in generation {best_generation}: {best_ind}\n")
