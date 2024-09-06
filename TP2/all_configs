@@ -1,0 +1,111 @@
+[
+    {
+        "runs": 2,
+        "individual_type": "WARRIOR",
+        "total_points": 150,
+        "population_size": 500,
+        "time_limit": 10.0,
+        "hyperparams": {
+            "selection": {
+                "name": "elite",
+                "k": 100
+            },
+            "crossover": {
+                "name": "one_point"
+            },
+            "mutation": {
+                "name": "single_gene",
+                "p_m": 0.4
+            },
+            "replacement": {
+                "name": "fill_all"
+            },
+            "termination": {
+                "name": "generation_amount",
+                "amount": 500
+            }
+        }
+    },
+    {
+        "runs": 2,
+        "individual_type": "WARRIOR",
+        "total_points": 150,
+        "population_size": 500,
+        "time_limit": 10.0,
+        "hyperparams": {
+            "selection": {
+                "name": "elite",
+                "k": 100
+            },
+            "crossover": {
+                "name": "one_point"
+            },
+            "mutation": {
+                "name": "single_gene",
+                "p_m": 0.4
+            },
+            "replacement": {
+                "name": "fill_all"
+            },
+            "termination": {
+                "name": "acceptable_solution",
+                "target_fitness": 15
+            }
+        }
+    },
+    {
+        "runs": 2,
+        "individual_type": "WARRIOR",
+        "total_points": 150,
+        "population_size": 500,
+        "time_limit": 10.0,
+        "hyperparams": {
+            "selection": {
+                "name": "elite",
+                "k": 100
+            },
+            "crossover": {
+                "name": "one_point"
+            },
+            "mutation": {
+                "name": "single_gene",
+                "p_m": 0.4
+            },
+            "replacement": {
+                "name": "fill_all"
+            },
+            "termination": {
+                "name": "content_stability",
+                "no_improvement_generations": 50
+            }
+        }
+    },
+    {
+        "runs": 2,
+        "individual_type": "WARRIOR",
+        "total_points": 150,
+        "population_size": 500,
+        "time_limit": 10.0,
+        "hyperparams": {
+            "selection": {
+                "name": "elite",
+                "k": 100
+            },
+            "crossover": {
+                "name": "one_point"
+            },
+            "mutation": {
+                "name": "single_gene",
+                "p_m": 0.4
+            },
+            "replacement": {
+                "name": "fill_all"
+            },
+            "termination": {
+                "name": "structural_stability",
+                "threshold": 0.2,
+                "stability_generations": 50
+            }
+        }
+    }
+]
