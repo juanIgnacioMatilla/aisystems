@@ -8,3 +8,7 @@ class Crossover(ABC):
     @abstractmethod
     def crossover(self, ind1: Individual, ind2: Individual) -> Tuple[Individual, Individual]:
         pass
+
+    def reset(self):
+        """Reset the internal state of the crossover strategy."""
+        pass

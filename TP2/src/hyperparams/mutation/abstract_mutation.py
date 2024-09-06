@@ -12,3 +12,7 @@ class Mutation(ABC):
     @abstractmethod
     def mutate(self, ind1: Individual) -> Individual:
         pass
+
+    def reset(self):
+        """Reset the internal state of the mutation strategy."""
+        pass

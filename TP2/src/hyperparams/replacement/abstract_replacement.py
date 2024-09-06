@@ -8,3 +8,7 @@ class Replacement(ABC):
     @abstractmethod
     def replace(self, population: List[Individual], offspring: List[Individual]) -> List[Individual]:
         pass
+
+    def reset(self):
+        """Reset the internal state of the replacement strategy."""
+        pass

@@ -22,3 +22,7 @@ class Selection(ABC):
         :return: Lista de individuos seleccionados como padres.
         """
         pass
+
+    def reset(self):
+        """Reset the internal state of the selection strategy."""
+        pass

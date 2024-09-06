@@ -42,6 +42,13 @@ def main():
 
         engine = GeneticEngine(hyperparams)
         for i in range(run_config['runs']):
+            # Reset strategy inner states
+            selection_strategy.reset()
+            crossover_strategy.reset()
+            mutation_strategy.reset()
+            replacement_strategy.reset()
+            termination_strategy.reset()
+
             (initial_population,
              final_population,
              generations,
@@ -61,6 +68,9 @@ def main():
             final_fitness_mean = np.mean(final_fitness_values)
             final_fitness_std = np.std(final_fitness_values)
             # Output the results
+            # termination used
+            print(f"Termination strategy: {termination_strategy.__class__.__name__}")
+
             print(f"Run {i + 1}/{run_config['runs']}:")
             print(f"Initial Population fitness mean: {initial_fitness_mean:.2f} +- {initial_fitness_std:.2f}")
             print(f"Final Population fitness mean:  {final_fitness_mean:.2f} +- {final_fitness_std:.2f}")
