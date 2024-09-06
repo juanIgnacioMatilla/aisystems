@@ -12,19 +12,22 @@ class SingleGeneMutation(Mutation):
         # Determine the index of the gene to mutate
         num_genes = len(chromosome)
         gene_to_mutate = randint(0, num_genes - 1)
-
         if random() < self.p_m:
             # Mutate the selected gene
             if gene_to_mutate == 0:
+                #TODO: do the +- height change
                 mutation_amount = random() * 0.1  # Example mutation amount
                 chromosome[gene_to_mutate] += mutation_amount
                 # Constrain height to be within 1.3 and 2.0
                 chromosome[gene_to_mutate] = min(max(chromosome[gene_to_mutate], 1.3), 2.0)
             else:
+                other_gene_to_mutate = randint(1, num_genes - 1)
                 # Mutate 'strength_points', 'agility_points', etc., which are ints
                 current_value = chromosome[gene_to_mutate]
                 # Apply mutation by incrementing or decrementing the value
-                chromosome[gene_to_mutate] = max(0, current_value + randint(-5, 5))
+                random_mutation = randint(-5, 5)
+                chromosome[gene_to_mutate] = max(0, current_value + random_mutation)
+                chromosome[other_gene_to_mutate] = max(0, current_value - random_mutation)
 
         # Create a new Chromosome with the mutated values
         mutated_chromosome = Chromosome(
