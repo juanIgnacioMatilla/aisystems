@@ -15,19 +15,40 @@ class SingleGeneMutation(Mutation):
         if random() < self.p_m:
             # Mutate the selected gene
             if gene_to_mutate == 0:
-                #TODO: do the +- height change
+                # Mutating height (example logic)
                 mutation_amount = random() * 0.1  # Example mutation amount
                 chromosome[gene_to_mutate] += mutation_amount
                 # Constrain height to be within 1.3 and 2.0
                 chromosome[gene_to_mutate] = min(max(chromosome[gene_to_mutate], 1.3), 2.0)
             else:
-                other_gene_to_mutate = randint(1, num_genes - 1)
-                # Mutate 'strength_points', 'agility_points', etc., which are ints
+                # Mutate other attributes: strength, agility, etc.
                 current_value = chromosome[gene_to_mutate]
+
                 # Apply mutation by incrementing or decrementing the value
                 random_mutation = randint(-5, 5)
+
+                # Ensure the mutated value does not exceed 150
+                if current_value + random_mutation > 150:
+                    random_mutation = 150 - current_value
+
+                # Update the gene to be mutated
                 chromosome[gene_to_mutate] = max(0, current_value + random_mutation)
-                chromosome[other_gene_to_mutate] = max(0, current_value - random_mutation)
+
+                # Calculate the change (delta)
+                delta1 = abs(current_value - chromosome[gene_to_mutate])
+
+                # Find another gene to balance the change
+                other_gene_to_mutate = randint(1, num_genes - 1)
+                while other_gene_to_mutate == gene_to_mutate or \
+                        chromosome[other_gene_to_mutate] + delta1 > 150 or \
+                        chromosome[other_gene_to_mutate] - delta1 < 0:
+                    other_gene_to_mutate = randint(1, num_genes - 1)
+
+                # Balance the other gene by applying the delta
+                if chromosome[gene_to_mutate] > current_value:
+                    chromosome[other_gene_to_mutate] = max(0, chromosome[other_gene_to_mutate] - delta1)
+                else:
+                    chromosome[other_gene_to_mutate] = min(150, chromosome[other_gene_to_mutate] + delta1)
 
         # Create a new Chromosome with the mutated values
         mutated_chromosome = Chromosome(

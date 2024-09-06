@@ -31,7 +31,7 @@ class GeneticEngine:
                 time.time() - start_time) < time_limit:
             parents = self.selection_strategy.select(population)
             offspring = self._generate_offspring(parents)
-            self._mutate_offspring(offspring)
+            offspring = self._mutate_offspring(offspring)
             # Normalize in case after crossover and mutation any offspring violates the constraints on points or height
             for i in range(len(offspring)):
                 offspring[i].chromosome = normalize_chromosome(offspring[i].chromosome, total_points)
@@ -54,6 +54,6 @@ class GeneticEngine:
             offspring.extend([child1, child2])
         return offspring
 
-    def _mutate_offspring(self, offspring: List[Individual]):
-        for individual in offspring:
-            self.mutation_strategy.mutate(individual)
+    def _mutate_offspring(self, offspring: List[Individual]) -> List[Individual]:
+        offspring = [self.mutation_strategy.mutate(individual) for individual in offspring]
+        return offspring

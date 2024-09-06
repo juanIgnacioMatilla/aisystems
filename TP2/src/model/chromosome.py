@@ -10,7 +10,7 @@ class Chromosome(NamedTuple):
     vigor_points: int
     constitution_points: int
 
-
+#TODO remove after finishing all hyperparams
 def normalize_chromosome(chromosome: Chromosome, target_total) -> Chromosome:
     # Adjust height to be within 1.3 and 2.0
     height = min(max(chromosome.height, 1.3), 2.0)
@@ -27,6 +27,7 @@ def normalize_chromosome(chromosome: Chromosome, target_total) -> Chromosome:
     if total_points != target_total:
         points = distribute_points(target_total, 5)
         strength, agility, intelligence, vigor, constitution = points
+        print(f"NORMALIZING")
     else:
         strength = chromosome.strength_points
         agility = chromosome.agility_points
