@@ -3,26 +3,27 @@
         "runs": 5,
         "individual_type": "WARRIOR",
         "total_points": 150,
-        "population_size": 500,
+        "population_size": 5000,
         "time_limit": 60.0,
         "hyperparams": {
             "selection": {
-                "name": "elite",
-                "k": 100
+                "name": "probabilistic_tournament",
+                "k": 100,
+                "threshold": 0.9
             },
             "crossover": {
                 "name": "one_point"
             },
             "mutation": {
                 "name": "single_gene",
-                "p_m": 0.0
+                "p_m": 0.01
             },
             "replacement": {
                 "name": "fill_all"
             },
             "termination": {
-                "name": "generation_amount",
-                "amount": 5
+                "name": "content_stability",
+                "no_improvement_generations": 50
             }
         }
     }
