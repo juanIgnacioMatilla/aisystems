@@ -52,4 +52,5 @@ def distribute_points(total_points: int, num_attributes: int) -> List[int]:
     for _ in range(total_points):
         # Randomly assign a point to one of the attributes
         points[random.randint(0, num_attributes - 1)] += 1
+
     return points

@@ -1,4 +1,4 @@
-from random import random, randint
+from random import random, randint, choice
 from TP2.src.hyperparams.mutation.abstract_mutation import Mutation
 from TP2.src.model.chromosome import Chromosome
 from TP2.src.model.individual import Individual
@@ -16,7 +16,7 @@ class SingleGeneMutation(Mutation):
             # Mutate the selected gene
             if gene_to_mutate == 0:
                 # Mutating height (example logic)
-                mutation_amount = random() * 0.1  # Example mutation amount
+                mutation_amount = random() * 0.1 * choice([1, -1])
                 chromosome[gene_to_mutate] += mutation_amount
                 # Constrain height to be within 1.3 and 2.0
                 chromosome[gene_to_mutate] = min(max(chromosome[gene_to_mutate], 1.3), 2.0)
@@ -46,9 +46,9 @@ class SingleGeneMutation(Mutation):
 
                 # Balance the other gene by applying the delta
                 if chromosome[gene_to_mutate] > current_value:
-                    chromosome[other_gene_to_mutate] = max(0, chromosome[other_gene_to_mutate] - delta1)
+                    chromosome[other_gene_to_mutate] = chromosome[other_gene_to_mutate] - delta1
                 else:
-                    chromosome[other_gene_to_mutate] = min(150, chromosome[other_gene_to_mutate] + delta1)
+                    chromosome[other_gene_to_mutate] = chromosome[other_gene_to_mutate] + delta1
 
         # Create a new Chromosome with the mutated values
         mutated_chromosome = Chromosome(

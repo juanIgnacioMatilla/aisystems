@@ -1,6 +1,7 @@
 from TP2.src.hyperparams.crossover.one_point_crossover import OnePointCrossover
 from TP2.src.hyperparams.mutation.single_gene_mutation import SingleGeneMutation
 from TP2.src.hyperparams.replacement.fill_all_replacement import FillAllReplacement
+from TP2.src.hyperparams.replacement.fill_parent_replacement import FillParentReplacement
 from TP2.src.hyperparams.selection.boltzmann_selection import BoltzmannSelection
 from TP2.src.hyperparams.selection.deterministic_tournament_selection import DeterministicTournamentSelection
 from TP2.src.hyperparams.selection.elite_selection import EliteSelection
@@ -29,6 +30,7 @@ CROSSOVER_MAP = {
 
 REPLACEMENT_MAP = {
     "fill_all": FillAllReplacement,
+    "fill_parent": FillParentReplacement,
 }
 
 MUTATION_MAP = {

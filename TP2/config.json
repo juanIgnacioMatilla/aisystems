@@ -3,13 +3,12 @@
         "runs": 5,
         "individual_type": "WARRIOR",
         "total_points": 150,
-        "population_size": 5000,
+        "population_size": 50,
         "time_limit": 60.0,
         "hyperparams": {
             "selection": {
-                "name": "probabilistic_tournament",
-                "k": 100,
-                "threshold": 0.9
+                "name": "elite",
+                "k": 10
             },
             "crossover": {
                 "name": "one_point"
