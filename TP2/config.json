@@ -1,28 +1,29 @@
 [
     {
-        "runs": 5,
-        "individual_type": "WARRIOR",
+        "runs": 2,
+        "individual_type": "MAGE",
         "total_points": 150,
-        "population_size": 50,
-        "time_limit": 60.0,
+        "population_size": 1000,
+        "time_limit": 100.0,
         "hyperparams": {
             "selection": {
-                "name": "elite",
-                "k": 10
+                "name": "probabilistic_tournament",
+                "k": 500,
+                "threshold": 0.4
             },
             "crossover": {
                 "name": "one_point"
             },
             "mutation": {
-                "name": "single_gene",
-                "p_m": 0.01
+                "name": "multi_gene",
+                "p_m": 0.5
             },
             "replacement": {
-                "name": "fill_all"
+                "name": "fill_parent"
             },
             "termination": {
-                "name": "content_stability",
-                "no_improvement_generations": 50
+                "name": "generation_amount",
+                "amount": 2000
             }
         }
     }

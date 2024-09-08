@@ -20,7 +20,7 @@ class OnePointCrossover(Crossover):
         valid_crossover_points = [0]*num_attributes
 
         # Choose a crossover point between 1 and num_attributes - 1
-        crossover_point = random.randint(1, num_attributes - 1)
+        crossover_point = random.randint(0, num_attributes - 1)
 
         # Create offspring chromosomes by swapping segments after the crossover point
         offspring_values1 = (
