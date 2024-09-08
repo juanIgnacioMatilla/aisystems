@@ -1,6 +1,8 @@
 import json
 import numpy as np
 from TP2.src.hyperparams.hyperparams import Hyperparams
+from TP2.src.model.chromosome import Chromosome
+from TP2.src.model.eve import EVE
 from TP2.src.model.individual_types import IndividualTypes
 from TP2.src.genetic_engine import GeneticEngine
 from TP2.utils.config_handler import get_strategies

@@ -26,7 +26,11 @@
                 "p_m": 0.01
             },
             "replacement": {
-                "name": "fill_all"
+                "name": "fill_all",
+                "selection": {
+                    "name": "elite",
+                    "k": 50
+                }
             },
             "termination": {
                 "name": "content_stability",
