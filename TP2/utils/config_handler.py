@@ -64,7 +64,7 @@ def initialize_mutation_strategy(mutation_params):
     return mutation_class(**mutation_params)
 
 
-def initialize_replacement_strategy(replacement_params, population_size):
+def initialize_replacement_strategy(replacement_params):
     """
     Initialize the replacement strategy based on the provided parameters and an optional selection method.
     """
@@ -115,7 +115,8 @@ def get_strategies(run_config):
     mutation_strategy = initialize_mutation_strategy(run_config['hyperparams']['mutation'])
 
     # Initialize Replacement Strategy
-    replacement_strategy = initialize_replacement_strategy(run_config['hyperparams']['replacement'], run_config['population_size'])
+    run_config['hyperparams']['replacement']['selection']['k'] = run_config['population_size']
+    replacement_strategy = initialize_replacement_strategy(run_config['hyperparams']['replacement'])
 
     # Initialize Termination Strategy
     termination_strategy = initialize_termination_strategy(run_config['hyperparams']['termination'])
