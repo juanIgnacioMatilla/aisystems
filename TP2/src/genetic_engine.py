@@ -1,7 +1,6 @@
 import time
 from typing import List
 from TP2.src.hyperparams.hyperparams import Hyperparams
-from TP2.src.model.chromosome import normalize_chromosome
 from TP2.src.model.individual_types import IndividualTypes
 from TP2.src.model.individual import Individual
 from TP2.src.model.initial_population import generate_initial_population

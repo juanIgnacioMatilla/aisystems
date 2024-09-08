@@ -8,7 +8,6 @@ from TP2.src.model.individual import Individual
 
 class OnePointCrossover(Crossover):
 
-    #TODO: check that resultating chromosomes are normalized
     def crossover(self, parent1: Individual, parent2: Individual) -> Tuple[Individual, Individual]:
         chromosome1 = parent1.chromosome
         chromosome2 = parent2.chromosome

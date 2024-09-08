@@ -18,6 +18,9 @@ def generate_initial_population(
         points_distribution = distribute_points(total_points, 5)
 
         # Initialize a Chromosome instance
+        for  i in range(total_points):
+            att_array.append(random.choice(list(Attributes)))
+
         chromosome = Chromosome(
             height=random.uniform(1.3, 2.0),
             strength_points=points_distribution[0],

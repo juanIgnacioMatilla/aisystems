@@ -1,9 +1,10 @@
 # from TP2.src.hyperparams.crossover.anular_crossover import AnularCrossover
 from TP2.src.hyperparams.crossover.one_point_crossover import OnePointCrossover
-# from TP2.src.hyperparams.crossover.two_point_crossover import TwoPointCrossover
-# from TP2.src.hyperparams.crossover.uniform_crossover import UniformCrossover
+from TP2.src.hyperparams.crossover.two_point_crossover import TwoPointCrossover
+from TP2.src.hyperparams.crossover.uniform_crossover import UniformCrossover
 from TP2.src.hyperparams.mutation.multi_gene_mutation import MultiGeneMutation
 from TP2.src.hyperparams.mutation.single_gene_mutation import SingleGeneMutation
+from TP2.src.hyperparams.mutation.total_gene_mutation import TotalGeneMutation
 from TP2.src.hyperparams.replacement.fill_all_replacement import FillAllReplacement
 from TP2.src.hyperparams.replacement.fill_parent_replacement import FillParentReplacement
 from TP2.src.hyperparams.selection.boltzmann_selection import BoltzmannSelection
@@ -18,6 +19,7 @@ from TP2.src.hyperparams.termination.gen_amount_termination import GenAmountTerm
 from TP2.src.hyperparams.termination.structural_stability_termination import StructuralStabilityTermination
 from TP2.src.hyperparams.termination.content_stability_termination import ContentStabilityTermination
 from TP2.src.hyperparams.termination.acceptable_solution_termination import AcceptableSolutionTermination
+from TP2.src.hyperparams.mutation.uniform_gene_mutation import UniformGeneMutation
 
 SELECTION_MAP = {
     "elite": EliteSelection,
@@ -45,6 +47,8 @@ REPLACEMENT_MAP = {
 MUTATION_MAP = {
     "single_gene": SingleGeneMutation,
     "multi_gene": MultiGeneMutation,
+    "uniform_gene": UniformGeneMutation,
+    "total_gene": TotalGeneMutation
 }
 
 TERMINATION_MAP = {

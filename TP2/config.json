@@ -22,7 +22,7 @@
                 "name": "one_point"
             },
             "mutation": {
-                "name": "single_gene",
+                "name": "total_gene",
                 "p_m": 0.01
             },
             "replacement": {
