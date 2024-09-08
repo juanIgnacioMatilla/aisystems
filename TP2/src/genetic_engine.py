@@ -31,9 +31,6 @@ class GeneticEngine:
             parents = self.selection_strategy.select(population)
             offspring = self._generate_offspring(parents)
             offspring = self._mutate_offspring(offspring)
-            # Normalize in case after crossover and mutation any offspring violates the constraints on points or height
-            for i in range(len(offspring)):
-                offspring[i].chromosome = normalize_chromosome(offspring[i].chromosome, total_points)
             population = self.replacement_strategy.replace(population, offspring)
             generation += 1
             # Update the best individual and its generation if a better one is found

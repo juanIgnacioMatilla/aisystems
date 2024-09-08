@@ -45,11 +45,11 @@ class EVE:
     def calculate_fitness(individual_type: IndividualTypes, chromosome: Chromosome):
         height = chromosome.height
         # Calculate attributes using EVE class
-        force_total = EVE.calculate_force_total(chromosome.strength_points)
-        agility_total = EVE.calculate_agility_total(chromosome.agility_points)
-        intelligence_total = EVE.calculate_intelligence_total(chromosome.intelligence_points)
-        vigor_total = EVE.calculate_vigor_total(chromosome.vigor_points)
-        constitution_total = EVE.calculate_constitution_total(chromosome.constitution_points)
+        force_total = EVE.calculate_force_total(chromosome.strength_points())
+        agility_total = EVE.calculate_agility_total(chromosome.dexterity_points())
+        intelligence_total = EVE.calculate_intelligence_total(chromosome.intelligence_points())
+        vigor_total = EVE.calculate_vigor_total(chromosome.vitality_points())
+        constitution_total = EVE.calculate_constitution_total(chromosome.constitution_points())
         atm = EVE.calculate_atm(height)
         dem = EVE.calculate_dem(height)
 

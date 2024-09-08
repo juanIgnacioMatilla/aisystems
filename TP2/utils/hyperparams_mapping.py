@@ -1,4 +1,4 @@
-# from TP2.src.hyperparams.crossover.anular_crossover import AnularCrossover
+from TP2.src.hyperparams.crossover.anular_crossover import AnularCrossover
 from TP2.src.hyperparams.crossover.one_point_crossover import OnePointCrossover
 from TP2.src.hyperparams.crossover.two_point_crossover import TwoPointCrossover
 from TP2.src.hyperparams.crossover.uniform_crossover import UniformCrossover
@@ -34,9 +34,9 @@ SELECTION_MAP = {
 
 CROSSOVER_MAP = {
     "one_point": OnePointCrossover,
-    # "two_point": TwoPointCrossover,
-    # "uniform": UniformCrossover,
-    # "anular": AnularCrossover,
+    "two_point": TwoPointCrossover,
+    "uniform": UniformCrossover,
+    "anular": AnularCrossover,
 }
 
 REPLACEMENT_MAP = {

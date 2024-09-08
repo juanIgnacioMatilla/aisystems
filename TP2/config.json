@@ -1,10 +1,10 @@
 [
     {
-        "runs": 5,
-        "individual_type": "WARRIOR",
+        "runs": 1,
+        "individual_type": "ARCHER",
         "total_points": 200,
-        "population_size": 500,
-        "time_limit": 60.0,
+        "population_size": 100,
+        "time_limit": 120.0,
         "hyperparams": {
             "selection": {
                 "name": "combined",
@@ -19,7 +19,7 @@
                 "percentage_a": 0.4
             },
             "crossover": {
-                "name": "one_point"
+                "name": "uniform"
             },
             "mutation": {
                 "name": "total_gene",
@@ -29,12 +29,12 @@
                 "name": "fill_all",
                 "selection": {
                     "name": "elite",
-                    "k": 50
+                    "k": 100
                 }
             },
             "termination": {
                 "name": "content_stability",
-                "no_improvement_generations": 50
+                "no_improvement_generations": 100
             }
         }
     }
