@@ -45,7 +45,8 @@ def initialize_single_selection_strategy(selection_params, k):
     """
     selection_name = selection_params.pop('name')
     selection_class = SELECTION_MAP[selection_name]
-    return selection_class(k=k, **selection_params)
+    selection_params['k'] = k
+    return selection_class(**selection_params)
 
 
 def initialize_crossover_strategy(crossover_params):
