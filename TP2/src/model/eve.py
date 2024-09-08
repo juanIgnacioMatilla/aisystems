@@ -27,7 +27,7 @@ class EVE:
 
     @staticmethod
     def calculate_atm(height):
-        return 0.5 - (3 * height - 5)**4 / ((3 * height - 5)**2 + height / 2)
+        return 0.5 - (3 * height - 5)**4 + ((3 * height - 5)**2) + height / 2
 
     @staticmethod
     def calculate_dem(height):
