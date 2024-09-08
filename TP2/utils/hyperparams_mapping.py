@@ -1,7 +1,7 @@
-from TP2.src.hyperparams.crossover.anular_crossover import AnularCrossover
+# from TP2.src.hyperparams.crossover.anular_crossover import AnularCrossover
 from TP2.src.hyperparams.crossover.one_point_crossover import OnePointCrossover
-from TP2.src.hyperparams.crossover.two_point_crossover import TwoPointCrossover
-from TP2.src.hyperparams.crossover.uniform_crossover import UniformCrossover
+# from TP2.src.hyperparams.crossover.two_point_crossover import TwoPointCrossover
+# from TP2.src.hyperparams.crossover.uniform_crossover import UniformCrossover
 from TP2.src.hyperparams.mutation.multi_gene_mutation import MultiGeneMutation
 from TP2.src.hyperparams.mutation.single_gene_mutation import SingleGeneMutation
 from TP2.src.hyperparams.replacement.fill_all_replacement import FillAllReplacement
