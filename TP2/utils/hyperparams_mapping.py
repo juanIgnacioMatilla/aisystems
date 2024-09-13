@@ -3,6 +3,7 @@ from TP2.src.hyperparams.crossover.one_point_crossover import OnePointCrossover
 from TP2.src.hyperparams.crossover.two_point_crossover import TwoPointCrossover
 from TP2.src.hyperparams.crossover.uniform_crossover import UniformCrossover
 from TP2.src.hyperparams.mutation.multi_gene_mutation import MultiGeneMutation
+from TP2.src.hyperparams.mutation.non_uniform_gene_mutation import NonUniformGeneMutation
 from TP2.src.hyperparams.mutation.single_gene_mutation import SingleGeneMutation
 from TP2.src.hyperparams.mutation.total_gene_mutation import TotalGeneMutation
 from TP2.src.hyperparams.replacement.fill_all_replacement import FillAllReplacement
@@ -48,6 +49,7 @@ MUTATION_MAP = {
     "single_gene": SingleGeneMutation,
     "multi_gene": MultiGeneMutation,
     "uniform_gene": UniformGeneMutation,
+    "non_uniform_gene": NonUniformGeneMutation,
     "total_gene": TotalGeneMutation
 }
 

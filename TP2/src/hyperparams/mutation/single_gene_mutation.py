@@ -6,7 +6,7 @@ from TP2.src.model.individual import Individual
 
 
 class SingleGeneMutation(Mutation):
-    def mutate(self, ind1: Individual) -> Individual:
+    def mutate(self, ind1: Individual, generation: int) -> Individual:
         # Determine the index of the gene to mutate
         chromosome = [ind1.chromosome.height] + list(ind1.chromosome.att_genes)
         locus = randint(0, len(chromosome) - 1)

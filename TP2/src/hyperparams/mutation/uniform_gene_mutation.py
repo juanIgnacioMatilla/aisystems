@@ -1,16 +1,15 @@
 from abc import ABC
 from random import random, randint, choice
 from TP2.src.hyperparams.mutation.abstract_mutation import Mutation
-from TP2.src.hyperparams.mutation.multi_gene_mutation import MultiGeneMutation
-from TP2.src.hyperparams.mutation.single_gene_mutation import SingleGeneMutation
 from TP2.src.model.attributes import Attributes
 from TP2.src.model.chromosome import Chromosome
 from TP2.src.model.individual import Individual
 
+
 # Uniform Mutation Strategies
 
 class UniformGeneMutation(Mutation):
-    def mutate(self, ind1: Individual) -> Individual:
+    def mutate(self, ind1: Individual, generation: int) -> Individual:
         chromosome = [ind1.chromosome.height] + list(ind1.chromosome.att_genes)
         for i in range(len(chromosome)):
             if random() < self.p_m:

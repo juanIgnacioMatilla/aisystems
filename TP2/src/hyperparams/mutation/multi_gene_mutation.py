@@ -6,7 +6,7 @@ from TP2.src.model.individual import Individual
 
 
 class MultiGeneMutation(Mutation):
-    def mutate(self, ind1: Individual) -> Individual:
+    def mutate(self, ind1: Individual, generation: int) -> Individual:
         chromosome = [ind1.chromosome.height] + list(ind1.chromosome.att_genes)
 
         already_mutated = []
