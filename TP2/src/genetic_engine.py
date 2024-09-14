@@ -1,10 +1,10 @@
 import time
-from typing import List
+from typing import List, Dict
 from TP2.src.hyperparams.hyperparams import Hyperparams
 from TP2.src.model.individual_types import IndividualTypes
 from TP2.src.model.individual import Individual
 from TP2.src.model.initial_population import generate_initial_population
-
+import numpy as np
 
 class GeneticEngine:
     def __init__(self, hyperparams: Hyperparams):
@@ -27,13 +27,22 @@ class GeneticEngine:
         best_individual = max(population, key=lambda ind: ind.fitness())
         best_generation = self.generation
 
+        # Track average fitness per generation
+        data_per_gen = []
+
         while not self.termination_strategy.should_terminate(population, self.generation) and (
                 time.time() - start_time) < time_limit:
+            # Calculate and store the average fitness for the current generation
+            fitness = [ind.fitness() for ind in population]
+            data_per_gen.append(np.mean(fitness))
+
+            # Genetic algorithm steps
             parents = self.selection_strategy.select(population)
             offspring = self._generate_offspring(parents)
             offspring = self._mutate_offspring(offspring)
             population = self.replacement_strategy.replace(population, offspring)
             self.generation += 1
+
             # Update the best individual and its generation if a better one is found
             current_best = max(population, key=lambda ind: ind.fitness())
             if current_best.fitness() > best_individual.fitness():
@@ -41,7 +50,7 @@ class GeneticEngine:
                 best_generation = self.generation
 
         total_time = time.time() - start_time
-        return initial_population, population, self.generation, total_time, (best_individual, best_generation)
+        return initial_population, population, self.generation, total_time, (best_individual, best_generation), data_per_gen
 
     def _generate_offspring(self, parents: List[Individual]) -> List[Individual]:
         offspring: List[Individual] = []

@@ -1,14 +1,14 @@
 [
     {
-        "runs": 2,
+        "runs": 4,
         "individual_type": "ARCHER",
         "total_points": 200,
-        "population_size": 100,
+        "population_size": 200,
         "time_limit": 120.0,
         "hyperparams": {
             "selection": {
                 "name": "combined",
-                "k": 100,
+                "k": 20,
                 "method_a": {
                     "name":"elite"
                 },
@@ -21,7 +21,7 @@
                 "name": "uniform"
             },
             "mutation": {
-                "name": "total_gene",
+                "name": "multi_gene",
                 "p_m": 0.01
             },
             "replacement": {
@@ -32,7 +32,7 @@
             },
             "termination": {
                 "name": "generation_amount",
-                "amount": 2000
+                "amount": 140
             }
         }
     }
