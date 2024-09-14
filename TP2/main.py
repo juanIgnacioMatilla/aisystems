@@ -16,15 +16,18 @@ def main():
     # Load configuration from JSON
     config = load_config('config.json')
 
+    # List to store results of each run
+    results = []
+
     # Iterate over each run configuration in the JSON
     for run_config in config:
         # Extract hyperparameters and instantiate strategy classes
-
         (selection_strategy,
          crossover_strategy,
          mutation_strategy,
          replacement_strategy,
          termination_strategy) = get_strategies(run_config)
+
         # Set up hyperparameters
         hyperparams: Hyperparams = {
             'selection_strategy': selection_strategy,
@@ -67,10 +70,24 @@ def main():
             final_fitness_values = [individual.fitness() for individual in final_population]
             final_fitness_mean = np.mean(final_fitness_values)
             final_fitness_std = np.std(final_fitness_values)
-            # Output the results
-            # termination used
-            print(f"Termination strategy: {termination_strategy.__class__.__name__}")
 
+            # Store the results of the run
+            run_result = {
+                'run': i + 1,
+                'initial_fitness_mean': initial_fitness_mean,
+                'initial_fitness_std': initial_fitness_std,
+                'final_fitness_mean': final_fitness_mean,
+                'final_fitness_std': final_fitness_std,
+                'generations': generations,
+                'total_time': total_time,
+                'best_individual': best_ind,
+                'best_generation': best_generation,
+                'termination_strategy': termination_strategy.__class__.__name__
+            }
+            results.append(run_result)
+
+            # Output the results
+            print(f"Termination strategy: {termination_strategy.__class__.__name__}")
             print(f"Run {i + 1}/{run_config['runs']}:")
             print(f"Initial Population fitness mean: {initial_fitness_mean:.4f} +- {initial_fitness_std:.4f}")
             print(f"Final Population fitness mean:  {final_fitness_mean:.4f} +- {final_fitness_std:.4f}")
@@ -86,6 +103,28 @@ def main():
             print(f"Constitution points: {best_ind.chromosome.constitution_points()}")
             print(f"Intelligence points: {best_ind.chromosome.intelligence_points()}")
             print(f"Height: {best_ind.chromosome.height:.3f}\n")
+
+    initial_fitness_means = [result['initial_fitness_mean'] for result in results]
+    initial_fitness_stds = [result['initial_fitness_std'] for result in results]
+    final_fitness_means = [result['final_fitness_mean'] for result in results]
+    final_fitness_stds = [result['final_fitness_std'] for result in results]
+    generations = [result['generations'] for result in results]
+    total_times = [result['total_time'] for result in results]
+
+    overall_results = {
+        'initial_fitness_mean': np.mean(initial_fitness_means),
+        'initial_fitness_std': np.std(initial_fitness_means),
+        'final_fitness_mean': np.mean(final_fitness_means),
+        'final_fitness_std': np.std(final_fitness_means),
+        'generations_mean': np.mean(generations),
+        'generations_std': np.std(generations),
+        'total_time_mean': np.mean(total_times),
+        'total_time_std': np.std(total_times)
+    }
+
+    print(f"Overall Results: {overall_results}")
+
+    return results
 
 
 if __name__ == "__main__":
