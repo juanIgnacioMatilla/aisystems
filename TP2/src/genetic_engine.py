@@ -1,6 +1,10 @@
 import time
 from typing import List
+
+import numpy as np
+
 from TP2.src.hyperparams.hyperparams import Hyperparams
+from TP2.src.model.diversity import Diversity
 from TP2.src.model.individual_types import IndividualTypes
 from TP2.src.model.individual import Individual
 from TP2.src.model.initial_population import generate_initial_population
@@ -16,15 +20,18 @@ class GeneticEngine:
         self.generation = None
 
     def run(self, ind_type: IndividualTypes, total_points: int, population_size: int, time_limit: float):
+        # self.fitness_history = []
+        # self.diversity_history = []
         if time_limit < 10 or time_limit > 120:
             raise ValueError("time limit must be between 10 and 120")
         population = generate_initial_population(ind_type, total_points, population_size)
         initial_population = population
+        # self.fitness_history.append(self._calculate_fitness_mean(population))
+        # self.diversity_history.append(Diversity.calculate_diversity(population))
         self.generation = 0
         start_time = time.time()
-
         # Initialize the best individual tracking
-        best_individual = max(population, key=lambda ind: ind.fitness())
+        best_individual = min(population, key=lambda ind: ind.fitness())
         best_generation = self.generation
 
         while not self.termination_strategy.should_terminate(population, self.generation) and (
@@ -33,15 +40,23 @@ class GeneticEngine:
             offspring = self._generate_offspring(parents)
             offspring = self._mutate_offspring(offspring)
             population = self.replacement_strategy.replace(population, offspring)
+            # self.fitness_history.append(self._calculate_fitness_mean(population))
+            # if(self.generation % 25 == 0):
+            #     self.diversity_history.append(Diversity.calculate_diversity(population))
             self.generation += 1
             # Update the best individual and its generation if a better one is found
-            current_best = max(population, key=lambda ind: ind.fitness())
+            current_best = min(population, key=lambda ind: ind.fitness())
             if current_best.fitness() > best_individual.fitness():
                 best_individual = current_best
                 best_generation = self.generation
-
         total_time = time.time() - start_time
         return initial_population, population, self.generation, total_time, (best_individual, best_generation)
+
+    def _calculate_fitness_mean(self, population):
+        final_fitness_values = [individual.fitness() for individual in population]
+        final_fitness_mean = np.mean(final_fitness_values)
+        final_fitness_std = np.std(final_fitness_values)
+        return final_fitness_mean, final_fitness_std
 
     def _generate_offspring(self, parents: List[Individual]) -> List[Individual]:
         offspring: List[Individual] = []

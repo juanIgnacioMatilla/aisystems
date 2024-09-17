@@ -26,5 +26,6 @@ class ContentStabilityTermination(Termination):
             self.stable_generations = 0
         else:
             self.stable_generations += 1
-
+            if self.stable_generations % 50 == 0:
+                print(self.stable_generations)
         return self.stable_generations >= self.no_improvement_generations

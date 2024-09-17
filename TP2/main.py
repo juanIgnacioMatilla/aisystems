@@ -1,9 +1,12 @@
+import copy
 import json
 import numpy as np
 from TP2.src.hyperparams.hyperparams import Hyperparams
 from TP2.src.model.individual_types import IndividualTypes
 from TP2.src.genetic_engine import GeneticEngine
 from TP2.utils.config_handler import get_strategies
+from TP2.utils.ploter import plot_fitness_per_generation, plot_diversity_per_generation, \
+    plot_chromosome_distribution
 
 
 def load_config(filename: str):
@@ -18,8 +21,9 @@ def main():
 
     # Iterate over each run configuration in the JSON
     for run_config in config:
+        run_config_cp = copy.deepcopy(run_config)
         # Extract hyperparameters and instantiate strategy classes
-
+        total_diversity = []
         (selection_strategy,
          crossover_strategy,
          mutation_strategy,
@@ -39,7 +43,8 @@ def main():
         total_points = run_config['total_points']
         population_size = run_config['population_size']
         time_limit = run_config['time_limit']
-
+        best_inds = []
+        best_gens = []
         engine = GeneticEngine(hyperparams)
         for i in range(run_config['runs']):
             # Reset strategy inner states
@@ -59,34 +64,19 @@ def main():
                 population_size,
                 time_limit
             )
+            print(f"BEST {best_ind.type.value}")
+            print(f"Fitness:{best_ind.fitness()}")
+            print(f"Fuerza: {best_ind.chromosome.strength_points()}")
+            print(f"Destreza: {best_ind.chromosome.dexterity_points()}")
+            print(f"Inteligencia: {best_ind.chromosome.intelligence_points()}")
+            print(f"Vigor: {best_ind.chromosome.vitality_points()}")
+            print(f"Constitucion: {best_ind.chromosome.constitution_points()}")
+            print(f"Altura: {best_ind.chromosome.height:.3f}")
+            print(f"Tiempo: {total_time:.3f}")
+            plot_chromosome_distribution(best_ind.chromosome, best_ind.type.value)
 
-            initial_fitness_values = [individual.fitness() for individual in initial_population]
-            initial_fitness_mean = np.mean(initial_fitness_values)
-            initial_fitness_std = np.std(initial_fitness_values)
-
-            final_fitness_values = [individual.fitness() for individual in final_population]
-            final_fitness_mean = np.mean(final_fitness_values)
-            final_fitness_std = np.std(final_fitness_values)
-            # Output the results
-            # termination used
-            print(f"Termination strategy: {termination_strategy.__class__.__name__}")
 
             print(f"Run {i + 1}/{run_config['runs']}:")
-            print(f"Initial Population fitness mean: {initial_fitness_mean:.4f} +- {initial_fitness_std:.4f}")
-            print(f"Final Population fitness mean:  {final_fitness_mean:.4f} +- {final_fitness_std:.4f}")
-            print(f"Generations: {generations}")
-            print(f"Total Time: {total_time:.2f} seconds")
-            print(f"Best individual in generation {best_generation}: {best_ind}")
-            print(f"Params for best individual:")
-            print(f"Individual Type: {ind_type.value}")
-            print(f"Total Points: {total_points}")
-            print(f"Strength points: {best_ind.chromosome.strength_points()}")
-            print(f"Agility points: {best_ind.chromosome.dexterity_points()}")
-            print(f"Vigor points: {best_ind.chromosome.vitality_points()}")
-            print(f"Constitution points: {best_ind.chromosome.constitution_points()}")
-            print(f"Intelligence points: {best_ind.chromosome.intelligence_points()}")
-            print(f"Height: {best_ind.chromosome.height:.3f}\n")
-
 
 if __name__ == "__main__":
     main()
