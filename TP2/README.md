@@ -259,7 +259,51 @@ Se pueden ajustar los parametros e hiperparametros utilizando el config.json
       }
   }
 ```
+Un ejemplo del formato final del json seria:
+```json
+[
+    {
+        "runs": 1,
+        "individual_type": "ARCHER",
+        "total_points": 200,
+        "population_size": 100,
+        "time_limit": 120.0,
+        "hyperparams": {
+            "selection": {
+                "name": "combined",
+                "k": 50,
+                "method_a": {
+                    "name":"elite"
+                },
+                "method_b": {
+                    "name":"boltzmann",
+                    "temperature": 100
+                },
+                "percentage_a": 0.4
+            },
+            "crossover": {
+                "name": "one_point"
+            },
+            "mutation": {
+                "name": "total_gene",
+                "p_m": 0.01
+            },
+            "replacement": {
+                "name": "fill_all",
+                "selection": {
+                    "name": "elite"
+                }
+            },
+            "termination": {
+                "name": "content_stability",
+                "no_improvement_generations": 100
+            }
+        }
+    }
+]
+```
 
+Tambien se pueden correr varias configs secuencialmente, hay un ejemplo en el archivo example_configs.
 ## Contenidos
 Este repositorio contiene la implementación de un motor de algoritmos geneticos para encontrar buenas configuraciones para la creacion de personajes en el juego **ITBUM ONLINE**. 
 
