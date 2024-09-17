@@ -29,7 +29,7 @@ def plot_chromosome_distribution(chromosome: Chromosome, type: str):
     # Cambiar el rango del eje radial, ajustar el tamaño de la fuente de los labels y números
     fig.update_layout(
         font=dict(
-            size=18  
+            size=18
         )
     )
     fig.write_image(f"grafico_polar{type}.png")
