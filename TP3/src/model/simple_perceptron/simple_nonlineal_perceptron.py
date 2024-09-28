@@ -27,8 +27,8 @@ class SimpleNonLinearPerceptron:
                 error = target - prediction
                 # Actualiza los pesos y el bias usando la derivada de la sigmoide
                 adjustment = self.learning_rate * error * self.sigmoid_derivative(prediction)
-                self.neuron.weights += adjustment * inputs
-                self.neuron.bias += adjustment
+                inputs_with_bias = np.append(inputs, 1)
+                self.neuron.weights += adjustment * inputs_with_bias
 
     def predict(self, inputs):
         # Devuelve la salida de la neurona

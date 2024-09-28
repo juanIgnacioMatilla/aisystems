@@ -1,3 +1,5 @@
+import numpy as np
+
 from TP3.src.model.neuron import Neuron
 
 
@@ -17,8 +19,9 @@ class SimpleLinearPerceptron:
                 error = target - prediction
 
                 # Actualiza los pesos y el bias
-                self.neuron.weights += self.learning_rate * error * inputs
-                self.neuron.bias += self.learning_rate * error
+                inputs_with_bias = np.append(inputs, 1)
+                self.neuron.weights += self.learning_rate * error * inputs_with_bias
+                # self.neuron.bias += self.learning_rate * error
 
     def predict(self, inputs):
         # Devuelve la salida de la neurona
