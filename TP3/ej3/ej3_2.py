@@ -26,10 +26,10 @@ def main():
     # Assuming the Layer and MultiLayerPerceptron classes are defined
 
     # Load the data from the file
-    X, y = load_data('./inputs/TP3-ej3-digitos.txt')
+    X, y = load_data('../inputs/TP3-ej3-digitos.txt')
     # Define the MLP structure
     # Input size is 35 (flattened 7x5 digits), one hidden layer with 10 neurons, and 1 output
-    mlp = MultiLayerPerceptron(layers_structure=[35, 10, 1], learning_rate=0.1)
+    mlp = MultiLayerPerceptron(layers_structure=[35, 10, 5, 1], learning_rate=0.1)
 
     # Train the MLP
     errors = mlp.train(X, y, epochs=5000)
@@ -42,6 +42,7 @@ def main():
     for i,error in enumerate(errors):
         if i % 1000 == 0:
             print("error for epoch ",i,": ",error)
+
 
 if __name__ == "__main__":
     main()
