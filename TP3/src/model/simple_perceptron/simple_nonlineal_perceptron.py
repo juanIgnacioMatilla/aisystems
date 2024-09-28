@@ -4,9 +4,9 @@ from TP3.src.model.neuron import Neuron
 
 
 class SimpleNonLinearPerceptron:
-    def __init__(self, n_inputs, learning_rate=0.01):
+    def __init__(self, learning_rate):
         # Usamos la función sigmoide como función de activación no lineal
-        self.neuron = Neuron(n_inputs, self.sigmoid)
+        self.neuron = None
         self.learning_rate = learning_rate
 
     def sigmoid(self, x):
@@ -18,6 +18,7 @@ class SimpleNonLinearPerceptron:
         return x * (1 - x)
 
     def train(self, X, y, epochs):
+        self.neuron = Neuron(len(X[0]), self.sigmoid)
         for epoch in range(epochs):
             for inputs, target in zip(X, y):
                 # Predicción
