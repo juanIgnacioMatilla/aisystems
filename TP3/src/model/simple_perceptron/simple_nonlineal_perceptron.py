@@ -18,7 +18,8 @@ class SimpleNonLinearPerceptron:
         return x * (1 - x)
 
     def train(self, X, y, epochs):
-        self.neuron = Neuron(len(X[0]), self.sigmoid)
+        initial_weights = np.random.rand(len(X[0]) + 1)  # +1 for the bias
+        self.neuron = Neuron(initial_weights, self.sigmoid)
         for epoch in range(epochs):
             for inputs, target in zip(X, y):
                 # Predicción

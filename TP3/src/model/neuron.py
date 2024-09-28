@@ -1,10 +1,12 @@
+from typing import Callable
+
 import numpy as np
 
 
 class Neuron:
-    def __init__(self, n_inputs, activation_function):
+    def __init__(self, weights: np.ndarray, activation_function: Callable):
         # Inicializa los pesos aleatorios y un umbral (bias)
-        self.weights = np.random.rand(n_inputs+1)
+        self.weights = weights
         self.activation_function = activation_function
 
     def predict(self, inputs):
