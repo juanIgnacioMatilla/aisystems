@@ -7,7 +7,7 @@ from TP3.src.model.simple_perceptron.simple_lineal_perceptron_classifier import 
 # Ejemplo de uso
 if __name__ == "__main__":
 
-    #Clafisicador
+    # Calsificador Lineal
     # Datos de entrenamiento (AND lógico)
     X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y = np.array([0, 0, 0, 1])  # Salidas correspondientes para el AND
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         print(f"Entrada: {inputs}, Predicción: {perceptron.predict(inputs)}")
     print()
 
-    #No lineal
+    # No lineal
     X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y = np.array([0, 1, 1, 1])
 

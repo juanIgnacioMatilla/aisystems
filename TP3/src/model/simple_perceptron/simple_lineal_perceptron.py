@@ -14,15 +14,11 @@ class SimpleLinearPerceptron:
         self.neuron = Neuron(initial_weights, self.activation_function)
         for epoch in range(epochs):
             for inputs, target in zip(X, y):
-                # Predicción
                 prediction = self.neuron.predict(inputs)
-                # Cálculo del error
                 error = target - prediction
-
-                # Actualiza los pesos y el bias
+                # Update weights and bias
                 inputs_with_bias = np.append(inputs, 1)
                 self.neuron.weights += self.learning_rate * error * inputs_with_bias
 
     def predict(self, inputs):
-        # Devuelve la salida de la neurona
         return self.neuron.predict(inputs)
