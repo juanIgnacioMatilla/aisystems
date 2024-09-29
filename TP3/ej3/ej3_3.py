@@ -1,6 +1,8 @@
 import numpy as np
 
+from TP3.src.model.multilayer_perceptron.adam.adam_multi_layer_perceptron import AdamMultiLayerPerceptron
 from TP3.src.model.multilayer_perceptron.vanilla.multi_layer_perceptron import MultiLayerPerceptron
+
 
 # Helper function for manual one-hot encoding
 def one_hot_encode(labels, num_classes):
@@ -8,6 +10,7 @@ def one_hot_encode(labels, num_classes):
     for i, label in enumerate(labels):
         one_hot_labels[i][label] = 1
     return one_hot_labels
+
 
 # Helper function to read and preprocess the data
 def load_data(file_path):
@@ -37,13 +40,13 @@ def main():
     # Define the MLP structure
     # Input size is 35 (flattened 7x5 digits), one hidden layer with 10 neurons, and 1 output
     # mlp = MultiLayerPerceptron(layers_structure=[35, 20, 10], learning_rate=0.1)
-    mlp = MultiLayerPerceptron(layers_structure=[35, 100, 10], learning_rate=0.1)
+    vanilla_mlp = MultiLayerPerceptron(layers_structure=[35, 20, 10], learning_rate=0.1)
 
     # Train the MLP
-    errors = mlp.train(X, y, epochs=5000)
-
+    errors = vanilla_mlp.train(X, y, epochs=5000)
+    print("Vanilla: ")
     for i, x in enumerate(X):
-        predictions = mlp.predict(x)
+        predictions = vanilla_mlp.predict(x)
         predicted_digit = np.argmax(predictions)  # Get the index of the highest probability (predicted digit)
         print(f"Prediction for digit {i}: {predicted_digit} (Expected: {np.argmax(y[i])})")
         print(predictions)
@@ -51,7 +54,27 @@ def main():
 
     for i, error in enumerate(errors):
         if i % 1000 == 0:
-            print("error for epoch ",i,": ",error)
+            print("error for epoch ", i, ": ", error)
+
+    # Define the MLP structure
+    # Input size is 35 (flattened 7x5 digits), hidden layer with 100 neurons, output layer with 10 neurons
+    adam_mlp = AdamMultiLayerPerceptron(layers_structure=[35, 20, 10])
+
+    # Train the MLP
+    errors = adam_mlp.train(X, y, epochs=5000)
+    print("Adam: ")
+    # Make predictions and display results
+    for i, x in enumerate(X):
+        predictions = adam_mlp.predict(x)
+        predicted_digit = np.argmax(predictions)  # Get the index of the highest probability (predicted digit)
+        print(f"Prediction for digit {i}: {predicted_digit} (Expected: {np.argmax(y[i])})")
+        print(predictions)
+        print()
+
+    # Display errors for some epochs
+    for i, error in enumerate(errors):
+        if i % 1000 == 0:
+            print(f"Error for epoch {i}: {error}")
 
 
 if __name__ == "__main__":
