@@ -1,6 +1,6 @@
 import numpy as np
 
-from TP3.src.model.multilayer_perceptron.mult_layer_perceptron import MultiLayerPerceptron
+from TP3.src.model.multilayer_perceptron.vanilla.multi_layer_perceptron import MultiLayerPerceptron
 
 # Helper function for manual one-hot encoding
 def one_hot_encode(labels, num_classes):

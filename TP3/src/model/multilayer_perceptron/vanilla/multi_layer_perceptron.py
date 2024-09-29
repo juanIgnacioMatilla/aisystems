@@ -1,6 +1,6 @@
 import numpy as np
 
-from TP3.src.model.multilayer_perceptron.layer import Layer
+from TP3.src.model.multilayer_perceptron.vanilla.layer import Layer
 
 
 class MultiLayerPerceptron:

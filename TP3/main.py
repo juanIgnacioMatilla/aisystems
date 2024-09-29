@@ -1,7 +1,5 @@
 import numpy as np
 
-from TP3.src.model.multilayer_perceptron.mult_layer_perceptron import MultiLayerPerceptron
-from TP3.src.model.neuron import Neuron
 from TP3.src.model.simple_perceptron.simple_lineal_perceptron import SimpleLinearPerceptron
 from TP3.src.model.simple_perceptron.simple_nonlineal_perceptron import SimpleNonLinearPerceptron
 from TP3.src.model.simple_perceptron.simple_lineal_perceptron_classifier import SimplePerceptronClassifier

@@ -1,6 +1,7 @@
 import numpy as np
 
-from TP3.src.model.multilayer_perceptron.mult_layer_perceptron import MultiLayerPerceptron
+from TP3.src.model.multilayer_perceptron.momentum.momentum_multi_layer_perceptron import MomentumMultiLayerPerceptron
+from TP3.src.model.multilayer_perceptron.vanilla.multi_layer_perceptron import MultiLayerPerceptron
 
 
 # Helper function to read and preprocess the data
@@ -33,7 +34,7 @@ def main():
 
     # Train the MLP
     errors = mlp.train(X, y, epochs=5000)
-
+    print("Vanilla: ")
     # Test the MLP
     for i, x in enumerate(X):
         predictions = mlp.predict(x)
@@ -42,6 +43,23 @@ def main():
     for i,error in enumerate(errors):
         if i % 1000 == 0:
             print("error for epoch ",i,": ",error)
+
+    print("Momentum: ")
+    mlp = MomentumMultiLayerPerceptron(layers_structure=[35, 10, 5, 1], learning_rate=0.1, alpha=0.9)
+
+    # Train the MLP
+    errors = mlp.train(X, y, epochs=5000)
+
+    # Test the MLP
+    for i, x in enumerate(X):
+        predictions = mlp.predict(x)
+        print("Prediction for digit", i, ": ", "even" if np.round(predictions) == 0 else "odd")
+        print()
+
+    # Print errors at every 1000 epochs
+    for i, error in enumerate(errors):
+        if i % 1000 == 0:
+            print("Error at epoch", i, ": ", error)
 
 
 if __name__ == "__main__":

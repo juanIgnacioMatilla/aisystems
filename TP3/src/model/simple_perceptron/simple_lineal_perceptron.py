@@ -1,6 +1,5 @@
 import numpy as np
 
-from TP3.src.model.neuron import Neuron
 from TP3.src.model.simple_perceptron.simple_perceptron import SimplePerceptron
 
 

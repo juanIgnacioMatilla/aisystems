@@ -1,6 +1,6 @@
 import numpy as np
 
-from TP3.src.model.multilayer_perceptron.mult_layer_perceptron import MultiLayerPerceptron
+from TP3.src.model.multilayer_perceptron.vanilla.multi_layer_perceptron import MultiLayerPerceptron
 if __name__ == "__main__":
     # Multicapa
     X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])  # Datos de entrenamiento
