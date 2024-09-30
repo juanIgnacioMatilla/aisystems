@@ -29,8 +29,6 @@ class MultiLayerPerceptron:
         return outputs
 
     def train(self, X, y, epochs):
-        errors_by_epoch = []
-        accuracies_by_epoch = []
 
         for epoch in range(epochs):
             print(f'In epoch {epoch + 1}/{epochs}')
@@ -64,7 +62,7 @@ class MultiLayerPerceptron:
             self.errors_by_epoch.append(mean_error)
             self.accuracies_by_epoch.append(accuracy)
 
-        return errors_by_epoch, accuracies_by_epoch
+        return self.errors_by_epoch,  self.accuracies_by_epoch
 
     def forward_propagate(self, inputs):
         outputs_by_layer = [inputs]
