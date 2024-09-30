@@ -5,8 +5,8 @@ from TP3.src.model.multilayer_perceptron.vanilla.layer import Layer
 class MultiLayerPerceptron:
     def __init__(self, layers_structure, learning_rate=0.01, activation_function=lambda x: 1 / (1 + np.exp(-x)),
                  activation_function_derivative=lambda x: x * (1 - x)):
-        self.errors_by_epoch = None
-        self.accuracies_by_epoch = None
+        self.errors_by_epoch = []
+        self.accuracies_by_epoch = []
         self.learning_rate = learning_rate
         self.layers = [
             Layer(num_neurons, input_size, activation_function, activation_function_derivative)
