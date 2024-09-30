@@ -2,15 +2,25 @@ import numpy as np
 
 from TP3.src.model.multilayer_perceptron.vanilla.layer import Layer
 
-
 class MultiLayerPerceptron:
     def __init__(self, layers_structure, learning_rate=0.01, activation_function=lambda x: 1 / (1 + np.exp(-x)),
                  activation_function_derivative=lambda x: x * (1 - x)):
+        self.errors_by_epoch = None
+        self.accuracies_by_epoch = None
         self.learning_rate = learning_rate
         self.layers = [
             Layer(num_neurons, input_size, activation_function, activation_function_derivative)
             for input_size, num_neurons in zip(layers_structure[:-1], layers_structure[1:])
         ]
+
+    def __getstate__(self):
+        # Return the state of the object to be pickled
+        state = self.__dict__.copy()
+        return state
+
+    def __setstate__(self, state):
+        # Restore the state of the object from the unpickled state
+        self.__dict__.update(state)
 
     def predict(self, inputs):
         outputs = inputs
@@ -20,8 +30,13 @@ class MultiLayerPerceptron:
 
     def train(self, X, y, epochs):
         errors_by_epoch = []
+        accuracies_by_epoch = []
+
         for epoch in range(epochs):
+            print(f'In epoch {epoch + 1}/{epochs}')
             epoch_error = 0
+            correct_predictions = 0
+
             for inputs, target in zip(X, y):
                 # Forward propagation
                 outputs_by_layer = self.forward_propagate(inputs)
@@ -32,12 +47,24 @@ class MultiLayerPerceptron:
                 # Update weights
                 self.update_weights(inputs, outputs_by_layer, gradients)
 
-                # Error calculation
+                # Error calculation (Mean Squared Error)
                 final_output = outputs_by_layer[-1]
                 epoch_error += 0.5 * np.sum((target - final_output) ** 2)
 
-            errors_by_epoch.append(epoch_error)
-        return errors_by_epoch
+                # Accuracy calculation (assuming target is one-hot encoded)
+                predicted_class = np.argmax(final_output)
+                true_class = np.argmax(target)
+                if predicted_class == true_class:
+                    correct_predictions += 1
+
+            # Calculate mean error and accuracy for this epoch
+            mean_error = epoch_error / len(X)
+            accuracy = correct_predictions / len(X)
+
+            self.errors_by_epoch.append(mean_error)
+            self.accuracies_by_epoch.append(accuracy)
+
+        return errors_by_epoch, accuracies_by_epoch
 
     def forward_propagate(self, inputs):
         outputs_by_layer = [inputs]

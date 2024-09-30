@@ -61,7 +61,7 @@ def main():
     adam_mlp = AdamMultiLayerPerceptron(layers_structure=[35, 20, 10])
 
     # Train the MLP
-    errors = adam_mlp.train(X, y, epochs=5000)
+    errors, accuracies = adam_mlp.train(X, y, epochs=5000)
     print("Adam: ")
     # Make predictions and display results
     for i, x in enumerate(X):
