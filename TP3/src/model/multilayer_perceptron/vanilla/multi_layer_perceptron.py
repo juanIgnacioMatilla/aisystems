@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 
 from TP3.src.model.multilayer_perceptron.vanilla.layer import Layer
@@ -7,6 +9,7 @@ class MultiLayerPerceptron:
                  activation_function_derivative=lambda x: x * (1 - x)):
         self.errors_by_epoch = []
         self.accuracies_by_epoch = []
+        self.training_time = 0
         self.learning_rate = learning_rate
         self.layers = [
             Layer(num_neurons, input_size, activation_function, activation_function_derivative)
@@ -29,6 +32,9 @@ class MultiLayerPerceptron:
         return outputs
 
     def train(self, X, y, epochs):
+
+        #time to train
+        start_time = time.time()
 
         for epoch in range(epochs):
             print(f'In epoch {epoch + 1}/{epochs}')
@@ -62,6 +68,9 @@ class MultiLayerPerceptron:
             self.errors_by_epoch.append(mean_error)
             self.accuracies_by_epoch.append(accuracy)
 
+
+        #time to train
+        self.training_time = time.time() - start_time
         return self.errors_by_epoch,  self.accuracies_by_epoch
 
     def forward_propagate(self, inputs):
