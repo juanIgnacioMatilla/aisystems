@@ -91,7 +91,6 @@ def print_n_predictions(loaded_mlp, x_test, y_test, n):
 
 def print_training_errors(loaded_mlp):
     # Display errors during training for some epochs
-    print("\nTraining Errors:")
     for i, error in enumerate(loaded_mlp.errors_by_epoch):
         if i % 1 == 0:
             print(f"Error for epoch {i}: {error}")
@@ -99,7 +98,6 @@ def print_training_errors(loaded_mlp):
 
 def print_training_accuracies(loaded_mlp):
     # Display accuracies during training for some epochs
-    print("\nTraining Accuracies:")
     for i, accuracy in enumerate(loaded_mlp.accuracies_by_epoch):
         if i % 1 == 0:
             print(f"Accuracy for epoch {i}: {accuracy}")

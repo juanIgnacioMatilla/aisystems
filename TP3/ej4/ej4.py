@@ -3,7 +3,7 @@ from TP3.ej4.mnist_utils import load_preprocessed_mnist, load_preprocessed_mnist
     store_model, load_model
 from TP3.src.model.multilayer_perceptron.adam.adam_multi_layer_perceptron import AdamMultiLayerPerceptron
 
-EPOCHS = 3
+EPOCHS = 7
 
 
 def main():
@@ -21,15 +21,24 @@ def main():
 
     # Define the MLP structure
     # Input size is 784 (flattened 28x28 images), hidden layer with 64 neurons, output layer with 10 neurons
-    adam_mlp = AdamMultiLayerPerceptron(layers_structure=[784, 64, 10])
+    adam_mlp = AdamMultiLayerPerceptron(layers_structure=[784, 256, 128, 64, 10])
+
+    # # Train the MLP with Adam optimizer
+    # adam_mlp.train(x_train, y_train, epochs=EPOCHS)  # Adjust the number of epochs as needed
+    # # adam_mlp.train(x_train_subset, y_train_subset, epochs=2)  # Adjust the number of epochs as needed
+    # print("\nTraining with Adam optimizer completed.\n")
+    #
+    # model_filename = f'trained_models/ADAM_{EPOCHS}E.pkl'
+    # store_model(adam_mlp, model_filename)
+
+
 
     # Train the MLP with Adam optimizer
-    adam_mlp.train(x_train, y_train, epochs=EPOCHS)  # Adjust the number of epochs as needed
-    # adam_mlp.train(x_train_subset, y_train_subset, epochs=2)  # Adjust the number of epochs as needed
+    adam_mlp.train(x_train, y_train, epochs=1)  # Adjust the number of epochs as needed
     print("\nTraining with Adam optimizer completed.\n")
-
-    model_filename = f'trained_models/trained_mlp_ADAM_{EPOCHS}E.pkl'
+    model_filename = f'trained_models/ADAM_{1}E_784_256_128_64_10.pkl'
     store_model(adam_mlp, model_filename)
+
 
 
 if __name__ == "__main__":
