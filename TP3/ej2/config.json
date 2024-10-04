@@ -1,0 +1,6 @@
+{
+  "k": 10,
+  "p_type": "non_linear",
+  "learning_rate": 0.0001,
+  "epochs": 30000
+}
