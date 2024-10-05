@@ -1,7 +1,8 @@
 import dill
 import tensorflow as tf
 import numpy as np
-
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 def load_preprocessed_mnist():
     # Load and preprocess the MNIST dataset
@@ -36,10 +37,10 @@ def retrieve_preprocessed_mnist():
         return dill.load(mnist_file)
 
 
-def store_model(adam_mlp, model_filename):
+def store_model(mlp, model_filename):
     # Save the trained model to a file
     with open(model_filename, 'wb') as model_file:
-        dill.dump(adam_mlp, model_file)
+        dill.dump(mlp, model_file)
 
 
 def load_model(model_filename):
@@ -87,6 +88,59 @@ def print_n_predictions(loaded_mlp, x_test, y_test, n):
         print(f"Test Sample {i}: Predicted: {predicted_digit}, Actual: {actual_digit}")
         print(f"Prediction probabilities: {predictions}")
         print()
+
+def confusion_matrix(loaded_mlp, x_test, y_test, size):
+    # Display predictions for all samples
+    matrix = np.zeros((size, size), dtype=int)
+    for i in range(len(x_test)):
+        predictions = loaded_mlp.predict(x_test[i])
+        predicted_digit = np.argmax(predictions)  # Get the index of the highest probability (predicted digit)
+        actual_digit = np.argmax(y_test[i])  # The actual digit from the test labels
+        matrix[actual_digit][predicted_digit] += 1
+    return matrix
+
+def graph_confusion_matrix(matrix):
+    # Create a new figure with adjusted size
+    fig, ax = plt.subplots(figsize=(8, 6))  # Adjust the figure size
+
+    # Display the confusion matrix as an image
+    cax = ax.matshow(matrix, cmap='YlGnBu')  # Use 'YlGnBu' colormap to match sns
+
+    # Add a colorbar for reference
+    fig.colorbar(cax)
+
+    # Loop over data dimensions and create text annotations
+    for i in range(10):
+        for j in range(10):
+            if j == i:
+                ax.text(j, i, int(matrix[i, j]), ha='center', va='center', color='white')
+            else:
+                ax.text(j, i, int(matrix[i, j]), ha='center', va='center', color='black')
+
+    # Set titles and labels
+    ax.set_title("Confusion Matrix", pad=20)  # Add padding to the title
+    ax.set_xlabel("Predicted", labelpad=10)
+    ax.set_ylabel("Actual", labelpad=10)
+
+    # Set x and y axis labels to indicate digits
+    ax.set_xticks(np.arange(10))
+    ax.set_yticks(np.arange(10))
+
+    # Move x-axis ticks to the bottom
+    ax.xaxis.set_ticks_position('bottom')
+    ax.xaxis.tick_bottom()
+
+    # Turn on grid
+    ax.grid(False)  # Disable default grid lines from matshow
+    ax.set_xticks(np.arange(-0.5, 10, 1), minor=True)  # Set minor ticks for grid
+    ax.set_yticks(np.arange(-0.5, 10, 1), minor=True)
+    ax.grid(which="minor", color="gray", linestyle='-', linewidth=0.5)
+
+    plt.show()
+
+
+
+
 
 
 def print_training_errors(loaded_mlp):
