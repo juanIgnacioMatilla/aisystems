@@ -36,10 +36,10 @@ def retrieve_preprocessed_mnist():
         return dill.load(mnist_file)
 
 
-def store_model(adam_mlp, model_filename):
+def store_model(mlp, model_filename):
     # Save the trained model to a file
     with open(model_filename, 'wb') as model_file:
-        dill.dump(adam_mlp, model_file)
+        dill.dump(mlp, model_file)
 
 
 def load_model(model_filename):

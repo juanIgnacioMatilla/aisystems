@@ -37,7 +37,8 @@ class MultiLayerPerceptron:
         start_time = time.time()
 
         for epoch in range(epochs):
-            print(f'In epoch {epoch + 1}/{epochs}')
+
+            # print(f'In epoch {epoch + 1}/{epochs}')
             epoch_error = 0
             correct_predictions = 0
 
@@ -94,13 +95,10 @@ class MultiLayerPerceptron:
         for i in reversed(range(len(self.layers) - 1)):
             layer = self.layers[i]
             next_layer = self.layers[i + 1]
-            error = np.zeros(len(layer.neurons))
-
-            # Sumamos los errores de cada neurona en la capa siguiente
-            for j, neuron in enumerate(layer.neurons):
-                for k, next_neuron in enumerate(next_layer.neurons):
-                    # Multiplica el peso de la neurona j con el gradiente de la neurona k
-                    error[j] += next_neuron.weights[j] * gradients[-1][k]
+            # Transponer la matriz de pesos
+            weights_transposed = np.transpose([neuron.weights[:-1] for neuron in next_layer.neurons])
+            # Multiplicar los gradientes de la capa siguiente por los pesos transpuestos
+            error = np.dot(weights_transposed, gradients[-1])
 
             # Calcula el gradiente para la neurona actual
             gradient = error * layer.activation_function_derivative(outputs_by_layer[i + 1])

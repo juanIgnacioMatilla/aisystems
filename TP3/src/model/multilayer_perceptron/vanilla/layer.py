@@ -4,7 +4,13 @@ from TP3.src.model.neuron import Neuron
 
 
 class Layer:
-    def __init__(self, num_neurons, input_size, activation_function, activation_function_derivative):
+    def __init__(
+            self,
+            num_neurons,
+            input_size,
+            activation_function,
+            activation_function_derivative
+            ):
         self.neurons = [
             Neuron(np.random.randn(input_size + 1), activation_function) for _ in range(num_neurons)
         ]
