@@ -3,7 +3,7 @@
     "k": 5,
     "inner_layers": [10, 5],
     "learning_rate": 0.1,
-    "optimizer": "vanilla",
+    "optimizer": "adam",
     "epochs": 5000
   }
 ]
