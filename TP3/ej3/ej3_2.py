@@ -104,6 +104,8 @@ def main():
 
         for _ in range(config.get("k")):
             errors, accuracy, mlp = train(X, y, config)
+            partial_accuracies = [accuracy[i] for i in range(0, len(accuracy), 75)]
+            all_accuracies.append(partial_accuracies)
 
         # Convert to a NumPy array for easier manipulation
         all_accuracies = np.array(all_accuracies)
@@ -113,7 +115,7 @@ def main():
         accuracy_std = np.std(all_accuracies, axis=0)
 
         # Plot mean accuracy with y-error bars
-        epochs = np.arange(0, len(accuracy_mean) * 5, 5)  # Epoch indices (sampled every 5 epochs)
+        epochs = np.arange(0, len(accuracy_mean) * 75, 75)  # Epoch indices (sampled every 5 epochs)
         plt.figure(figsize=(12, 6))
         plt.errorbar(epochs, accuracy_mean, yerr=accuracy_std, fmt='o', capsize=5, label='Average Accuracy',
                      color='blue')
