@@ -1,12 +1,7 @@
 [
   {
-    "inner_layers": [20],
-    "learning_rate": 0.1,
-    "optimizer": "adam",
-    "epochs": 5000
-  },
-  {
-    "inner_layers": [20],
+    "k": 5,
+    "inner_layers": [10, 5],
     "learning_rate": 0.1,
     "optimizer": "vanilla",
     "epochs": 5000
