@@ -31,16 +31,18 @@ class MultiLayerPerceptron:
             outputs = layer.predict(outputs)
         return outputs
 
-    def train(self, X, y, epochs):
+    F1 - SCORE
 
-        #time to train
+    def train(self, X, y, epochs):
+        # Time to train
         start_time = time.time()
 
-        for epoch in range(epochs):
+        f1_by_epoch = []
 
-            # print(f'In epoch {epoch + 1}/{epochs}')
+        for epoch in range(epochs):
             epoch_error = 0
             correct_predictions = 0
+            confusion_matrix = np.zeros((10, 10))
 
             for inputs, target in zip(X, y):
                 # Forward propagation
@@ -62,6 +64,9 @@ class MultiLayerPerceptron:
                 if predicted_class == true_class:
                     correct_predictions += 1
 
+                # Update confusion matrix
+                confusion_matrix[true_class][predicted_class] += 1
+
             # Calculate mean error and accuracy for this epoch
             mean_error = epoch_error / len(X)
             accuracy = correct_predictions / len(X)
@@ -69,10 +74,23 @@ class MultiLayerPerceptron:
             self.errors_by_epoch.append(mean_error)
             self.accuracies_by_epoch.append(accuracy)
 
+            # Calculate F1 score for each class
+            f1_scores = []
+            for i in range(10):
+                tp = confusion_matrix[i][i]
+                fn = sum([confusion_matrix[i][j] for j in range(10) if j != i])
+                fp = sum([confusion_matrix[j][i] for j in range(10) if j != i])
+                precision = tp / (tp + fp) if tp + fp != 0 else 0
+                recall = tp / (tp + fn) if tp + fn != 0 else 0
+                f1 = 2 * (precision * recall) / (precision + recall) if precision + recall != 0 else 0
+                f1_scores.append(f1)
 
-        #time to train
+            # Store the average F1 score for this epoch
+            f1_by_epoch.append(np.mean(f1_scores))
+
+        # Time to train
         self.training_time = time.time() - start_time
-        return self.errors_by_epoch,  self.accuracies_by_epoch
+        return self.errors_by_epoch, self.accuracies_by_epoch, f1_by_epoch
 
     def forward_propagate(self, inputs):
         outputs_by_layer = [inputs]
