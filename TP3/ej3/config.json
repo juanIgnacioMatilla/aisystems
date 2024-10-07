@@ -1,6 +1,6 @@
 [
   {
-    "k": 5,
+    "k": 1,
     "inner_layers": [10, 5],
     "learning_rate": 0.1,
     "optimizer": "vanilla",
