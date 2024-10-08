@@ -1,5 +1,13 @@
 # TP 3 - Perceptron Simple y Multicapa
-
+## Ejercicio 1:
+Este puede correrse con el siguiente config file:
+```
+{
+  "learning_rate": [learning_rate_value],
+  "epochs": [epochs_value]
+}
+```
+Genera los videos mostrando la separacion del hiperplano para AND y XOR
 ## Ejercicio 2:
 Este puede correrse con el siguiente config file:
 ```
@@ -10,6 +18,9 @@ Este puede correrse con el siguiente config file:
   "epochs": [epochs_value]
 }
 ```
+Igualmente los graficos de la presentacion se obtuvieron con el script que dice 
+ej2_final.py y ej2_fixed.py
+
 A continuacion explicado los valores que toman:
 - k: Define la cantidad de divisiones que habra para el k-fold. Los valores aceptables son $k \in (2,28)$
 - learning rate: es un double que representa el ratio de aprendizaje.
