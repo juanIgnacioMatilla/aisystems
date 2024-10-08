@@ -1,7 +1,6 @@
 import dill
 import tensorflow as tf
 import numpy as np
-import seaborn as sns
 import matplotlib.pyplot as plt
 
 def load_preprocessed_mnist():
@@ -63,20 +62,32 @@ def load_preprocessed_mnist_sample(sample_size):
         indices = np.random.choice(len(x), size, replace=False)  # Randomly choose indices
         return x[indices], y[indices]
 
-    # Sample 10,000 training examples and 1,000 test examples from MNIST
     x_train_subset, y_train_subset = sample_data(x_train, y_train, size=sample_size)
-    x_test_subset, y_test_subset = sample_data(x_test, y_test, size=sample_size)
 
     # Flatten the subset
     x_train_subset = x_train_subset.reshape(sample_size, 784)
-    x_test_subset = x_test_subset.reshape(sample_size, 784)
 
     # One-hot encode the labels for the subsets (convert labels to 10-dimensional vectors)
     y_train_subset = tf.keras.utils.to_categorical(y_train_subset, num_classes=10)
-    y_test_subset = tf.keras.utils.to_categorical(y_test_subset, num_classes=10)
+    y_test = tf.keras.utils.to_categorical(y_test, num_classes=10)
 
-    return (x_train_subset, y_train_subset), (x_test_subset, y_test_subset)
+    return (x_train_subset, y_train_subset), (x_test, y_test)
 
+def accuracy_test_set(loaded_mlp, x_test, y_test):
+    # Test the model on the test set
+    test_accuracies = []
+    for i in range(len(x_test)):
+        test_accuracies.append(np.argmax(loaded_mlp.predict(x_test[i])) == np.argmax(y_test[i]))
+
+    return np.mean(test_accuracies)
+
+def error_test_set(loaded_mlp, x_test, y_test):
+    # Test the model on the test set
+    test_errors = []
+    for i in range(len(x_test)):
+        #MSE error
+        test_errors.append(np.mean((loaded_mlp.predict(x_test[i]) - y_test[i]) ** 2))
+    return np.mean(test_errors)
 
 def print_n_predictions(loaded_mlp, x_test, y_test, n):
     # Display predictions for the first 10 test samples
@@ -138,11 +149,6 @@ def graph_confusion_matrix(matrix):
 
     plt.show()
 
-
-
-
-
-
 def print_training_errors(loaded_mlp):
     # Display errors during training for some epochs
     for i, error in enumerate(loaded_mlp.errors_by_epoch):
@@ -155,3 +161,65 @@ def print_training_accuracies(loaded_mlp):
     for i, accuracy in enumerate(loaded_mlp.accuracies_by_epoch):
         if i % 1 == 0:
             print(f"Accuracy for epoch {i}: {accuracy}")
+
+
+def graph_accuracy_v_epochs(loaded_mlp):
+    # Create a new figure with adjusted size
+    fig, ax = plt.subplots(figsize=(8, 6))  # Adjust the figure size
+
+    # Plot the accuracy values
+    ax.plot(loaded_mlp.accuracies_by_epoch)
+
+    # Set x-ticks and shift epoch labels by 1
+    ax.set_xticks(np.arange(len(loaded_mlp.accuracies_by_epoch)))
+    ax.set_xticklabels(np.arange(1, len(loaded_mlp.accuracies_by_epoch) + 1))  # Start at 1 instead of 0
+
+    # Set titles and labels
+    ax.set_title("Accuracy vs. Epochs", pad=20)  # Add padding to the title
+    ax.set_xlabel("Epochs", labelpad=10)
+    ax.set_ylabel("Accuracy", labelpad=10)
+
+    # Show the plot
+    plt.show()
+
+
+# def training_errors_v_test_errors(loaded_mlp, x_test, y_test):
+#     # Calcular el error de entrenamiento y de testeo
+#     training_errors = []
+#     test_errors = []
+#     for i in range(len(loaded_mlp.errors_by_epoch)):
+#         training_errors.append(loaded_mlp.errors_by_epoch[i])
+#
+#
+#     for i in range(len(x_test)):
+#         predictions = loaded_mlp.predict(x_test[i])
+#         predicted_digit = np.argmax(predictions)  # Get the index of the highest probability (predicted digit)
+#         actual_digit = np.argmax(y_test[i])  # The actual digit from the test labels
+#         if predicted_digit != actual_digit:
+#             test_errors.append(1)
+#         else:
+#             test_errors.append(0)
+#
+#     # Suponiendo que tienes listas con los errores por epoch
+#     epochs = np.arange(1, len(training_errors) + 1)  # Rango de epochs, empezando en 1
+#
+#     # Crear una nueva figura con tamaño ajustado
+#     fig, ax = plt.subplots(figsize=(8, 6))  # Tamaño de la figura
+#
+#     # Graficar los errores de entrenamiento y de testeo
+#     ax.plot(epochs, training_errors, label="Error de Entrenamiento", color='blue', marker='o')
+#     ax.plot(epochs, test_errors, label="Error de Testeo", color='red', marker='x')
+#
+#     # Títulos y etiquetas
+#     ax.set_title("Error de Entrenamiento vs. Error de Testeo", pad=20)
+#     ax.set_xlabel("Cantidad de Epochs", labelpad=10)
+#     ax.set_ylabel("Error", labelpad=10)
+#
+#     # Mostrar la leyenda
+#     ax.legend()
+#
+#     # Mostrar la cuadrícula
+#     ax.grid(True)
+#
+#     # Mostrar el gráfico
+#     plt.show()

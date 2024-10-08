@@ -14,8 +14,9 @@ from TP3.src.model.multilayer_perceptron.vanilla.multi_layer_perceptron import (
     MultiLayerPerceptron,
 )
 
-
 # Helper function for manual one-hot encoding
+
+
 def one_hot_encode(labels, num_classes):
     one_hot_labels = np.zeros((len(labels), num_classes))
     for i, label in enumerate(labels):
@@ -26,6 +27,7 @@ def one_hot_encode(labels, num_classes):
 # Helper function to read and preprocess the data
 def load_data(file_path):
     digits = []
+
     with open(file_path, "r") as file:
         lines = file.readlines()
         digit_data = []
@@ -46,14 +48,17 @@ def load_data(file_path):
 def load_config(file_path="./config.json"):
     with open(file_path, "r") as file:
         config = json.load(file)
+
     return config
 
 
 def train(X, y, config):
     learning_rate = config.get("learning_rate", 0.1)
+
     epochs = config.get("epochs", 5000)
     structure = [35] + config.get("structure", [10, 5]) + [10]
     alpha = config.get("alpha", 0.9)
+
     optimizer = config.get("optimizer", "vanilla")
     mlp = {
         "vanilla": MultiLayerPerceptron(
@@ -71,16 +76,17 @@ def train(X, y, config):
 
 
 def test(mlp, X):
-    values = [i for i in range(10) for _ in range(10)]
+    values = [i for i in range(100) for _ in range(100)]
     confusion_matrix = np.zeros((10, 10))
     i = 0
     for input in X:
         prediction = mlp.predict(input)
-        print(f"Prediction: {np.argmax(prediction)} (Expected: {values[i]}")
+        print(f"Prediction: {np.argmax(prediction)} (Expected: {values[i]})")
+
         confusion_matrix[values[i]][np.argmax(prediction)] += 1
         i += 1
-    plt.figure(figsize=(8, 6))  # Adjust the figure size as needed
 
+    plt.figure(figsize=(8, 6))  # Adjust the figure size as needed
     sns.heatmap(
         confusion_matrix,
         annot=True,
@@ -89,22 +95,21 @@ def test(mlp, X):
         square=True,
         linewidths=0.5,
     )
-
     # Title and labels
     plt.title("Matriz de confusion")
     plt.xlabel("Prediccion")
     plt.ylabel("Real")
-
     # Show the plot
     plt.show()
-
     metrics = {}
     for i in range(10):
+
         tp = confusion_matrix[i][i]
         tn = sum([confusion_matrix[j][j] for j in range(10) if j != i])
         fp = sum([confusion_matrix[j][i] for j in range(10) if j != i])
         fn = sum([confusion_matrix[i][j] for j in range(10) if j != i])
         precision = tp / (tp + fp) if tp + fp != 0 else 0
+
         recall = tp / (tp + fn) if tp + fn != 0 else 0
         f1 = (
             2 * (precision * recall) / (precision + recall)
@@ -142,59 +147,10 @@ def main():
 
     for config in configs:
         print(config)
-        mlp, errors = train(X, y, config)
+
+        mlp, _ = train(X, y, config)
         digits, _ = load_data("./test_noise_0.2.txt")
         test(mlp, digits)
-
-    # # Assuming the Layer and MultiLayerPerceptron classes are defined
-    # # Load the data from the file
-    # # Define the MLP structure
-    # # Input size is 35 (flattened 7x5 digits), one hidden layer with 10 neurons, and 1 output
-    # # mlp = MultiLayerPerceptron(layers_structure=[35, 20, 10], learning_rate=0.1)
-    # vanilla_mlp = MultiLayerPerceptron(layers_structure=[35, 20, 10], learning_rate=0.1)
-    #
-    # # Train the MLP
-    # errors = vanilla_mlp.train(X, y, epochs=5000)
-    # print("Vanilla: ")
-    # for i, x in enumerate(X):
-    #     predictions = vanilla_mlp.predict(x)
-    #     predicted_digit = np.argmax(
-    #         predictions
-    #     )  # Get the index of the highest probability (predicted digit)
-    #     print(
-    #         f"Prediction for digit {i}: {predicted_digit} (Expected: {np.argmax(y[i])})"
-    #     )
-    #     print(predictions)
-    #     print()
-    #
-    # for i, error in enumerate(errors):
-    #     if i % 1000 == 0:
-    #         print("error for epoch ", i, ": ", error)
-    #
-    # # Define the MLP structure
-    # # Input size is 35 (flattened 7x5 digits), hidden layer with 100 neurons, output layer with 10 neurons
-    # adam_mlp = AdamMultiLayerPerceptron(layers_structure=[35, 20, 10])
-    #
-    # # Train the MLP
-    # errors, accuracies = adam_mlp.train(X, y, epochs=5000)
-    # print("Adam: ")
-    # # Make predictions and display results
-    # for i, x in enumerate(X):
-    #     predictions = adam_mlp.predict(x)
-    #     predicted_digit = np.argmax(
-    #         predictions
-    #     )  # Get the index of the highest probability (predicted digit)
-    #     print(
-    #         f"Prediction for digit {i}: {predicted_digit} (Expected: {np.argmax(y[i])})"
-    #     )
-    #     print(predictions)
-    #     print()
-    #
-    # # Display errors for some epochs
-    # for i, error in enumerate(errors):
-    #     if i % 1000 == 0:
-    #         print(f"Error for epoch {i}: {error}")
-    #
 
 
 if __name__ == "__main__":
