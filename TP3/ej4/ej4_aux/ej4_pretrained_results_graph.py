@@ -20,7 +20,8 @@ def main():
                         'trained_models/ADAM_2E_784_32_10.pkl', 'trained_models/ADAM_2E_784_16_32_10.pkl',
                         'trained_models/ADAM_2E_784_16_10_10.pkl', 'trained_models/ADAM_2E_784_10_16_10.pkl',
                         'trained_models/ADAM_2E_784_10_10_10.pkl', 'trained_models/ADAM_2E_784_10_10.pkl',
-                        'trained_models/ADAM_2E_784_5_5_10.pkl', 'trained_models/ADAM_2E_784_5_10.pkl']
+                        'trained_models/ADAM_2E_784_5_5_10.pkl', 'trained_models/ADAM_2E_784_5_10.pkl'
+                        ]
 
     model_filenames3 = ['trained_models/ADAM_3E_784_64_10.pkl', 'trained_models/ADAM_3E_784_16_32_10.pkl',
                         'trained_models/ADAM_3E_784_16_10_10.pkl', 'trained_models/ADAM_3E_784_10_16_10.pkl',
@@ -32,10 +33,16 @@ def main():
                         'trained_models/ADAM_3E_tanh_784_32_10.pkl', 'trained_models/ADAM_3E_ELU_784_10_10.pkl',
                         'trained_models/ADAM_3E_ELU_784_32_10.pkl']
 
-    repeated_in123 = ['trained_models/ADAM_3E_784_64_10.pkl', 'trained_models/ADAM_3E_784_10_10_10.pkl',
-                      'trained_models/ADAM_3E_784_32_10.pkl', 'trained_models/ADAM_3E_784_10_16_10.pkl',
-                      'trained_models/ADAM_3E_784_10_10.pkl', 'trained_models/ADAM_3E_784_5_5_10.pkl',
-                      'trained_models/ADAM_3E_784_5_10.pkl']
+    activation_functions32 = ['trained_models/ADAM_3E_784_32_10.pkl', 'trained_models/ADAM_3E_ReLU_784_32_10.pkl',
+                              'trained_models/ADAM_3E_LeakyReLU_784_32_10.pkl',
+                              'trained_models/ADAM_3E_tanh_784_32_10.pkl', 'trained_models/ADAM_3E_ELU_784_32_10.pkl']
+
+    repeated_in123 = ['trained_models/ADAM_3E_784_128_10.pkl', 'trained_models/ADAM_3E_784_64_10.pkl',
+                      'trained_models/ADAM_3E_784_32_32_10.pkl', 'trained_models/ADAM_3E_784_32_16_10.pkl',
+                      'trained_models/ADAM_3E_784_16_32_10.pkl', 'trained_models/ADAM_3E_784_32_10.pkl',
+                      'trained_models/ADAM_3E_784_16_10_10.pkl', 'trained_models/ADAM_3E_784_10_16_10.pkl',
+                      'trained_models/ADAM_3E_784_10_10_10.pkl', 'trained_models/ADAM_3E_784_10_10.pkl',
+                      'trained_models/ADAM_3E_784_5_5_10.pkl', 'trained_models/ADAM_3E_784_5_10.pkl']
 
     model_filenames4 = ['trained_models/ADAM_4E_784_64_10.pkl', 'trained_models/ADAM_4E_784_10_10.pkl']
 
@@ -45,12 +52,18 @@ def main():
 
     model_filenames7 = ['trained_models/ADAM_7E_784_64_10.pkl']
 
-    model_filenames = repeated_in123
+    other_model_filenames = ['trained_models/ADAM_10E_784_256_128_64_10.pkl',
+                             'trained_models/ADAM_10E_784_16_10_10.pkl', 'trained_models/ADAM_100E_784_16_10_10.pkl',
+                                'trained_models/OVERFITTED_VANILLA_1000E_784_10_10.pkl', 'trained_models/UNDERFITTED_VANILLA_10E_784_10_10.pkl',
+                                'trained_models/UNDERFITTED_ADAM_1E_784_10_10.pkl', 'trained_models/OVERFITTED_ADAM_1000E_784_10_10.pkl']
+
+    all_model_filenames = model_filenames1 + model_filenames2 + model_filenames3 + model_filenames4 + model_filenames5 + model_filenames6 + model_filenames7 + other_model_filenames
+    model_filenames = other_model_filenames
     model_tags = []
 
     # Choose the list of tags selecting after 'adam' and before '.pkl'
     for model_filename in model_filenames:
-        model_tags.append(model_filename.split('ADAM_')[1].split('_10.pkl')[0])
+        model_tags.append(model_filename.split('models/')[1].split('_10.pkl')[0])
 
     for model_filename in model_filenames:
         loaded_mlp = load_model(model_filename)
