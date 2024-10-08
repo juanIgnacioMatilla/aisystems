@@ -24,9 +24,7 @@ A continuacion explicado los valores que toman:
 - epochs: Cantidad de epochs que se entrenara el modelo
 - p_type: Define el perceptron que se utilizara
   - "linear": Perceptron lineal
-  - "non_linear": Perceptron no lineal con la siguiente funcion de activacion(sigmoidea):
-
-$$f(x) = \frac{1}{1 + e^{-x}}$$
+  - "non_linear": Perceptron no lineal con funcion de activacion tanh
 
 Caso de uso:
 ```json
