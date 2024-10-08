@@ -31,48 +31,76 @@ class MultiLayerPerceptron:
             outputs = layer.predict(outputs)
         return outputs
 
-    def train(self, X, y, epochs):
-
-        #time to train
+    def train(self, X, y, epochs, batch_size=None, online=False):
+        # time to train
         start_time = time.time()
+
+        n_samples = X.shape[0]
+
+        # Handle batch size:
+        if online:
+            batch_size = 1  # Online learning (SGD)
+        elif batch_size is None:
+            batch_size = n_samples  # Full-batch if no batch size is provided
 
         for epoch in range(epochs):
 
-            # print(f'In epoch {epoch + 1}/{epochs}')
+            # Shuffle data at the beginning of each epoch
+            indices = np.arange(n_samples)
+            np.random.shuffle(indices)
+            X, y = X[indices], y[indices]
+
             epoch_error = 0
             correct_predictions = 0
 
-            for inputs, target in zip(X, y):
-                # Forward propagation
-                outputs_by_layer = self.forward_propagate(inputs)
+            # Process data in batches
+            for start_idx in range(0, n_samples, batch_size):
+                end_idx = min(start_idx + batch_size, n_samples)
+                batch_X = X[start_idx:end_idx]
+                batch_y = y[start_idx:end_idx]
 
-                # Backpropagation
-                gradients = self.backward_propagate(outputs_by_layer, target)
+                batch_error = 0
+                batch_correct_predictions = 0
 
-                # Update weights
-                self.update_weights(inputs, outputs_by_layer, gradients)
+                # Forward propagation for the batch
+                batch_outputs_by_layer = []
+                for inputs in batch_X:
+                    outputs_by_layer = self.forward_propagate(inputs)
+                    batch_outputs_by_layer.append(outputs_by_layer)
 
-                # Error calculation (Mean Squared Error)
-                final_output = outputs_by_layer[-1]
-                epoch_error += 0.5 * np.sum((target - final_output) ** 2)
+                # Backpropagation for the batch
+                batch_gradients = [self.backward_propagate(outputs, target)
+                                   for outputs, target in zip(batch_outputs_by_layer, batch_y)]
 
-                # Accuracy calculation (assuming target is one-hot encoded)
-                predicted_class = np.argmax(final_output)
-                true_class = np.argmax(target)
-                if predicted_class == true_class:
-                    correct_predictions += 1
+                # Update weights for the batch
+                for inputs, outputs_by_layer, gradients, target in zip(batch_X, batch_outputs_by_layer, batch_gradients,
+                                                                       batch_y):
+                    self.update_weights(inputs, outputs_by_layer, gradients)
 
-            # Calculate mean error and accuracy for this epoch
-            mean_error = epoch_error / len(X)
-            accuracy = correct_predictions / len(X)
+                    # Error calculation
+                    final_output = outputs_by_layer[-1]
+                    batch_error += 0.5 * np.sum((target - final_output) ** 2)
+
+                    # Accuracy calculation
+                    predicted_class = np.argmax(final_output)
+                    true_class = np.argmax(target)
+                    if predicted_class == true_class:
+                        batch_correct_predictions += 1
+
+                # Aggregate batch error and accuracy
+                epoch_error += batch_error
+                correct_predictions += batch_correct_predictions
+
+            # Mean error and accuracy for this epoch
+            mean_error = epoch_error / n_samples
+            accuracy = correct_predictions / n_samples
 
             self.errors_by_epoch.append(mean_error)
             self.accuracies_by_epoch.append(accuracy)
 
-
-        #time to train
+        # time to train
         self.training_time = time.time() - start_time
-        return self.errors_by_epoch,  self.accuracies_by_epoch
+        return self.errors_by_epoch, self.accuracies_by_epoch
 
     def forward_propagate(self, inputs):
         outputs_by_layer = [inputs]
