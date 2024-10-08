@@ -52,7 +52,7 @@ class MultiLayerPerceptron:
                 # Update weights
                 self.update_weights(inputs, outputs_by_layer, gradients)
 
-                # Error calculation (Mean Squared Error)
+                # Error calculation
                 final_output = outputs_by_layer[-1]
                 epoch_error += 0.5 * np.sum((target - final_output) ** 2)
 
@@ -66,7 +66,7 @@ class MultiLayerPerceptron:
             mean_error = epoch_error / len(X)
             accuracy = correct_predictions / len(X)
 
-            self.errors_by_epoch.append(mean_error)
+            self.errors_by_epoch.append(epoch_error)
             self.accuracies_by_epoch.append(accuracy)
 
 
