@@ -10,9 +10,9 @@ class SOM:
     def __init__(
             self,
             k: int,
-            topology: Topology,
-            learning_rate: Callable[[int], float],
-            radius: Callable[[int], int],
+            topology: Topology=Topology.RECTANGULAR,
+            learning_rate: Callable[[int], float] = lambda x: 1/(x+1),
+            radius: Callable[[int], int] = lambda x: 2,
     ):
         """
         :param k: Shape of the grid (k x k).
@@ -50,6 +50,7 @@ class SOM:
                     neuron.update_weights(input_vector, current_learning_rate)
             inputs_per_neuron_by_epoch.append(inputs_per_neuron)
             return grid, inputs_per_neuron_by_epoch
+
 
 
 def initialize_grid(k: int, inputs: np.ndarray, topology: Topology):

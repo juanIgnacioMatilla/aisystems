@@ -12,21 +12,14 @@ def main():
     # Seleccionar las columnas que quieres usar para entrenar el SOM
     inputs = data[["Area", "GDP", "Inflation", "Life.expect", "Military", "Pop.growth", "Unemployment"]].to_numpy()  # Ejemplo con las columnas 'GDP' y 'Life.expect'
 
-    # decreasing_radius = lambda x: int(k - ((x / (epochs - 1)) * (k - 1)))
     # Initialize and train the SOM
-    k = 6
-    som = SOM(k=k, topology=Topology.RECTANGULAR, learning_rate=lambda x: 1/(x+1), radius=lambda x: 1)
-    epochs = 1000
+    som = SOM(k=6)
+    # vector of 7 numbers per input (input neurons)
+    epochs = 500*7
     grid, inputs_per_neuron = som.train(inputs, epochs)
-    print("ULTIMA EPOCH")
+    print("Last epoch:")
     for neuron_coords, inputs in inputs_per_neuron[-1].items():
-        print(f"Neurona {neuron_coords}:")
-        for input_vector in inputs:
-            print(input_vector)
-        print("---------")
-    print("PRIMERA EPOCH:")
-    for neuron_coords, inputs in inputs_per_neuron[0].items():
-        print(f"Neurona {neuron_coords}:")
+        print(f"Neuron coords: {neuron_coords}:")
         for input_vector in inputs:
             print(input_vector)
         print("---------")
