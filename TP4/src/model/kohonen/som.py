@@ -15,10 +15,10 @@ class SOM:
             radius: Callable[[int], int],
     ):
         """
-        :param k: Forma de la cuadrícula (k x k).
-        :param topology: La topología puede ser 'rectangular' o 'hexagonal'.
-        :param learning_rate: Funcion de taza de aprendizaje por epoca.
-        :param radius: Funcion de radio por epoca.
+        :param k: Shape of the grid (k x k).
+        :param topology: The topology can be 'rectangular' or 'hexagonal'.
+        :param learning_rate: Learning rate function per epoch.
+        :param radius: Radius function per epoch.
         """
         self.k = k
         self.topology = topology
@@ -36,20 +36,20 @@ class SOM:
             inputs_per_neuron = {(i, j): [] for i in range(self.k) for j in range(self.k)}
 
             for input_vector in inputs:
-                # 1. Encuentra la neurona ganadora
+                # 1. Find the winning neuron
                 bmu = grid.find_bmu(input_vector)
 
-                # 2. Almacena el input en la neurona ganadora
+                # 2. Store the input in the winning neuron
                 inputs_per_neuron[bmu].append(input_vector)
 
-                # 3. Encuentra las neuronas vecinas
+                # 3. Find the neighboring neurons
                 neighbors = grid.get_neighbors(bmu, current_radius)
 
-                # 4. Actualiza los pesos de las neuronas en el vecindario
+                # 4. Update the weights of the neighboring neurons
                 for neuron in neighbors:
                     neuron.update_weights(input_vector, current_learning_rate)
             inputs_per_neuron_by_epoch.append(inputs_per_neuron)
-        return grid, inputs_per_neuron_by_epoch
+            return grid, inputs_per_neuron_by_epoch
 
 
 def initialize_grid(k: int, inputs: np.ndarray, topology: Topology):
