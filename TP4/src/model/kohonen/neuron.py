@@ -6,6 +6,7 @@ class Neuron:
         self.weights = weights
 
     def update_weights(self, input_vector: np.ndarray, learning_rate: float):
+
         self.weights += learning_rate * (input_vector - self.weights)
 
     def __repr__(self) -> str:

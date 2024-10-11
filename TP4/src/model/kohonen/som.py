@@ -1,3 +1,4 @@
+import math
 from typing import Callable
 import numpy as np
 from TP4.src.model.kohonen.grid.grid import Grid
@@ -10,9 +11,9 @@ class SOM:
     def __init__(
             self,
             k: int,
-            topology: Topology=Topology.RECTANGULAR,
-            learning_rate: Callable[[int], float] = lambda x: 1/(x+1),
-            radius: Callable[[int], int] = lambda x: 2,
+            topology: Topology = Topology.RECTANGULAR,
+            learning_rate: Callable[[int], float] = lambda x: 1 / (x + 1.1),
+            radius: Callable[[int], int] = None,
     ):
         """
         :param k: Shape of the grid (k x k).
@@ -25,22 +26,23 @@ class SOM:
         self.learning_rate = learning_rate
         self.radius = radius
 
-    def train(self, inputs: np.ndarray, epochs: int):
-        grid: Grid = initialize_grid(self.k, inputs, self.topology)
+    def _get_decreasing_radius_func(self, epochs):
+        def decreasing_radius(x):
+            decay_constant = epochs / math.log(self.k)
+            radius = self.k * math.exp(-x / decay_constant)
+            return max(1, round(radius))  # Ensure radius stays at least 1
+        return decreasing_radius
 
-        inputs_per_neuron_by_epoch = []
+    def train(self, inputs: np.ndarray, epochs: int):
+        if self.radius is None:
+            self.radius = self._get_decreasing_radius_func(epochs)
+        grid: Grid = initialize_grid(self.k, inputs, self.topology)
         for epoch in range(epochs):
             current_radius = self.radius(epoch)
             current_learning_rate = self.learning_rate(epoch)
-            # Create a dictionary to store the inputs assigned to each neuron
-            inputs_per_neuron = {(i, j): [] for i in range(self.k) for j in range(self.k)}
-
             for input_vector in inputs:
                 # 1. Find the winning neuron
                 bmu = grid.find_bmu(input_vector)
-
-                # 2. Store the input in the winning neuron
-                inputs_per_neuron[bmu].append(input_vector)
 
                 # 3. Find the neighboring neurons
                 neighbors = grid.get_neighbors(bmu, current_radius)
@@ -48,9 +50,7 @@ class SOM:
                 # 4. Update the weights of the neighboring neurons
                 for neuron in neighbors:
                     neuron.update_weights(input_vector, current_learning_rate)
-            inputs_per_neuron_by_epoch.append(inputs_per_neuron)
-            return grid, inputs_per_neuron_by_epoch
-
+        return grid
 
 
 def initialize_grid(k: int, inputs: np.ndarray, topology: Topology):
@@ -58,3 +58,4 @@ def initialize_grid(k: int, inputs: np.ndarray, topology: Topology):
         return RectangularGrid(k, inputs)
     elif topology == Topology.HEXAGONAL:
         return HexGrid(k, inputs)
+

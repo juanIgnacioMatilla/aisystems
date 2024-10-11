@@ -12,17 +12,18 @@ class Grid(ABC):
             weights: np.ndarray,
             propagation_func: Callable[[int, np.ndarray, np.ndarray], Tuple[int, int]] = min_euclidean_distance
     ):
+        self.propagation_func = propagation_func
         self.size: int = size
         # Create a matrix of Neurons and ensure it's a NumPy array
         self.matrix: np.ndarray = np.empty((size, size), dtype=Neuron)
-        # Shuffle the weights along the first axis
-        np.random.shuffle(weights)
+        # Determine the range from the inputs
+        min_input, max_input = np.min(weights), np.max(weights)
         # Create a matrix of Neurons using the shuffled weights
         for j in range(size):
             for i in range(size):
-                # Standardize weights
-                self.matrix[j, i] = Neuron((weights[j + i] - np.mean(weights) / np.std(weights)))
-        self.propagation_func = propagation_func
+                random_weight = np.random.uniform(min_input, max_input, size=weights[0].shape)
+                self.matrix[j, i] = Neuron(random_weight)
+
 
     def find_bmu(self, input_vector: np.ndarray) -> Tuple[int, int]:
         """

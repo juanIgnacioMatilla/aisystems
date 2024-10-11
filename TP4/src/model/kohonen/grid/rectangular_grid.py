@@ -10,13 +10,13 @@ from TP4.src.model.kohonen.neuron import Neuron
 class RectangularGrid(Grid):
 
     def get_neighbors(self, coords: Tuple[int, int], r: int) -> List[Neuron]:
-        row, col = coords
-        # Define the bounds for rows and columns to consider
-        row_min = max(0, row - r)
-        row_max = min(self.size, row + r + 1)
-        col_min = max(0, col - r)
-        col_max = min(self.size, col + r + 1)
-        # Extract the submatrix containing the central element and its neighbors
-        submatrix = self.matrix[row_min:row_max, col_min:col_max]
-        # Flatten the resulting array to get a 1D list of Neurons
-        return submatrix.flatten()
+        neurons = []
+        for i in range(self.size):
+            for j in range(self.size):
+                dist_to_bmu = self._euclidean_distance(np.array([i, j]), np.array(coords))
+                if dist_to_bmu <= r:
+                    neurons.append(self.matrix[i, j])
+        return neurons
+
+    def _euclidean_distance(self, x, y):
+        return np.linalg.norm(x - y)
