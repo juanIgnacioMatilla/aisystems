@@ -13,6 +13,8 @@ class RectangularGrid(Grid):
         neurons = []
         for i in range(self.size):
             for j in range(self.size):
+                if i == coords[0] and j == coords[1]:
+                    continue
                 dist_to_bmu = self._euclidean_distance(np.array([i, j]), np.array(coords))
                 if dist_to_bmu <= r:
                     neurons.append(self.matrix[i, j])

@@ -44,3 +44,32 @@ class Grid(ABC):
         - r: radius to consider for neighbors.
         """
         pass
+
+    def calculate_average_distances(self):
+        k = self.size
+        average_distances = np.zeros((k, k))
+
+        for i in range(k):
+            for j in range(k):
+                # Obtener el vector de pesos de la neurona actual
+                current_weights = self.matrix[i, j].weights
+
+                # Obtener las neuronas vecinas
+                neighbors = self.get_neighbors((i, j), 1)
+                print(neighbors, 'neighbors', i, j)
+
+                distances = []
+
+                for n in neighbors:
+                    # Obtener el vector de pesos de la neurona vecina
+                    neighbor_weights = n.weights
+
+                    # Calcular la distancia euclidiana entre la neurona actual y la neurona vecina
+                    distance = np.linalg.norm(current_weights - neighbor_weights)
+
+                    # Agregar la distancia calculada a la lista de distancias
+                    distances.append(distance)
+
+                average_distances[i, j] = np.mean(distances) if distances else 0  # Evitar la división por cero
+
+        return average_distances
