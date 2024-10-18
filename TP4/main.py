@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from collections import defaultdict
 from TP4.src.model.kohonen.som import SOM
+from TP4.src.utils import standardize_inputs
 
 
 def main():
@@ -19,10 +20,7 @@ def main():
     # Puedes cambiar la entrada aquí según lo que desees usar
     inputs = test_inputs
 
-    # Estandarizar entradas utilizando Z-score
-    mean = np.mean(inputs, axis=0)
-    std_dev = np.std(inputs, axis=0)
-    standardized_inputs = (inputs - mean) / std_dev
+    standard_inputs = standardize_inputs(inputs)
 
     # Obtener los nombres de los países
     countries = data["Country"].to_numpy()
@@ -31,13 +29,13 @@ def main():
     k = 5  # Ajusta esto si es necesario
     som = SOM(k=k)
     epochs = 500 * 1
-    grid = som.train(standardized_inputs, epochs)
+    grid = som.train(standard_inputs, epochs)
 
     # Asignar países a neuronas
     neuron_countries = defaultdict(list)
     neuron_counts = np.zeros((k, k))
 
-    for i, standardized_input in enumerate(standardized_inputs):
+    for i, standardized_input in enumerate(standard_inputs):
         bmu = grid.find_bmu(standardized_input)
         print(countries[i])
         print(f'input         : {inputs[i]}')
