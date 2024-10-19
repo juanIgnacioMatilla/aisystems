@@ -72,14 +72,50 @@ def plot_biplot(df):
     plt.show()
 
 
+def plot_components(df):
+    df_without_country = df.drop(columns=['Country'])
+    df_without_country = standardize_inputs(df_without_country)
+    # Crear el modelo PCA
+    pca = PCA(n_components=1)
+    pca.fit(df_without_country)
+
+    # Obtener las cargas del primer componente principal (PC1)
+    cargas_pc1 = pca.components_[0]
+    print(cargas_pc1)
+    # Etiquetas de las variables originales (reemplaza con tus variables)
+    features = ['Area', 'GDP', 'Inflation', 'Life.expect', 'Military', 'Pop.growth', 'Unemployment']
+    for i,feature in enumerate(features):
+        print(f'{feature}: {cargas_pc1[i]:.3f}')
+    # Colores: verde para positivas, rojo para negativas
+    colors = ['green' if c >= 0 else 'red' for c in cargas_pc1]
+
+    # Crear el gráfico
+    plt.figure(figsize=(10, 6))
+
+    # Graficar las barras con los colores diferenciados
+    plt.bar(features, cargas_pc1, color=colors, alpha=0.7)
+
+    # Etiquetas del gráfico
+    plt.xlabel('Features', fontsize=12)
+    plt.ylabel('Cargas', fontsize=12)
+    plt.title('Cargas de PC1 por feature', fontsize=14)
+
+
+    # Rotar etiquetas en el eje X si es necesario
+    plt.xticks(rotation=45, ha='right')
+
+    # Mostrar el gráfico
+    plt.tight_layout()
+    plt.show()
+
+
 def plot_variance_ratio(df):
     # Eliminar la columna 'Country' para que no interfiera con el PCA
     df = df.drop(columns=['Country'])
-
     # Crear y entrenar el modelo PCA
     pca = PCA(n_components=df.shape[1])
     pca.fit(df)
-
+    print(pca.components_)
     # Obtener las proporciones de la varianza explicada por cada componente
     var_ratios = pca.explained_variance_ratio_
     # Graficar las proporciones en escala logarítmica
@@ -106,6 +142,7 @@ def plot_variance_ratio(df):
     # Mostrar el gráfico
     plt.show()
 
+
 def plot_pc1(df):
     df_without_country = df.drop(columns=['Country'])
     df_without_country = standardize_inputs(df_without_country)
@@ -129,13 +166,14 @@ def plot_pc1(df):
 
 def main():
     df = pd.read_csv("../../inputs/europe.csv")
+    print('df: ',df)
+
     # plot_nonstandard_data(df)
     # plot_standard_data(df)
     # plot_biplot(df)
-    # plot_pc1(df)
-
-    plot_variance_ratio(df)
-
+    plot_pc1(df)
+    # plot_variance_ratio(df)
+    # plot_components(df)
 
 if __name__ == "__main__":
     main()
