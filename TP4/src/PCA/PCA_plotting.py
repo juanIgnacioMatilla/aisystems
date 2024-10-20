@@ -164,16 +164,3 @@ def plot_pc1(df):
     plt.show()
 
 
-def main():
-    df = pd.read_csv("../../inputs/europe.csv")
-    print('df: ',df)
-
-    # plot_nonstandard_data(df)
-    # plot_standard_data(df)
-    # plot_biplot(df)
-    plot_pc1(df)
-    # plot_variance_ratio(df)
-    # plot_components(df)
-
-if __name__ == "__main__":
-    main()
