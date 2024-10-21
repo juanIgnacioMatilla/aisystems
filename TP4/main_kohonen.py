@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 from collections import defaultdict
+
+from TP4.src.model.kohonen.plotting_utils import create_interactive_plot, create_udm_plot
 from TP4.src.model.kohonen.som import SOM
 from TP4.src.utils import standardize_inputs
 
@@ -18,7 +19,7 @@ def main():
     test_inputs = data[["Area"]].to_numpy()
 
     # Puedes cambiar la entrada aquí según lo que desees usar
-    inputs = test_inputs
+    # inputs = test_inputs
 
     standard_inputs = standardize_inputs(inputs)
 
@@ -29,7 +30,7 @@ def main():
     k = 5  # Ajusta esto si es necesario
     som = SOM(k=k)
     epochs = 500 * 1
-    grid = som.train(standard_inputs, epochs)
+    grid, _ = som.train(standard_inputs, epochs)
 
     # Asignar países a neuronas
     neuron_countries = defaultdict(list)
@@ -63,10 +64,10 @@ def main():
 
     print(matriz)
     print(neuron_counts)
-    print("Neurona 0, 0: ",  grid.matrix[0, 0].weights)
-    print("Neurona 0, 1: ",  grid.matrix[0, 1].weights)
-    print("Neurona 1, 0: ",  grid.matrix[1, 0].weights)
-    print("Neurona 1, 1: ",  grid.matrix[1, 1].weights)
+    print("Neurona 0, 0: ", grid.matrix[0, 0].weights)
+    print("Neurona 0, 1: ", grid.matrix[0, 1].weights)
+    print("Neurona 1, 0: ", grid.matrix[1, 0].weights)
+    print("Neurona 1, 1: ", grid.matrix[1, 1].weights)
 
     # Crear el gráfico interactivo
     create_interactive_plot(neuron_counts, matriz, "Life Expectancy")
@@ -75,65 +76,11 @@ def main():
     average_distances = grid.calculate_average_distances()
 
     # Calcular y crear el UDM
-    create_udm_plot(average_distances)  # Pasar k directamente como argumento
+    # Pasar k directamente como argumento
+    create_udm_plot(average_distances, "UDM")
 
     print("Average Euclidean Distances to Neighbors:")
     print(average_distances)
-
-
-def create_interactive_plot(neuron_counts, matriz, legend):
-    data = neuron_counts
-
-    # Crear el heatmap
-    heatmap = go.Heatmap(
-        z=data,
-        text=matriz,  # Añadir la matriz de texto
-        hovertemplate='count: %{z}<br>'
-                      'x: %{x}<br>'
-                      'y: %{y}<br>'
-                      '%{text}<extra></extra>',  # Mostrar texto personalizado en el hover
-        showscale=True
-    )
-
-    # Crear la figura
-    fig = go.Figure(data=heatmap)
-    # Añadir un título al gráfico
-    fig.update_layout(title=legend)
-    # Agregar bordes utilizando líneas
-    for i in range(data.shape[0]):
-        for j in range(data.shape[1]):
-            fig.add_shape(type='rect',
-                          x0=j - 0.5, x1=j + 0.5,
-                          y0=i - 0.5, y1=i + 0.5,
-                          line=dict(color='black', width=1))
-
-    # Configurar el layout para mostrar el heatmap correctamente
-    fig.update_layout(
-        xaxis=dict(showgrid=False, zeroline=False),
-        yaxis=dict(showgrid=False, zeroline=False),
-    )
-
-    # Mostrar la figura
-    fig.show()
-
-
-def create_udm_plot(avg_distances):
-
-    # Crear el heatmap de UDM
-    udm_heatmap = go.Heatmap(
-        z=avg_distances,
-        colorscale='Greys',  # Escala de colores en blanco y negro
-        colorbar=dict(title='Distance'),
-        showscale=True
-    )
-
-    # Crear la figura
-    fig = go.Figure(data=udm_heatmap)
-    fig.update_layout(title="Unified Distance Matrix (UDM)")
-
-    # Mostrar la figura
-    fig.show()
-
 
 
 if __name__ == "__main__":
