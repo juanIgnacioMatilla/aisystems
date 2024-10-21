@@ -29,9 +29,9 @@ def print_pattern(pattern, shape=(5, 5)):
 if __name__ == "__main__":
     # Stack patterns to form the pattern matrix
     min_orthogonality = 0
-    max_orthogonality = 2
-    patterns = find_orthogonal_subset(0, 2)
-    if not patterns:
+    max_orthogonality = 1
+    patterns = find_orthogonal_subset(min_orthogonality, max_orthogonality)
+    if patterns is None:
         print(f"No patterns found for min orthogonality {min_orthogonality} and max orthogonality {max_orthogonality}")
         exit()
     for pattern in patterns:
