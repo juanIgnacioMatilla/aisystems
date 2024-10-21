@@ -4,6 +4,8 @@ import random
 import numpy as np
 
 from TP4.src.model.hopfield.hopfield_network import HopfieldNetwork
+from TP4.src.model.hopfield.letters import letter_J, letter_A, letter_E, letter_L
+from TP4.src.model.hopfield.orthogonality import find_orthogonal_subset
 
 
 def add_noise(pattern, noise_level=0.1):
@@ -25,50 +27,15 @@ def print_pattern(pattern, shape=(5, 5)):
 
 
 if __name__ == "__main__":
-    # Define the letter J pattern
-    letter_J = np.array([
-         1,  1,  1,  1,  1,
-        -1, -1, -1,  1, -1,
-        -1, -1, -1,  1, -1,
-        -1,  -1, -1,  1, -1,
-         1,  1,  1, 1, -1
-    ])
-
-    # Define the letter A pattern
-    letter_A = np.array([
-        1,  1,  1,  1, 1,
-        1, -1, -1, -1, 1,
-        1,  1,  1,  1, 1,
-        1, -1, -1, -1, 1,
-        1, -1, -1, -1, 1,
-    ])
-
-    # Define the letter E pattern
-    letter_E = np.array([
-        1,  1, 1, 1, 1,
-        1, -1, -1, -1, -1,
-        1, 1, 1, 1, 1,
-        1, -1, -1, -1, -1,
-        1, 1, 1, 1, 1
-    ])
-
-    # Define the letter L pattern
-    letter_L = np.array([
-        1, -1, -1, -1, -1,
-        1, -1, -1, -1, -1,
-        1, -1, -1, -1, -1,
-        1, -1, -1, -1, -1,
-        1, 1, 1, 1, 1
-    ])
-
     # Stack patterns to form the pattern matrix
-    patterns = np.vstack([letter_J, letter_A, letter_E, letter_L])
-
+    patterns = find_orthogonal_subset(3, 15)
+    for pattern in patterns:
+        print_pattern(pattern)
     # Create the Hopfield network with the patterns
     hopfield_net = HopfieldNetwork(patterns)
 
     # Define a noisy version of one of the patterns
-    noisy_letter = add_noise(letter_A, noise_level=0.1)
+    noisy_letter = add_noise(patterns[0], noise_level=0.1)
 
     # Print the noisy pattern
     print("Noisy pattern:")
@@ -85,4 +52,4 @@ if __name__ == "__main__":
 
     print("Energy across steps:")
     for i, energy in enumerate(energies):
-        print(f"Energy in step {i+1}: {energy:.3f}")
+        print(f"Energy in step {i + 1}: {energy:.3f}")
