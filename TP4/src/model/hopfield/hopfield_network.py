@@ -20,7 +20,10 @@ class HopfieldNetwork:
         for i in range(self.n_neurons):
             # Regla de actualización: Si(t+1) = sgn(sum_j(w_ij * Sj(t)))
             h = np.dot(self.weights[i], states)
-            new_states[i] = sgn(h)
+            if h == 0:
+                new_states[i] = states[i]
+            else:
+                new_states[i] = sgn(h)
         return new_states
 
     def get_similar(self, pattern, max_iters=100):
@@ -47,5 +50,4 @@ def sgn(x):
         return 1
     if x < 0:
         return -1
-    else:
-        return x
+    raise "x cannot be cero"
