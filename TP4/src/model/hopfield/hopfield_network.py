@@ -15,33 +15,37 @@ class HopfieldNetwork:
         return weights
 
     def update(self, states):
-        """Update the states using matrix multiplication."""
+        """Actualiza el estado de la red de manera asincrónica."""
+        new_states = states.copy()
         for i in range(self.n_neurons):
-            # Calcular h_i
-            h_i = np.dot(self.weights[i], states)
-            # Actualizar S_i de acuerdo a la regla:
-            if h_i > 0:
-                states[i] = 1
-            elif h_i < 0:
-                states[i] = -1
-            # Si h_i = 0, el estado de la neurona no cambia (se mantiene prev_state[i])
-        return np.array(states)
+            # Regla de actualización: Si(t+1) = sgn(sum_j(w_ij * Sj(t)))
+            h = np.dot(self.weights[i], states)
+            new_states[i] = sgn(h)
+        return new_states
 
     def get_similar(self, pattern, max_iters=100):
-            """Run the network until the state no longer changes, track the steps."""
-            states = pattern
-            states_history = [states.copy()]
-            energy_history = [self.energy(states)]
-            for i in range(max_iters):
-                new_states = self.update(states)
-                states_history.append(new_states.copy())
-                energy_history.append(self.energy(new_states))
-                if np.array_equal(new_states, states):
-                    break
-                states = new_states
-
-            return states, states_history, energy_history
+        """Run the network until the state no longer changes, track the steps."""
+        states = pattern
+        states_history = [states.copy()]
+        energy_history = [self.energy(states)]
+        for i in range(max_iters):
+            new_states = self.update(states)
+            if np.array_equal(new_states, states):
+                break
+            states_history.append(new_states)
+            energy_history.append(self.energy(new_states))
+            states = new_states
+        return states, states_history, energy_history
 
     def energy(self, states):
         """Compute the energy of the current state."""
         return -0.5 * np.dot(states.T, np.dot(self.weights, states))
+
+
+def sgn(x):
+    if x > 0:
+        return 1
+    if x < 0:
+        return -1
+    else:
+        return x

@@ -75,13 +75,13 @@ if __name__ == "__main__":
     print_pattern(noisy_letter)
 
     # Recover the pattern by running the network until convergence
-    recovered_pattern, states, energies = hopfield_net.get_similar(noisy_letter.copy(), 100)
+    recovered_pattern, states_history, energies = hopfield_net.get_similar(noisy_letter.copy(), 100)
 
     # Print all the steps leading to the final state
     print("Steps towards convergence:")
-    for i, state in enumerate(states):
+    for i, states in enumerate(states_history):
         print(f"Step {i + 1}:")
-        print_pattern(state)
+        print_pattern(states)
 
     print("Energy across steps:")
     for i, energy in enumerate(energies):
