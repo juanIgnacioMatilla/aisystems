@@ -37,12 +37,20 @@ class SOM:
         if self.radius is None:
             self.radius = self._get_decreasing_radius_func(epochs)
         grid: Grid = initialize_grid(self.k, inputs, self.topology)
+        quantization_errors = []  # To record quantization error per epoch
+
         for epoch in range(epochs):
             current_radius = self.radius(epoch)
             current_learning_rate = self.learning_rate(epoch)
+            total_error = 0  # Initialize error for this epoch
+
             for input_vector in inputs:
                 # 1. Find the winning neuron
                 bmu = grid.find_bmu(input_vector)
+                bmu_neuron = grid.matrix[bmu]
+                # Calculate quantization error (distance between input and BMU)
+                error = np.linalg.norm(input_vector - bmu_neuron.weights)
+                total_error += error
 
                 # 3. Find the neighboring neurons
                 neighbors = grid.get_neighbors(bmu, current_radius)
@@ -50,8 +58,12 @@ class SOM:
                 # 4. Update the weights of the neighboring neurons
                 for neuron in neighbors:
                     neuron.update_weights(input_vector, current_learning_rate)
-        return grid
 
+            # Record the average quantization error for this epoch
+            avg_error = total_error / len(inputs)
+            quantization_errors.append(avg_error)
+
+        return grid, quantization_errors
 
 def initialize_grid(k: int, inputs: np.ndarray, topology: Topology):
     if topology == Topology.RECTANGULAR:
