@@ -4,7 +4,6 @@ import random
 import numpy as np
 
 from TP4.src.model.hopfield.hopfield_network import HopfieldNetwork
-from TP4.src.model.hopfield.letters import letter_J, letter_A, letter_E, letter_L
 from TP4.src.model.hopfield.orthogonality import find_orthogonal_subset
 
 
@@ -28,19 +27,20 @@ def print_pattern(pattern, shape=(5, 5)):
 
 if __name__ == "__main__":
     # Stack patterns to form the pattern matrix
-    min_orthogonality = 0
-    max_orthogonality = 1
+    min_orthogonality = 5
+    max_orthogonality = 15
     patterns = find_orthogonal_subset(min_orthogonality, max_orthogonality)
     if patterns is None:
         print(f"No patterns found for min orthogonality {min_orthogonality} and max orthogonality {max_orthogonality}")
         exit()
+    print("Patterns in network:")
     for pattern in patterns:
         print_pattern(pattern)
     # Create the Hopfield network with the patterns
     hopfield_net = HopfieldNetwork(patterns)
 
     # Define a noisy version of one of the patterns
-    noisy_letter = add_noise(patterns[0], noise_level=0.1)
+    noisy_letter = add_noise(patterns[1], noise_level=0.2)
 
     # Print the noisy pattern
     print("Noisy pattern:")

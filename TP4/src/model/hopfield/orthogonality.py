@@ -55,11 +55,11 @@ def calculate_orthogonality(patterns):
 
 
 # Función para encontrar letras que formen un conjunto ortogonal
-def find_orthogonal_subset(min_orthogonality, max_orthogonality, subset_size=4):
+def find_orthogonal_subset(min_orthogonality, max_orthogonality):
     letters, product_matrix = calculate_orthogonality(patterns)
     n = len(letters)
     selected_letters = []
-
+    subset_size = 4
     # Probar todas las combinaciones posibles de 4 letras
     for i in range(n):
         for j in range(i + 1, n):
@@ -90,9 +90,3 @@ def get_matrix_of_letters(letters):
     return np.vstack(letters_matrix)
 
 
-def print_pattern(pattern, shape=(5, 5)):
-    """Print a 1D pattern as a 2D matrix (5x5)."""
-    pattern_reshaped = pattern.reshape(shape)
-    for row in pattern_reshaped:
-        print(' '.join('*' if x == 1 else ' ' for x in row))
-    print("\n")
