@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from TP4.main_hopfield import add_noise
+from TP4.hopfield_tests.main_hopfield import add_noise
 from TP4.src.model.hopfield.hopfield_network import HopfieldNetwork
 from TP4.src.model.hopfield.orthogonality import find_orthogonal_subset
 
