@@ -1,56 +1,10 @@
-import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
+from TP4.src.model.boltzman.boltzmann_utils import load_mnist_data_split, mean_squared_error, add_noise_to_image
 from TP4.src.model.boltzman.deep_belief_network import DBN
 from TP4.src.model.boltzman.restricted_boltzmann_machine import RBM
-from tensorflow.keras.datasets import mnist
-
-
-def binarize_images(images, threshold=0.5):
-    return (images > threshold).astype(np.float32)
-
-
-def load_mnist_data_split():
-    (x_train, y_train), (x_test, y_test) = mnist.load_data()
-    # Normalizar y binarizar las imágenes
-    x_train = x_train.astype('float32') / 255
-    x_train = binarize_images(x_train)
-    x_train = x_train.reshape((x_train.shape[0], -1))
-
-    x_test = x_test.astype('float32') / 255
-    x_test = binarize_images(x_test)
-    x_test = x_test.reshape((x_test.shape[0], -1))
-
-    return x_train, y_train, x_test, y_test
-
-
-def add_noise_to_image(image, noise_level=0.1):
-    """
-    Agrega ruido binomial a una imagen binarizada.
-
-    :param image: Vector de la imagen original (valores 0 o 1).
-    :param noise_level: Porcentaje de píxeles a los que se les agregará ruido.
-    :return: Imagen con ruido.
-    """
-    noisy_image = image.copy()
-    n_pixels = len(image)
-    n_noisy = int(noise_level * n_pixels)
-    noisy_indices = np.random.choice(n_pixels, n_noisy, replace=False)
-    noisy_image[noisy_indices] = 1 - noisy_image[noisy_indices]
-    return noisy_image
-
-
-def mean_squared_error(original, reconstructed):
-    """
-    Calcula el Error Cuadrático Medio (MSE) entre las imágenes originales y reconstruidas.
-
-    :param original: Array de forma (n_samples, n_features) de las imágenes originales.
-    :param reconstructed: Array de forma (n_samples, n_features) de las imágenes reconstruidas.
-    :return: MSE promedio.
-    """
-    return np.mean((original - reconstructed) ** 2)
 
 
 if __name__ == "__main__":

@@ -1,12 +1,16 @@
+import time
+
 import numpy as np
 import matplotlib.pyplot as plt
-from tensorflow.keras.datasets import mnist
+
+from TP4.src.model.boltzman.boltzmann_utils import load_mnist_data_split, add_noise_to_image
 
 
 class RBM:
     def __init__(self, n_visible, n_hidden):
         self.n_visible = n_visible  # Número de unidades visibles (784 para MNIST)
         self.n_hidden = n_hidden  # Número de unidades ocultas
+        self.training_time = 0  # Para rastrear el tiempo total de entrenamiento
         # Inicializar pesos y sesgos
         np.random.seed(42)
         self.weights = np.random.normal(0, 0.01, (self.n_visible, self.n_hidden))
@@ -78,6 +82,7 @@ class RBM:
         :param learning_rate: Tasa de aprendizaje
         :param k: Número de pasos de Gibbs Sampling
         """
+        time_start = time.time()
         n_samples = data.shape[0]
         for epoch in range(epochs):
             # Barajar los datos
@@ -86,6 +91,8 @@ class RBM:
                 batch = data[i:i + batch_size]
                 self.contrastive_divergence(batch, learning_rate, k)
             print(f"RBM: Época {epoch + 1}/{epochs} completada")
+
+        self.training_time = time.time() - time_start
 
     def reconstruct(self, data):
         """
@@ -119,46 +126,9 @@ class RBM:
         return prob_hidden
 
 
-# Función para binarizar las imágenes
-def binarize_images(images, threshold=127):
-    return (images > threshold).astype(np.float32)
-
-# Cargar y preprocesar los datos de MNIST
-def load_mnist_data():
-    (x_train, _), (_, _) = mnist.load_data()
-    # Normalizar y binarizar las imágenes
-    x_train = binarize_images(x_train)
-    # Aplanar las imágenes
-    x_train = x_train.reshape((x_train.shape[0], -1))
-    return x_train
-
-# Cargar y preprocesar los datos de MNIST
-def load_mnist_data_no_binarized():
-    (x_train, _), (_, _) = mnist.load_data()
-    x_train = x_train.astype('float32') / 255
-    x_train = x_train.reshape(60000, 784)
-    return x_train
-
-
-def add_noise_to_image(image, noise_level=0.1):
-    """
-    Agrega ruido binomial a una imagen binarizada.
-
-    :param image: Vector de la imagen original (valores 0 o 1).
-    :param noise_level: Porcentaje de píxeles a los que se les agregará ruido.
-    :return: Imagen con ruido.
-    """
-    noisy_image = image.copy()
-    n_pixels = len(image)
-    n_noisy = int(noise_level * n_pixels)
-    noisy_indices = np.random.choice(n_pixels, n_noisy, replace=False)
-    noisy_image[noisy_indices] = 1 - noisy_image[noisy_indices]
-    return noisy_image
-
-
 if __name__ == "__main__":
     # Cargar los datos
-    x_train = load_mnist_data()
+    x_train = load_mnist_data_split()
     n_samples, n_visible = x_train.shape
     n_hidden = 64  # Puedes ajustar este valor según tus necesidades
 

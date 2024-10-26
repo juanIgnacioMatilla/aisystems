@@ -1,24 +1,10 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from tensorflow.keras.datasets import mnist
-from TP4.src.model.boltzman.restricted_boltzmann_machine import RBM, load_mnist_data
+import time
+
+from TP4.src.model.boltzman.boltzmann_utils import add_noise_to_image, load_mnist_data_split
+from TP4.src.model.boltzman.restricted_boltzmann_machine import RBM
 # Mostrar la original y la reconstruida
 import matplotlib.pyplot as plt
 
-def add_noise_to_image(image, noise_level=0.1):
-    """
-    Agrega ruido binomial a una imagen binarizada.
-
-    :param image: Vector de la imagen original (valores 0 o 1).
-    :param noise_level: Porcentaje de píxeles a los que se les agregará ruido.
-    :return: Imagen con ruido.
-    """
-    noisy_image = image.copy()
-    n_pixels = len(image)
-    n_noisy = int(noise_level * n_pixels)
-    noisy_indices = np.random.choice(n_pixels, n_noisy, replace=False)
-    noisy_image[noisy_indices] = 1 - noisy_image[noisy_indices]
-    return noisy_image
 
 def plot_images(original, reconstructed, n=1):
     plt.figure(figsize=(n * 2, 2))
@@ -47,6 +33,7 @@ class DBN:
         - Tercera RBM: 200 visibles, 50 ocultas
         """
         self.layer_sizes = layer_sizes
+        self.training_time = 0  # To track total training time
         self.rbms = []
         for i in range(len(layer_sizes) - 1):
             rbm = RBM(layer_sizes[i], layer_sizes[i + 1])
@@ -62,12 +49,16 @@ class DBN:
         :param learning_rate: Tasa de aprendizaje
         :param k: Número de pasos de Gibbs Sampling
         """
+
+        time_start = time.time()
         input_data = data
         for idx, rbm in enumerate(self.rbms):
             print(f"\nEntrenando RBM {idx + 1}/{len(self.rbms)} con {rbm.n_visible} visibles y {rbm.n_hidden} ocultas")
             rbm.train(input_data, epochs=epochs, batch_size=batch_size, learning_rate=learning_rate, k=k)
             # Transformar los datos para la siguiente RBM
             input_data = rbm.transform(input_data)
+
+        self.training_time = time.time() - time_start
 
     def reconstruct(self, data):
         """
@@ -100,7 +91,7 @@ class DBN:
 
 if __name__ == "__main__":
     # Cargar los datos
-    x_train = load_mnist_data()
+    x_train = load_mnist_data_split()
     n_samples, n_visible = x_train.shape
 
     # Definir la estructura de la DBN
