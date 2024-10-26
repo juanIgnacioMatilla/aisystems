@@ -13,82 +13,6 @@ if __name__ == "__main__":
     n_samples_train, n_visible = x_train.shape
     n_samples_test, _ = x_test.shape
 
-    epochs = 1
-    # epochs = 2
-    # epochs = 3
-    # epochs = 5
-    # epochs = 8
-    # epochs = 13
-
-    rbm_individual = RBM(n_visible=784, n_hidden=60)
-    rbm_individual.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    store_model(rbm_individual, f'trained_boltzmann/RBM_E{epochs}_784_60_B100_LR001_K1.pkl')
-
-
-
-    # SIZE_TRAINING_SET = 1000
-    # SIZE_TRAINING_SET = 5000
-    # SIZE_TRAINING_SET = 10000
-    # SIZE_TRAINING_SET = 30000
-    #
-    # #load sample of data
-    # x_train, _, x_test, _ = load_mnist_data_split_sample(SIZE_TRAINING_SET)
-    # n_samples_train, n_visible = x_train.shape
-    # n_samples_test, _ = x_test.shape
-    #
-    # epochs = 5
-    #
-    # layer_sizes = [784, 500, 200, 60]
-    # dbn = DBN(layer_sizes)
-    # dbn.pretrain(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    #
-    # rbm_individual = RBM(n_visible=784, n_hidden=60)
-    # rbm_individual.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    #
-    # store_model(dbn, f'trained_boltzmann/DBN_E5_784_500_200_60_B100_LR001_K1_TS{SIZE_TRAINING_SET}.pkl')
-    # store_model(rbm_individual, f'trained_boltzmann/RBM_E5_784_60_B100_LR001_K1_TS{SIZE_TRAINING_SET}.pkl')
-
-
-
-    # rbm_00 = RBM(n_visible=784, n_hidden=2048)
-    # rbm_0 = RBM(n_visible=784, n_hidden=1024)
-    # rbm_1 = RBM(n_visible=784, n_hidden=784)
-    # rbm_2 = RBM(n_visible=784, n_hidden=512)
-    # rbm_3 = RBM(n_visible=784, n_hidden=256)
-    # rbm_4 = RBM(n_visible=784, n_hidden=128)
-    # rbm_5 = RBM(n_visible=784, n_hidden=64)
-    # rbm_6 = RBM(n_visible=784, n_hidden=32)
-    # rbm_7 = RBM(n_visible=784, n_hidden=16)
-    # rbm_8 = RBM(n_visible=784, n_hidden=8)
-    # rbm_9 = RBM(n_visible=784, n_hidden=4)
-
-    # rbm_00.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_0.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_1.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_2.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_3.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_4.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_5.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_6.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_7.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_8.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-    # rbm_9.train(x_train, epochs=epochs, batch_size=100, learning_rate=0.01, k=1)
-
-    # store_model(rbm_00, 'trained_boltzmann/RBM_E5_784_2048_B100_LR001_K1.pkl')
-    # store_model(rbm_0, 'trained_boltzmann/RBM_E5_784_1024_B100_LR001_K1.pkl')
-    # store_model(rbm_1, 'trained_boltzmann/RBM_E5_784_784_B100_LR001_K1.pkl')
-    # store_model(rbm_2, 'trained_boltzmann/RBM_E5_784_512_B100_LR001_K1.pkl')
-    # store_model(rbm_3, 'trained_boltzmann/RBM_E5_784_256_B100_LR001_K1.pkl')
-    # store_model(rbm_4, 'trained_boltzmann/RBM_E5_784_128_B100_LR001_K1.pkl')
-    # store_model(rbm_5, 'trained_boltzmann/RBM_E5_784_64_B100_LR001_K1.pkl')
-    # store_model(rbm_6, 'trained_boltzmann/RBM_E5_784_32_B100_LR001_K1.pkl')
-    # store_model(rbm_7, 'trained_boltzmann/RBM_E5_784_16_B100_LR001_K1.pkl')
-    # store_model(rbm_8, 'trained_boltzmann/RBM_E5_784_8_B100_LR001_K1.pkl')
-    # store_model(rbm_9, 'trained_boltzmann/RBM_E5_784_4_B100_LR001_K1.pkl')
-
-
-
-
     # epochs = 5
     #
     # # Input layer with 784 units, one hidden layer
@@ -114,7 +38,7 @@ if __name__ == "__main__":
     # layer_sizes_4_1 = [784, 512, 256, 128, 64]
     # layer_sizes_4_2 = [784, 1024, 512, 256, 128]
     # layer_sizes_4_3 = [784, 2048, 1024, 512, 256]
-
+    #
     # dbn_1 = DBN(layer_sizes_1)
     # dbn_1_1 = DBN(layer_sizes_1_1)
     # dbn_1_2 = DBN(layer_sizes_1_2)
@@ -226,7 +150,3 @@ if __name__ == "__main__":
     #
     # # Plot the results
     # plot_model_accuracies(model_tags, mean_ssims, std_ssims)
-
-    rbm = load_model('trained_boltzmann/RBM_E13_784_60_B100_LR001_K1.pkl')
-    dbn = load_model('trained_boltzmann/DBN_E13_784_500_200_60_B100_LR001_K1.pkl')
-    plot_all_reconstructions(x_test, rbm, dbn)
