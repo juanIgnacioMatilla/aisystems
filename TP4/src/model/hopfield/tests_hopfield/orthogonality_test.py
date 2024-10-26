@@ -21,7 +21,7 @@ def main():
 
     for min_orthogonality in min_orthogonality_values:
         # Encontrar un conjunto de patrones con la ortogonalidad especificada
-        patterns_set = find_orthogonal_subset(min_orthogonality, max_orthogonality)
+        letters, patterns_set = find_orthogonal_subset(min_orthogonality, max_orthogonality)
         if patterns_set is None:
             print(f"No se encontraron patrones para Min Ortogonalidad = {min_orthogonality}")
             continue
@@ -83,16 +83,16 @@ def categorize_result(recovered_pattern, patterns, states_history, target_patter
     for idx, stored_pattern in enumerate(patterns):
         if np.array_equal(recovered_pattern, stored_pattern):
             if idx == target_pattern_idx:
-                print(f"CORRECTO")
+                # print(f"CORRECTO")
                 return 'Correcto'
             else:
-                print(f"INCORRECTO")
+                # print(f"INCORRECTO")
                 return 'Incorrecto'
     # Verificar si hay un ciclo
     if len(states_history) > len(set(tuple(s) for s in states_history)):
-        print(f"CICLO")
+        # print(f"CICLO")
         return 'Ciclo'
-    print(f"ESPURIO")
+    # print(f"ESPURIO")
     return 'Espurio'
 
 if __name__ == "__main__":

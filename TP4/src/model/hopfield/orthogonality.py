@@ -79,8 +79,8 @@ def find_orthogonal_subset(min_orthogonality, max_orthogonality):
                             break
 
                     if valid:
-                        return get_matrix_of_letters(group)  # Devolvemos el primer conjunto que cumple la condición
-    return None  # Si no se encuentra ningún conjunto, devolvemos una lista vacía
+                        return get_matrix_of_letters(group), group
+    return None, []  # Si no se encuentra ningún conjunto, devolvemos una lista vacía
 
 
 def get_matrix_of_letters(letters):
