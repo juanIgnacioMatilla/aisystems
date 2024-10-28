@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 
 from TP4.src.model.boltzman.boltzmann_utils import add_noise_to_image, compare_images, mean_squared_error, \
     pixelwise_error, hamming_loss, binarize_images, load_model
+from skimage.metrics import structural_similarity as ssim
 
 
 def plot_noisy_comparison(x_test, rbm_individual, dbn):
@@ -70,7 +71,61 @@ def plot_noisy_comparison(x_test, rbm_individual, dbn):
         plt.tight_layout()
         plt.show()
 
+
+def compare_ssim(x_test, rbm_individual):
+    ssim_values = []
+    num_images = 15  # Número de imágenes a mostrar
+
+    for i in range(num_images):
+        # Seleccionar una imagen de prueba
+        test_image = x_test[i]
+
+        # Agregar ruido a la imagen de prueba
+        noisy_image = add_noise_to_image(test_image, noise_level=0.07)
+        noisy_image_reshaped = noisy_image.reshape(1, -1)
+
+        # Reconstruir con RBM individual
+        reconstructed_rbm = rbm_individual.reconstruct(noisy_image_reshaped).flatten()
+
+        # Calcular SSIM entre la imagen original y la reconstruida
+        original_image = test_image.reshape(28, 28)
+        reconstructed_image = reconstructed_rbm.reshape(28, 28)
+        current_ssim = ssim(original_image, reconstructed_image,
+                            data_range=reconstructed_image.max() - reconstructed_image.min())
+        ssim_values.append(current_ssim)
+
+        # Visualizar los resultados con un diseño más compacto
+        fig, axes = plt.subplots(1, 4, figsize=(10, 4))
+
+        # Imagen Original
+        axes[0].imshow(original_image, cmap='gray')
+        axes[0].set_title("Original")
+        axes[0].axis('off')
+
+        # Imagen con Ruido
+        axes[1].imshow(noisy_image.reshape(28, 28), cmap='gray')
+        axes[1].set_title("Con Ruido")
+        axes[1].axis('off')
+
+        # Imagen Reconstruida por RBM
+        axes[2].imshow(reconstructed_image, cmap='gray')
+        axes[2].set_title("Recuperado por RBM")
+        axes[2].axis('off')
+
+        # Mostrar el valor de SSIM
+        axes[3].text(0.5, 0.5, f"SSIM: {current_ssim:.4f}", fontsize=12, ha='center')
+        axes[3].axis('off')
+
+        # Ajustar el espacio entre subplots
+        plt.subplots_adjust(wspace=0.3)
+        plt.tight_layout()
+        plt.show()
+
+    # Opcional: Mostrar el SSIM promedio
+    average_ssim = np.mean(ssim_values)
+    print(f"SSIM Promedio sobre {num_images} imágenes: {average_ssim:.4f}")
 def plot_all_reconstructions(x_test, rbm_individual, dbn):
+    ssim_values = []
     for i in range(15):
         # Seleccionar una imagen de prueba
         test_image = x_test[i]
@@ -96,6 +151,11 @@ def plot_all_reconstructions(x_test, rbm_individual, dbn):
 
         # Reconstruir con RBM individual
         reconstructed_rbm = rbm_individual.reconstruct(noisy_image_reshaped).flatten()
+        # Calcular SSIM entre la imagen original y la reconstruida
+        original_image = test_image.reshape(28, 28)
+        reconstructed_image = reconstructed_rbm.reshape(28, 28)
+        current_ssim = ssim(original_image, reconstructed_image, data_range=reconstructed_image.max() - reconstructed_image.min())
+        ssim_values.append(current_ssim)
         reconstructed_rbm_no_noise = rbm_individual.reconstruct(test_image.reshape(1, -1)).flatten()
 
         # Reconstruir con DBN
@@ -116,69 +176,75 @@ def plot_all_reconstructions(x_test, rbm_individual, dbn):
         plt.axis('off')
 
         plt.subplot(1, 10, 3)
-        plt.title("RBM con Ruido")
+        plt.title("Recuperado por RBM")
         plt.imshow(reconstructed_rbm.reshape(28, 28), cmap='gray')
         plt.axis('off')
 
-        plt.subplot(1, 10, 4)
-        plt.title("Binarized RBM con Ruido")
-        plt.imshow(binarize_images(reconstructed_rbm).reshape(28, 28), cmap='gray')
-        plt.axis('off')
+        # plt.subplot(1, 10, 4)
+        # plt.title("Binarized RBM con Ruido")
+        # plt.imshow(binarize_images(reconstructed_rbm).reshape(28, 28), cmap='gray')
+        # plt.axis('off')
+        #
+        # plt.subplot(1, 10, 5)
+        # plt.title("RBM sin Ruido")
+        # plt.imshow(reconstructed_rbm_no_noise.reshape(28, 28), cmap='gray')
+        # plt.axis('off')
 
-        plt.subplot(1, 10, 5)
-        plt.title("RBM sin Ruido")
-        plt.imshow(reconstructed_rbm_no_noise.reshape(28, 28), cmap='gray')
-        plt.axis('off')
+        # plt.subplot(1, 10, 6)
+        # plt.title("Binarized RBM sin Ruido")
+        # plt.imshow(binarize_images(reconstructed_rbm_no_noise).reshape(28, 28), cmap='gray')
+        # plt.axis('off')
 
-        plt.subplot(1, 10, 6)
-        plt.title("Binarized RBM sin Ruido")
-        plt.imshow(binarize_images(reconstructed_rbm_no_noise).reshape(28, 28), cmap='gray')
-        plt.axis('off')
+        # plt.subplot(1, 10, 7)
+        # plt.title("DBN Ruido")
+        # plt.imshow(reconstructed_dbn.reshape(28, 28), cmap='gray')
+        # plt.axis('off')
+        #
+        # plt.subplot(1, 10, 8)
+        # plt.title("Binarized DBN con Ruido")
+        # plt.imshow(binarize_images(reconstructed_dbn).reshape(28, 28), cmap='gray')
+        # plt.axis('off')
+        #
+        # plt.subplot(1, 10, 9)
+        # plt.title("DBN sin Ruido")
+        # plt.imshow(reconstructed_dbn_no_noise.reshape(28, 28), cmap='gray')
+        # plt.axis('off')
+        #
+        # plt.subplot(1, 10, 10)
+        # plt.title("Binarized DBN sin Ruido")
+        # plt.imshow(binarize_images(reconstructed_dbn_no_noise).reshape(28, 28), cmap='gray')
+        # plt.axis('off')
 
-        plt.subplot(1, 10, 7)
-        plt.title("DBN Ruido")
-        plt.imshow(reconstructed_dbn.reshape(28, 28), cmap='gray')
-        plt.axis('off')
-
-        plt.subplot(1, 10, 8)
-        plt.title("Binarized DBN con Ruido")
-        plt.imshow(binarize_images(reconstructed_dbn).reshape(28, 28), cmap='gray')
-        plt.axis('off')
-
-        plt.subplot(1, 10, 9)
-        plt.title("DBN sin Ruido")
-        plt.imshow(reconstructed_dbn_no_noise.reshape(28, 28), cmap='gray')
-        plt.axis('off')
-
-        plt.subplot(1, 10, 10)
-        plt.title("Binarized DBN sin Ruido")
-        plt.imshow(binarize_images(reconstructed_dbn_no_noise).reshape(28, 28), cmap='gray')
-        plt.axis('off')
-
-        mlp_test_model = load_model('../../../../TP3/ej4/trained_models/XAVIER_ADAM_10E_784_256_128_64_10.pkl')
-        prediction_reconstructed_rbm = mlp_test_model.predict(reconstructed_rbm.reshape(1, -1))
-        prediction_reconstructed_rbm_no_noise = mlp_test_model.predict(reconstructed_rbm_no_noise.reshape(1, -1))
-        prediction_reconstructed_dbn = mlp_test_model.predict(reconstructed_dbn.reshape(1, -1))
-        prediction_reconstructed_dbn_no_noise = mlp_test_model.predict(reconstructed_dbn_no_noise.reshape(1, -1))
-        prediction_reconstructed_rbm_binarized = mlp_test_model.predict(
-            binarize_images(reconstructed_rbm).reshape(1, -1))
-        prediction_reconstructed_rbm_no_noise_binarized = mlp_test_model.predict(
-            binarize_images(reconstructed_rbm_no_noise).reshape(1, -1))
-        prediction_reconstructed_dbn_binarized = mlp_test_model.predict(
-            binarize_images(reconstructed_dbn).reshape(1, -1))
-        prediction_reconstructed_dbn_no_noise_binarized = mlp_test_model.predict(
-            binarize_images(reconstructed_dbn_no_noise).reshape(1, -1))
+        # mlp_test_model = load_model('../../../../TP3/ej4/trained_models/ADAM_1E_784_32_32_10.pkl')
+        # prediction_reconstructed_rbm = mlp_test_model.predict(reconstructed_rbm.reshape(1, -1))
+        # prediction_reconstructed_rbm_no_noise = mlp_test_model.predict(reconstructed_rbm_no_noise.reshape(1, -1))
+        # prediction_reconstructed_dbn = mlp_test_model.predict(reconstructed_dbn.reshape(1, -1))
+        # prediction_reconstructed_dbn_no_noise = mlp_test_model.predict(reconstructed_dbn_no_noise.reshape(1, -1))
+        # prediction_reconstructed_rbm_binarized = mlp_test_model.predict(
+        #     binarize_images(reconstructed_rbm).reshape(1, -1))
+        # prediction_reconstructed_rbm_no_noise_binarized = mlp_test_model.predict(
+        #     binarize_images(reconstructed_rbm_no_noise).reshape(1, -1))
+        # prediction_reconstructed_dbn_binarized = mlp_test_model.predict(
+        #     binarize_images(reconstructed_dbn).reshape(1, -1))
+        # prediction_reconstructed_dbn_no_noise_binarized = mlp_test_model.predict(
+        #     binarize_images(reconstructed_dbn_no_noise).reshape(1, -1))
 
 
         # add mse error below the plot
-        plt.text(-105, 50, f"RBM: {np.argmax(prediction_reconstructed_rbm)}", fontsize=8, color='black')
+        # plt.text(-105, 50, f"RBM: {np.argmax(prediction_reconstructed_rbm)}", fontsize=8, color='black')
+        #
+        # plt.text(-70, 50, f"Binarized RBM: {np.argmax(prediction_reconstructed_rbm_binarized)}", fontsize=8,
+        #          color='black')
+        #
+        # plt.text(-32, 50, f"DBN: {np.argmax(prediction_reconstructed_dbn)}", fontsize=8, color='black')
+        #
+        # plt.text(0, 50, f"Binarized DBN: {np.argmax(prediction_reconstructed_dbn_binarized)}", fontsize=8,
+        #          color='black')
+        # Mostrar el valor de SSIM
+        plt.subplot(1, 4, 4)
+        plt.title(f"SSIM: {current_ssim:.4f}")
+        plt.text(0.5, 0.5, f"{current_ssim:.4f}", fontsize=12, ha='center')
+        plt.axis('off')
 
-        plt.text(-70, 50, f"Binarized RBM: {np.argmax(prediction_reconstructed_rbm_binarized)}", fontsize=8,
-                 color='black')
-
-        plt.text(-32, 50, f"DBN: {np.argmax(prediction_reconstructed_dbn)}", fontsize=8, color='black')
-
-        plt.text(0, 50, f"Binarized DBN: {np.argmax(prediction_reconstructed_dbn_binarized)}", fontsize=8,
-                 color='black')
-
+        plt.tight_layout()
         plt.show()

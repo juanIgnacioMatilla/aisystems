@@ -1,0 +1,5 @@
+{
+    "pattern_names": ["letter_A", "letter_B", "letter_C", "letter_D"],
+    "input_pattern_name": "letter_A",
+    "max_iters": 100
+}

@@ -7,19 +7,12 @@ from TP4.src.model.kohonen.som import SOM
 from TP4.src.utils import standardize_inputs
 
 
-def main():
-    # Cargar los datos desde el archivo CSV
+def main():    # Cargar los datos desde el archivo CSV
     data = pd.read_csv('./inputs/europe.csv')  # Ajusta el nombre del archivo si es necesario
     np.set_printoptions(suppress=True, precision=5)  # Desactiva notación científica y ajusta los decimales a 5
 
     # Seleccionar las columnas que quieres usar para entrenar el SOM
     inputs = data[["Area", "GDP", "Inflation", "Life.expect", "Military", "Pop.growth", "Unemployment"]].to_numpy()
-    social_inputs = data[["Life.expect", "Pop.growth", "Unemployment"]].to_numpy()
-    economy_inputs = data[["GDP", "Inflation", "Unemployment"]].to_numpy()
-    test_inputs = data[["Area"]].to_numpy()
-
-    # Puedes cambiar la entrada aquí según lo que desees usar
-    # inputs = test_inputs
 
     standard_inputs = standardize_inputs(inputs)
 
@@ -81,6 +74,7 @@ def main():
 
     print("Average Euclidean Distances to Neighbors:")
     print(average_distances)
+
 
 
 if __name__ == "__main__":

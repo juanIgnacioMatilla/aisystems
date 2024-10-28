@@ -5,7 +5,7 @@ from TP4.src.PCA.PCA_plotting import plot_nonstandard_data, plot_standard_data, 
 
 
 def main():
-    df = pd.read_csv("../../inputs/europe.csv")
+    df = pd.read_csv("./inputs/europe.csv")
     print('df: ', df)
     plot_nonstandard_data(df)
     plot_standard_data(df)
