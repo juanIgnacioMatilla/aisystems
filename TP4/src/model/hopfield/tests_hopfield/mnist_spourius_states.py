@@ -138,8 +138,8 @@ if __name__ == "__main__":
     plt.figure(figsize=(12, 8))
     plt.errorbar(
         noise_levels_sorted,
-        correct_means,
-        yerr=correct_stds,
+        [mean * 100 for mean in correct_means],  # Convertir a porcentaje
+        yerr=[std * 100 for std in correct_stds],  # Convertir a porcentaje
         fmt='o-',  # 'o' para puntos, '-' para líneas conectando
         ecolor='gray',
         capsize=5,
@@ -150,8 +150,8 @@ if __name__ == "__main__":
         label='Estados Correctos'
     )
     plt.xlabel('Nivel de Ruido', fontsize=16)
-    plt.ylabel('Cantidad de Estados Correctos', fontsize=16)
-    plt.title('Cantidad de Estados Correctos para Diferentes Niveles de Ruido', fontsize=18)
+    plt.ylabel('Porcentaje de Estados Correctos (%)', fontsize=16)  # Cambiar etiqueta
+    plt.title('Porcentaje de Estados Correctos para Diferentes Niveles de Ruido', fontsize=18)
     plt.xticks(noise_levels_sorted, fontsize=14)
     plt.yticks(fontsize=14)
     plt.grid(True, which='both', linestyle='--', linewidth=0.5)
@@ -164,8 +164,8 @@ if __name__ == "__main__":
     plt.figure(figsize=(12, 8))
     plt.errorbar(
         noise_levels_sorted,
-        incorrect_means,
-        yerr=incorrect_stds,
+        [mean * 100 for mean in incorrect_means],  # Convertir a porcentaje
+        yerr=[std * 100 for std in incorrect_stds],  # Convertir a porcentaje
         fmt='s--',  # 's' para cuadrados, '--' para líneas discontinuas
         ecolor='gray',
         capsize=5,
@@ -176,8 +176,8 @@ if __name__ == "__main__":
         label='Estados Incorrectos'
     )
     plt.xlabel('Nivel de Ruido', fontsize=16)
-    plt.ylabel('Cantidad de Estados Incorrectos', fontsize=16)
-    plt.title('Cantidad de Estados Incorrectos para Diferentes Niveles de Ruido', fontsize=18)
+    plt.ylabel('Porcentaje de Estados Incorrectos (%)', fontsize=16)  # Cambiar etiqueta
+    plt.title('Porcentaje de Estados Incorrectos para Diferentes Niveles de Ruido', fontsize=18)
     plt.xticks(noise_levels_sorted, fontsize=14)
     plt.yticks(fontsize=14)
     plt.grid(True, which='both', linestyle='--', linewidth=0.5)
@@ -190,8 +190,8 @@ if __name__ == "__main__":
     plt.figure(figsize=(12, 8))
     plt.errorbar(
         noise_levels_sorted,
-        spurious_means,
-        yerr=spurious_stds,
+        [mean * 100 for mean in spurious_means],  # Convertir a porcentaje
+        yerr=[std * 100 for std in spurious_stds],  # Convertir a porcentaje
         fmt='d-.',  # 'd' para diamantes, '-.' para líneas de puntos y rayas
         ecolor='gray',
         capsize=5,
@@ -202,8 +202,8 @@ if __name__ == "__main__":
         label='Estados Espurios'
     )
     plt.xlabel('Nivel de Ruido', fontsize=16)
-    plt.ylabel('Cantidad de Estados Espurios', fontsize=16)
-    plt.title('Cantidad de Estados Espurios para Diferentes Niveles de Ruido', fontsize=18)
+    plt.ylabel('Porcentaje de Estados Espurios (%)', fontsize=16)  # Cambiar etiqueta
+    plt.title('Porcentaje de Estados Espurios para Diferentes Niveles de Ruido', fontsize=18)
     plt.xticks(noise_levels_sorted, fontsize=14)
     plt.yticks(fontsize=14)
     plt.grid(True, which='both', linestyle='--', linewidth=0.5)

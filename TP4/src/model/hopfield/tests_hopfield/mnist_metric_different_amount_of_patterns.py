@@ -105,73 +105,25 @@ def main():
 
     # Graficar Precisión vs Número de Patrones Almacenados
     plt.figure(figsize=(10, 6))
-    plt.errorbar(k_values, precisions, yerr=precisions_std, fmt='-o', color='blue',
-                 ecolor='lightblue', capsize=5, label='Precisión')
+    plt.errorbar(
+        k_values,
+        [precision * 100 for precision in precisions],  # Convertir a porcentaje
+        yerr=[std * 100 for std in precisions_std],  # Convertir a porcentaje
+        fmt='-o',
+        color='blue',
+        ecolor='lightblue',
+        capsize=5,
+        label='Precisión'
+    )
     plt.xlabel('Número de Patrones Almacenados (K)')
-    plt.ylabel('Precisión')
-    plt.title('Precisión vs. Número de Patrones Almacenados en la Red de Hopfield')
-    plt.ylim(0, 1.05)
+    plt.ylabel('Porcentaje de correctas (%)')  # Cambiar etiqueta para reflejar el porcentaje
+    plt.title('Porcentaje de correctas vs. Número de Patrones Almacenados en la Red de Hopfield')
+    plt.ylim(0, 105)  # Ajustar límite superior para un mejor ajuste del porcentaje
     plt.grid(True)
     plt.legend()
     plt.show()
 
-    # Opcional: Visualización de ejemplos específicos con un nivel de ruido seleccionado
-    example_k = min(k_values, key=lambda x: abs(x - 10))  # Seleccionar K cercano a 10
-    example_noise_level = noise_level  # 20% de ruido
-    print(f"\nVisualizando ejemplos de recuperación con K={example_k} y {example_noise_level * 100:.0f}% de ruido...")
 
-    # Seleccionar un conjunto de patrones para visualizar
-    selected_patterns = []
-    digits = np.random.choice(unique_digits, example_k, replace=False) if example_k <= len(unique_digits) else None
-    if example_k <= len(unique_digits):
-        for digit in digits:
-            indices = digit_to_indices[digit]
-            selected_index = np.random.choice(indices)
-            selected_patterns.append(patterns_pca[selected_index])
-    else:
-        for _ in range(example_k):
-            digit = np.random.choice(unique_digits)
-            indices = digit_to_indices[digit]
-            selected_index = np.random.choice(indices)
-            selected_patterns.append(patterns_pca[selected_index])
-    selected_patterns = np.array(selected_patterns)
-
-    # Inicializar la red de Hopfield con K patrones
-    hopfield_net = HopfieldNetwork(selected_patterns)
-
-    # Visualizar algunos ejemplos
-    num_examples = min(5, example_k)  # Mostrar hasta 5 ejemplos
-    plt.figure(figsize=(12, 9))
-    for i in range(num_examples):
-        original_pattern = selected_patterns[i]
-        noisy_pattern = add_noise(original_pattern, example_noise_level)
-        recovered_pattern, _, _ = hopfield_net.run(noisy_pattern, max_iters=100)
-
-        # Convertir patrones binarizados a imágenes
-        original_image = original_pattern.reshape(28, 28)
-        noisy_image = noisy_pattern.reshape(28, 28)
-        recovered_image = recovered_pattern.reshape(28, 28)
-
-        # Visualizar patrón original
-        plt.subplot(num_examples, 3, 3 * i + 1)
-        plt.imshow(original_image, cmap='gray')
-        plt.title('Original')
-        plt.axis('off')
-
-        # Visualizar patrón con ruido
-        plt.subplot(num_examples, 3, 3 * i + 2)
-        plt.imshow(noisy_image, cmap='gray')
-        plt.title(f'Con Ruido ({int(noise_level * 100)}%)')
-        plt.axis('off')
-
-        # Visualizar patrón recuperado
-        plt.subplot(num_examples, 3, 3 * i + 3)
-        plt.imshow(recovered_image, cmap='gray')
-        plt.title('Recuperado')
-        plt.axis('off')
-
-    plt.tight_layout()
-    plt.show()
 
 if __name__ == "__main__":
     main()

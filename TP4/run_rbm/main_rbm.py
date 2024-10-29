@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-from TP4.src.model.boltzman.boltzmann_utils import load_mnist_data_split, add_noise_to_image
+from TP4.src.model.boltzman.boltzmann_utils import load_mnist_data_split, add_noise_to_image, load_model
 from TP4.src.model.boltzman.restricted_boltzmann_machine import RBM
 import json
 import matplotlib.pyplot as plt
@@ -37,7 +37,6 @@ if __name__ == "__main__":
 
     # Entrenar la RBM
     rbm.train(x_train, epochs=epochs, batch_size=batch_size, learning_rate=learning_rate, k=k)
-
     for i in range(num_images):
         # Seleccionar una imagen de prueba
         test_image = x_train[i]
@@ -52,17 +51,17 @@ if __name__ == "__main__":
         plt.figure(figsize=(12, 4))
 
         plt.subplot(1, 3, 1)
-        plt.title("Imagen Original")
+        plt.title("Imagen original binarizada")
         plt.imshow(test_image.reshape(28, 28), cmap='gray')
         plt.axis('off')
 
         plt.subplot(1, 3, 2)
-        plt.title(f"Imagen con Ruido ({int(noise_level * 100)}%)")
+        plt.title(f"Imagen con ruido ({int(noise_level * 100)}%)")
         plt.imshow(noisy_image.reshape(28, 28), cmap='gray')
         plt.axis('off')
 
         plt.subplot(1, 3, 3)
-        plt.title("Imagen Reconstruida")
+        plt.title("Imagen reconstruida")
         plt.imshow(reconstructed_image.reshape(28, 28), cmap='gray')
         plt.axis('off')
         plt.suptitle("RBM", fontsize=16)
