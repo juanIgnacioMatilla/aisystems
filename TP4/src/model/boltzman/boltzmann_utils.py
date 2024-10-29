@@ -52,6 +52,26 @@ def load_mnist_data_split_sample(sample_size):
     return x_train_subset, y_train_subset, x_test, y_test
 
 
+# Cargar y preprocesar los datos de MNIST
+def load_mnist_data_no_binarized():
+    (x_train, _), (_, _) = mnist.load_data()
+    x_train = x_train.astype('float32') / 255
+    x_train = x_train.reshape(60000, 784)
+    return x_train
+
+
+def store_model(mlp, model_filename):
+    # Save the trained model to a file
+    with open(model_filename, 'wb') as model_file:
+        dill.dump(mlp, model_file)
+
+
+def load_model(model_filename):
+    # Load the trained model from a file
+    with open(model_filename, 'rb') as model_file:
+        return dill.load(model_file)
+
+
 def add_noise_to_image(image, noise_level=0.1):
     """
     Agrega ruido binomial a una imagen binarizada.
@@ -93,26 +113,6 @@ def hamming_loss(original, reconstructed):
     Hamming loss is a pixel-wise mismatch penalty between the original and reconstructed.
     """
     return np.sum(original != reconstructed) / original.size
-
-
-# Cargar y preprocesar los datos de MNIST
-def load_mnist_data_no_binarized():
-    (x_train, _), (_, _) = mnist.load_data()
-    x_train = x_train.astype('float32') / 255
-    x_train = x_train.reshape(60000, 784)
-    return x_train
-
-
-def store_model(mlp, model_filename):
-    # Save the trained model to a file
-    with open(model_filename, 'wb') as model_file:
-        dill.dump(mlp, model_file)
-
-
-def load_model(model_filename):
-    # Load the trained model from a file
-    with open(model_filename, 'rb') as model_file:
-        return dill.load(model_file)
 
 
 def compare_images(original, reconstructed):
@@ -185,7 +185,7 @@ def plot_accuracy_vs_noise(x_test, model, noise_levels, num_runs=3):
 
     # Plot Accuracy vs. Noise as a bar graph with error bars
     plt.figure(figsize=(10, 6))
-    plt.bar(noise_levels, mean_ssims, yerr=std_ssims, width=0.01, color='b', alpha=0.7, capsize=5)
+    plt.bar(noise_levels, mean_ssims, yerr=std_ssims, width=0.01, color='b', capsize=5)
     plt.title('Accuracy (Mean SSIM) vs. Noise Level for ' + model.__class__.__name__)
     plt.xlabel('Noise Level')
     plt.ylabel('Mean SSIM')
@@ -248,21 +248,48 @@ def calculate_ssim_statistics(ssim_values):
 
 
 def plot_model_accuracies(model_tags, mean_ssims, std_ssims):
-        plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(12, 6))
 
-        # Generate a bar plot for each model with error bars for standard deviation
-        x_pos = np.arange(len(model_tags))
-        plt.bar(x_pos, mean_ssims, yerr=std_ssims, capsize=5, color='skyblue', edgecolor='grey')
+    # Generate a bar plot for each model with error bars for standard deviation
+    x_pos = np.arange(len(model_tags))
+    # if tag contains RBM make it blue, if it contains DBN make it red
+    for i in range(len(model_tags)):
+        if 'RBM' in model_tags[i]:
+            plt.bar(x_pos[i], mean_ssims[i], yerr=std_ssims[i], capsize=5, color='b', edgecolor='grey')
+        else:
+            plt.bar(x_pos[i], mean_ssims[i], yerr=std_ssims[i], capsize=5, color='r', edgecolor='grey')
 
-        plt.xticks(x_pos, model_tags, rotation=45, ha="right")
-        plt.title('Model Accuracy Comparison (Mean SSIM)')
-        plt.xlabel('Models')
-        plt.ylabel('Mean SSIM')
-        plt.ylim(0, 1)  # Assuming SSIM is between 0 and 1
-        plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.xticks(x_pos, model_tags, rotation=45, ha="right")
+    plt.title('Model Accuracy Comparison (Mean SSIM)')
+    plt.xlabel('Models')
+    plt.ylabel('Mean SSIM')
+    plt.ylim(0, 1)  # Assuming SSIM is between 0 and 1
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
 
-        plt.tight_layout()
-        plt.show()
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_model_times(model_tags, times):
+    plt.figure(figsize=(12, 6))
+
+    # Generate a bar plot for each model with error bars for standard deviation
+    x_pos = np.arange(len(model_tags))
+    for i in range(len(model_tags)):
+        if 'RBM' in model_tags[i]:
+            plt.bar(x_pos[i], times[i], color='skyblue', edgecolor='grey')
+        else:
+            plt.bar(x_pos[i], times[i], color='lightcoral', edgecolor='grey')
+
+    plt.xticks(x_pos, model_tags, rotation=45, ha="right")
+    plt.title('Model Training Time Comparison')
+    plt.xlabel('Models')
+    plt.ylabel('Training Time (s)')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+    plt.tight_layout()
+    plt.show()
+
 
 def extract_tags(filenames):
     tags = []
@@ -272,3 +299,134 @@ def extract_tags(filenames):
         if match:
             tags.append(match.group(0))  # Add the full match (DBN_Ex or RBM_Ex)
     return tags
+
+
+def extract_tags_up_to_b(filenames):
+    tags = []
+    for filename in filenames:
+        match = re.search(r'(RBM|DBN)_E5_784(.*)_B', filename)
+        if match:
+            group1 = match.group(1)
+            group2 = match.group(2)
+            tags.append(f"{group1}{group2}")
+    return tags
+
+
+def extract_bs_tags(filenames):
+    tags = []
+    for filename in filenames:
+        # Search for the pattern 'B' followed by a number
+        match = re.search(r'(B)(\d+)', filename)
+        if match:
+            group1 = match.group(1)
+            group2 = match.group(2)
+            tags.append(f"{group1}{group2}")
+    return tags
+
+
+def extract_ts_tags(filenames):
+    ts_tags = []
+    for filename in filenames:
+        # Search for the 'TS' tag followed by a number
+        match = re.search(r'TS(\d+)', filename)
+        if match:
+            ts_tags.append(int(match.group(1)))  # Extract the number after 'TS'
+        else:
+            ts_tags.append(60000)  # Default to 60000 if 'TS' is not found
+    return ts_tags
+
+
+def extract_lr_tags(filenames):
+    lr_tags = []
+    for filename in filenames:
+        # Search for the pattern 'LR' followed by a number
+        match = re.search(r'LR(\d+)', filename)
+        if match:
+            lr_tags.append(float('0.' + match.group(1)))  # Extract the learning rate
+    return lr_tags
+
+
+def extract_hidden_units_tags(filenames):
+    hidden_units_tags = []
+    for filename in filenames:
+        # Search for the third underscore number pattern
+        match = re.search(r'_\d+_(\d+)_', filename)
+        if match:
+            hidden_units_tags.append(int(match.group(1)))  # Extract the hidden units number
+    return hidden_units_tags
+
+
+def extract_intermediate_tags(filenames):
+    tags = []
+    for filename in filenames:
+        # Search for the pattern '784_<content>_B100'
+        match = re.search(r'784_([^_]+(?:_[^_]+)*)_B100', filename)
+        if match:
+            tags.append(match.group(1))  # Capture everything between 784 and B100
+    return tags
+
+
+def extract_weight_init_tags(filenames):
+    tags = []
+    for filename in filenames:
+        # Search for the pattern 'XAVIER', 'HE', 'UNIFORM', or 'NORMAL'
+        match = re.search(r'(XAVIER|HE|UNIFORM|NORMAL)', filename)
+        if match:
+            tags.append(match.group(1))  # Capture the weight initialization method
+    return tags
+
+
+def plot_basic_metrics(x_test, model_filenames, model_tags, num_runs=3, noise_level=0.1):
+    mean_ssims = []
+    std_ssims = []
+    times = []
+    num_runs = num_runs
+    noise_level = noise_level
+
+    for model_filename in model_filenames:
+        model = load_model(model_filename)
+        print("Model loaded from file:", model_filename)
+
+        # Use the modularized function to get SSIM values for this model and noise level
+        all_ssim_values = evaluate_model_ssim(model, x_test, noise_level, num_runs)
+
+        # Use the modularized function to calculate mean and std deviation of SSIM values
+        mean_ssim, std_ssim = calculate_ssim_statistics(all_ssim_values)
+
+        # Append mean and std deviation for the model
+        mean_ssims.append(mean_ssim)
+        std_ssims.append(std_ssim)
+
+        # Print results for the current model
+        model_tag = model_tags[model_filenames.index(model_filename)]
+
+        print(f"Model: {model_tag} | Mean SSIM: {mean_ssim} | Std Dev: {std_ssim}")
+
+        times.append(model.training_time)
+
+    # sort by accuracy
+    sorted_indices = np.argsort(mean_ssims)[::-1]
+    model_tags = [model_tags[i] for i in sorted_indices]
+    mean_ssims = [mean_ssims[i] for i in sorted_indices]
+    std_ssims = [std_ssims[i] for i in sorted_indices]
+    times = [times[i] for i in sorted_indices]
+
+    # invert the order of the lists
+    model_tags = model_tags[::-1]
+    mean_ssims = mean_ssims[::-1]
+    std_ssims = std_ssims[::-1]
+    times = times[::-1]
+
+    # Plot the results
+    plot_model_accuracies(model_tags, mean_ssims, std_ssims)
+    plot_model_times(model_tags, times)
+
+    # for model_filename in model_filenames:
+    #     model = load_model(model_filename)
+    #     print("Model loaded from file:", model_filename)
+    #     # Print results for the current model
+    #     model_tag = model_tags[model_filenames.index(model_filename)]
+    #     times.append(model.training_time)
+    #
+    # # Plot the results
+    # plot_model_times(model_tags, times)

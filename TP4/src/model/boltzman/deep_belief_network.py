@@ -24,7 +24,7 @@ def plot_images(original, reconstructed, n=1):
 
 
 class DBN:
-    def __init__(self, layer_sizes):
+    def __init__(self, layer_sizes, init_method='normal'):
         """
         Inicializa la DBN con una lista de tamaños de capas.
         Por ejemplo, layer_sizes = [784, 500, 200, 50] crea una DBN con 3 capas RBM:
@@ -33,10 +33,10 @@ class DBN:
         - Tercera RBM: 200 visibles, 50 ocultas
         """
         self.layer_sizes = layer_sizes
-        self.training_time = 0  # To track total training time
+        self.training_time = 0
         self.rbms = []
         for i in range(len(layer_sizes) - 1):
-            rbm = RBM(layer_sizes[i], layer_sizes[i + 1])
+            rbm = RBM(layer_sizes[i], layer_sizes[i + 1], init_method=init_method)
             self.rbms.append(rbm)
 
     def pretrain(self, data, epochs=10, batch_size=100, learning_rate=0.1, k=1):
@@ -60,6 +60,7 @@ class DBN:
 
         self.training_time = time.time() - time_start
 
+
     def reconstruct(self, data):
         """
         Reconstruye los datos pasando hacia adelante y luego hacia atrás por la DBN.
@@ -75,6 +76,7 @@ class DBN:
         for rbm in reversed(self.rbms):
             hidden = rbm.reconstruct_visible(hidden)
         return hidden
+
 
     def transform(self, data):
         """

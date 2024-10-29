@@ -6,19 +6,33 @@ import matplotlib.pyplot as plt
 from TP4.src.model.boltzman.boltzmann_utils import load_mnist_data_split, add_noise_to_image
 
 
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+
 class RBM:
-    def __init__(self, n_visible, n_hidden):
-        self.n_visible = n_visible  # Número de unidades visibles (784 para MNIST)
-        self.n_hidden = n_hidden  # Número de unidades ocultas
-        self.training_time = 0  # Para rastrear el tiempo total de entrenamiento
-        # Inicializar pesos y sesgos
+    def __init__(self, n_visible, n_hidden, init_method='normal'):
+        self.n_visible = n_visible
+        self.n_hidden = n_hidden
+        self.training_time = 0
+
+        # Choose initialization based on `init_method`
         np.random.seed(42)
-        self.weights = np.random.normal(0, 0.01, (self.n_visible, self.n_hidden))
+        if init_method == 'normal':
+            self.weights = np.random.normal(0, 0.01, (self.n_visible, self.n_hidden))
+        elif init_method == 'uniform':
+            self.weights = np.random.uniform(-0.01, 0.01, (self.n_visible, self.n_hidden))
+        elif init_method == 'xavier':
+            limit = np.sqrt(6 / (self.n_visible + self.n_hidden))
+            self.weights = np.random.uniform(-limit, limit, (self.n_visible, self.n_hidden))
+        elif init_method == 'he':
+            limit = np.sqrt(2 / self.n_visible)
+            self.weights = np.random.normal(0, limit, (self.n_visible, self.n_hidden))
+        else:
+            raise ValueError(f"Unknown initialization method: {init_method}")
+
         self.visible_bias = np.zeros(self.n_visible)
         self.hidden_bias = np.zeros(self.n_hidden)
-
-    def sigmoid(self, x):
-        return 1 / (1 + np.exp(-x))
 
     def sample_hidden(self, visible):
         """
@@ -28,7 +42,7 @@ class RBM:
         :return: Tuple de (probabilidades ocultas, muestras binarias ocultas)
         """
         activation = np.dot(visible, self.weights) + self.hidden_bias
-        prob_hidden = self.sigmoid(activation)
+        prob_hidden = sigmoid(activation)
         hidden_sample = (prob_hidden > np.random.rand(*prob_hidden.shape)).astype(np.float32)
         return prob_hidden, hidden_sample
 
@@ -40,7 +54,7 @@ class RBM:
         :return: Tuple de (probabilidades visibles, muestras binarias visibles)
         """
         activation = np.dot(hidden, self.weights.T) + self.visible_bias
-        prob_visible = self.sigmoid(activation)
+        prob_visible = sigmoid(activation)
         visible_sample = (prob_visible > np.random.rand(*prob_visible.shape)).astype(np.float32)
         return prob_visible, visible_sample
 
