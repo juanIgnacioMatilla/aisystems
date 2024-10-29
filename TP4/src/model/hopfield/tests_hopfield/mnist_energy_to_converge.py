@@ -70,6 +70,7 @@ if __name__ == "__main__":
     # Procesar los historiales de energía para graficar
     print("Procesando historiales de energía para graficar...")
     avg_energy_histories = {}
+    std_energy_histories = {}
     for noise_level, histories in energy_histories.items():
         # Encontrar la longitud máxima de las secuencias de energía
         max_length = max(len(hist) for hist in histories)
@@ -77,13 +78,14 @@ if __name__ == "__main__":
         # Rellenar los historiales más cortos con su último valor para igualar longitudes
         padded_histories = [hist + [hist[-1]] * (max_length - len(hist)) for hist in histories]
 
-        # Calcular el promedio de energía en cada iteración
+        # Calcular el promedio y el desvío estándar de la energía en cada iteración
         avg_energy = np.mean(padded_histories, axis=0)
+        std_energy = np.std(padded_histories, axis=0)
         avg_energy_histories[noise_level] = avg_energy
+        std_energy_histories[noise_level] = std_energy
 
-    # Graficar los historiales de energía con ajustes de tamaño y fuentes
+    # Graficar los historiales de energía con barras de error (desvío estándar)
     print("Graficando la evolución de la energía...")
-
 
     # Configurar parámetros de estilo globales para mayor legibilidad
     plt.rcParams.update({
@@ -100,7 +102,8 @@ if __name__ == "__main__":
     plt.figure()  # La figura ya está configurada en rcParams
 
     for noise_level, avg_energy in avg_energy_histories.items():
-        plt.plot(range(len(avg_energy)), avg_energy, label=f'Ruido {noise_level}')
+        std_energy = std_energy_histories[noise_level]
+        plt.errorbar(range(len(avg_energy)), avg_energy, yerr=std_energy, label=f'Ruido {noise_level}', capsize=3)
 
     plt.xlabel('Iteraciones')
     plt.ylabel('Energía')
