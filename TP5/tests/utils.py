@@ -178,3 +178,33 @@ def decode_and_plot_interpolated_chars(autoencoder, interpolated_latents, title_
     plt.suptitle('Interpolated Characters')
     plt.tight_layout()
     plt.show()
+
+def add_noise(X, noise_level):
+    """
+    Add salt-and-pepper noise to the binary images.
+    noise_level: float between 0 and 1 indicating the fraction of pixels to corrupt.
+    """
+    X_noisy = X.copy()
+    num_samples, num_features = X.shape
+    num_noisy = int(noise_level * num_features)
+    for i in range(num_samples):
+        # Randomly choose indices to flip
+        noisy_indices = np.random.choice(num_features, num_noisy, replace=False)
+        X_noisy[i, noisy_indices] = 1 - X_noisy[i, noisy_indices]  # Flip bits
+    return X_noisy
+
+# Visualize results
+def plot_denoising_results(original_chars, noisy_chars, reconstructed_chars, num_examples):
+    fig, axes = plt.subplots(3, num_examples, figsize=(num_examples * 2, 6))
+    for i in range(num_examples):
+        axes[0, i].imshow(original_chars[i].reshape(7, 5), cmap='Greys')
+        axes[0, i].axis('off')
+        axes[0, i].set_title("Original")
+        axes[1, i].imshow(noisy_chars[i].reshape(7, 5), cmap='Greys')
+        axes[1, i].axis('off')
+        axes[1, i].set_title("Noisy")
+        axes[2, i].imshow(reconstructed_chars[i].reshape(7, 5), cmap='Greys')
+        axes[2, i].axis('off')
+        axes[2, i].set_title("Reconstructed")
+    plt.tight_layout()
+    plt.show()
