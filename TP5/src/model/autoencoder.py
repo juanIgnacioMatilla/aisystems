@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
@@ -18,7 +17,7 @@ class Autoencoder:
         self.weights = []
         self.biases = []
 
-        np.random.seed(42)
+        # np.random.seed(42)
         for i in range(self.num_layers - 1):
             n_in = layer_sizes[i]
             n_out = layer_sizes[i + 1]
@@ -89,10 +88,23 @@ class Autoencoder:
             self.weights[i] -= learning_rate * m_hat_w / (np.sqrt(v_hat_w) + self.epsilon)
             self.biases[i] -= learning_rate * m_hat_b / (np.sqrt(v_hat_b) + self.epsilon)
 
-    def train(self, X, learning_rate=0.001, num_epochs=4500):
+    def train(self, X, learning_rate=0.001, num_epochs=4500, error_bar_interval=500):
+        """
+        Trains the autoencoder.
+
+        Args:
+            X (np.ndarray): Input data of shape (num_samples, input_size).
+            learning_rate (float): Learning rate for weight updates.
+            num_epochs (int): Number of training epochs.
+            error_bar_interval (int): Interval (in epochs) to record max pixel error.
+
+        Returns:
+            loss_history (list): List of average loss per epoch.
+            max_pixel_error_history (list): List of max pixel errors at specified intervals.
+        """
         loss_history = []
-        max_pixel_error_history = []  # To store maximum pixel error per 500 epochs
-        for epoch in range(num_epochs):
+        max_pixel_error_history = []  # To store maximum pixel error per interval
+        for epoch in range(1, num_epochs + 1):
             total_loss = 0
             for i in range(X.shape[0]):
                 x = X[i].reshape(-1, 1)
@@ -104,8 +116,8 @@ class Autoencoder:
             avg_loss = total_loss / X.shape[0]
             loss_history.append(avg_loss)
 
-            # Compute and store the max pixel error every 500 epochs
-            if (epoch + 1) % 500 == 0:
+            # Compute and store the max pixel error at specified intervals
+            if epoch % error_bar_interval == 0:
                 pixel_errors = []
                 for i in range(X.shape[0]):
                     x = X[i].reshape(-1, 1)
@@ -116,7 +128,7 @@ class Autoencoder:
                     pixel_errors.append(pixel_error)
                 max_pixel_error = max(pixel_errors)
                 max_pixel_error_history.append(max_pixel_error)
-                print(f"Epoch {epoch + 1}/{num_epochs}, Average Loss: {avg_loss}, Max Pixel Error: {max_pixel_error}")
+                print(f"Epoch {epoch}/{num_epochs}, Average Loss: {avg_loss:.6f}, Max Pixel Error: {max_pixel_error}")
         return loss_history, max_pixel_error_history
 
     def reconstruct(self, x):
@@ -126,13 +138,16 @@ class Autoencoder:
     def decode(self, latent_vector):
         """
         Decode a latent vector to generate a new character.
+
         Args:
-            latent_vector (numpy.ndarray): A column vector of shape (latent_size, 1)
+            latent_vector (numpy.ndarray): A column vector of shape (latent_size, 1).
+
         Returns:
-            numpy.ndarray: The reconstructed output vector
+            numpy.ndarray: The reconstructed output vector.
         """
         activation = latent_vector
-        # Pass through decoder layers
+        # Pass through decoder layers (assuming symmetric architecture)
+        # The decoder is the second half of the weights
         for i in range(len(self.weights) // 2, len(self.weights)):
             z = np.dot(self.weights[i], activation) + self.biases[i]
             activation = sigmoid(z)

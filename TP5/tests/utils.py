@@ -208,3 +208,42 @@ def plot_denoising_results(original_chars, noisy_chars, reconstructed_chars, num
         axes[2, i].set_title("Reconstructed")
     plt.tight_layout()
     plt.show()
+
+
+# Visualize reconstructed images
+def plot_reconstructed_images(vae, X, num_images=10):
+    fig, axes = plt.subplots(2, num_images, figsize=(num_images * 2, 4))
+    for i in range(num_images):
+        x = X[i].reshape(-1, 1)
+        y = vae.reconstruct(x)
+        axes[0, i].imshow(x.reshape(28, 28), cmap='gray')
+        axes[0, i].axis('off')
+        axes[0, i].set_title("Original")
+        axes[1, i].imshow(y.reshape(28, 28), cmap='gray')
+        axes[1, i].axis('off')
+        axes[1, i].set_title("Reconstructed")
+    plt.tight_layout()
+    plt.show()
+
+# Generate new images by sampling from the latent space
+def generate_images(vae, num_images=10):
+    fig, axes = plt.subplots(1, num_images, figsize=(num_images * 2, 2))
+    for i in range(num_images):
+        z = np.random.randn(vae.latent_size, 1)
+        # Decoder forward pass
+        a = z
+        for j in range(len(vae.hidden_sizes)):
+            W = vae.weights[f'decoder_W{j+1}']
+            b = vae.biases[f'decoder_b{j+1}']
+            z_dec = np.dot(W, a) + b
+            a = vae.relu(z_dec)
+        W_out = vae.weights['decoder_W_out']
+        b_out = vae.biases['decoder_b_out']
+        y = np.dot(W_out, a) + b_out
+        y = vae.sigmoid(y)
+        axes[i].imshow(y.reshape(28, 28), cmap='gray')
+        axes[i].axis('off')
+    plt.tight_layout()
+    plt.show()
+
+
