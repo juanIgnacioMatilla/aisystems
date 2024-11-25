@@ -37,6 +37,18 @@ if __name__ == "__main__":
     vae.train(X_train, batch_size=64, epochs=5, learning_rate=0.001)
     # Measure the time after training ends
     end_time = time.time()
+    # Calculate and display the elapsed time
+    elapsed_time = end_time - start_time
+    print(f"Training completed in {elapsed_time:.2f} seconds.")
+
+    # Plot the loss function over epochs
+    plt.figure()
+    plt.plot(vae.loss_history)
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title('Training Loss over Epochs')
+    plt.show()
+
     # Use a small subset of test data for visualization
     plot_reconstructed_images(vae, X_test[:10])
 

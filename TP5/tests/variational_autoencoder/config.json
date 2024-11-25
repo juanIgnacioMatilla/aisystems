@@ -1,0 +1,20 @@
+{
+    "font_path": "C:\\Windows\\Fonts\\seguiemj.ttf",
+    "emojis": ["😍", "😎", "⚽", "🙃", "👽"],
+    "image_size": 20,
+    "samples_per_emoji": 1000,
+    "hidden_sizes": [256, 128],
+    "latent_size": 2,
+    "batch_size": 2,
+    "epochs": 20,
+    "learning_rate": 0.001,
+    "num_images_to_display": 10,
+    "grid_size": 15,
+    "random_seed": 42,
+    "font_size_min": 44,
+    "font_size_max": 52,
+    "max_shift": 3,
+    "rotation_angle_min": -7,
+    "rotation_angle_max": 7,
+    "threshold": 0.5
+}

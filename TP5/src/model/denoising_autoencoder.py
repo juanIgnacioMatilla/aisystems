@@ -1,13 +1,10 @@
 import numpy as np
 
-
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-
-def sigmoid_derivative(x):
-    return x * (1 - x)  # x is the output of sigmoid
-
+def sigmoid_derivative(output):
+    return output * (1 - output)  # 'output' is the sigmoid activation
 
 class DenoisingAutoencoder:
     def __init__(self, layer_sizes):
@@ -18,7 +15,6 @@ class DenoisingAutoencoder:
         self.weights = []
         self.biases = []
 
-        np.random.seed(42)
         for i in range(self.num_layers - 1):
             n_in = layer_sizes[i]
             n_out = layer_sizes[i + 1]
@@ -38,8 +34,6 @@ class DenoisingAutoencoder:
         self.beta2 = 0.999
         self.epsilon = 1e-8
         self.t = 0  # Time step
-
-    # Activation functions
 
     def forward(self, x):
         activations = [x]
@@ -62,7 +56,6 @@ class DenoisingAutoencoder:
 
         # Backpropagate the error
         for l in range(2, self.num_layers):
-            z = zs[-l]
             sp = sigmoid_derivative(activations[-l])
             delta = np.dot(self.weights[-l + 1].T, delta) * sp
             grads_w[-l] = np.dot(delta, activations[-l - 1].T)
@@ -91,9 +84,10 @@ class DenoisingAutoencoder:
 
     def train(self, X_noisy, X_clean, learning_rate=0.001, num_epochs=5000):
         loss_history = []
+        num_samples = X_noisy.shape[0]
         for epoch in range(num_epochs):
             total_loss = 0
-            for i in range(X_noisy.shape[0]):
+            for i in range(num_samples):
                 x_noisy = X_noisy[i].reshape(-1, 1)
                 x_clean = X_clean[i].reshape(-1, 1)
                 activations, zs = self.forward(x_noisy)
@@ -101,7 +95,7 @@ class DenoisingAutoencoder:
                 total_loss += loss
                 grads_w, grads_b = self.backward(x_clean, activations, zs)
                 self.update_parameters(grads_w, grads_b, learning_rate)
-            avg_loss = total_loss / X_noisy.shape[0]
+            avg_loss = total_loss / num_samples
             loss_history.append(avg_loss)
             if (epoch + 1) % 500 == 0:
                 print(f"Epoch {epoch + 1}/{num_epochs}, Average Loss: {avg_loss}")
@@ -110,6 +104,22 @@ class DenoisingAutoencoder:
     def reconstruct(self, x):
         activations, _ = self.forward(x)
         return activations[-1]
+
+    def encode(self, x):
+        """
+        Encode the input vector into the latent space.
+        Args:
+            x (numpy.ndarray): A column vector of shape (input_size, 1)
+        Returns:
+            numpy.ndarray: The latent representation
+        """
+        activation = x
+        # Pass through encoder layers
+        num_encoder_layers = len(self.weights) // 2
+        for i in range(num_encoder_layers):
+            z = np.dot(self.weights[i], activation) + self.biases[i]
+            activation = sigmoid(z)
+        return activation
 
     def decode(self, latent_vector):
         """
