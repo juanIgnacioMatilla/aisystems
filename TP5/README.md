@@ -27,7 +27,7 @@ Ejemplo de config.json:
 * latent_size: Tamaño del espacio latente (dimensión de la capa latente).
 * seed: Semilla para la reproducibilidad de los resultados.
 ## Denoising Autoencoder:
-Este se puede visualizar lo pedido corriendo test/denoising_autoencoder/fonth_test.py
+Este se puede visualizar lo pedido corriendo test/denoising_autoencoder/multiple_runs.py
 
 El archivo config.json contiene todos los parámetros configurables para el entrenamiento del denoising autoencoder.
 
